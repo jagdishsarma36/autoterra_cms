@@ -451,6 +451,9 @@ async function handleOneTimeCheckout(price) {
 }
 
 async function handleSubscriptionCheckout(price) {
+  const gst = currency === 'INR' ? Math.round(price * GST_RATE) : 0;
+  const totalAmount = price + gst;
+
   try {
     const res = await fetch('/api/razorpay/create-plan', {
       method: 'POST',
@@ -458,7 +461,7 @@ async function handleSubscriptionCheckout(price) {
       body: JSON.stringify({
         product_slug: selectedProduct,
         term: selectedTerm,
-        amount: price,
+        amount: totalAmount,
         currency: currency
       })
     });
