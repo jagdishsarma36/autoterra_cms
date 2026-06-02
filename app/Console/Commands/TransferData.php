@@ -110,10 +110,12 @@ class TransferData extends Command
         // Get column names from the first row
         $columns = array_keys((array) $rows->first());
 
+        // Delete existing rows to avoid unique constraint conflicts
+        $existingCount = $mysql->table($table)->count();
+        $mysql->table($table)->delete();
+
         // Process rows in chunks for efficiency
         $chunks = $rows->chunk(500);
-        $inserted = 0;
-        $updated = 0;
 
         foreach ($chunks as $chunk) {
             $records = [];
@@ -135,18 +137,11 @@ class TransferData extends Command
                 $records[] = $record;
             }
 
-            // Use upsert — handles all unique constraints (PK + composite keys)
-            $existingIds = array_column($records, 'id');
-            $existingCount = $mysql->table($table)->whereIn('id', $existingIds)->count();
-
-            $mysql->table($table)->upsert($records, 'id');
-
-            $inserted += count($records) - $existingCount;
-            $updated += $existingCount;
+            $mysql->table($table)->insert($records);
         }
 
         $this->totalRows += $count;
-        $label = "{$inserted} inserted, {$updated} updated";
+        $label = "{$existingCount} existing deleted, {$count} inserted";
         $this->line("  <info>{$table}</info> — {$count} rows transferred ({$label})");
 
         // Reset auto-increment counter
