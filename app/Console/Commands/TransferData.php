@@ -116,6 +116,8 @@ class TransferData extends Command
         $updated = 0;
 
         foreach ($chunks as $chunk) {
+            $records = [];
+
             foreach ($chunk as $row) {
                 $record = [];
 
@@ -130,17 +132,17 @@ class TransferData extends Command
                     $record[$column] = $value;
                 }
 
-                // Upsert: insert if new, update if ID already exists
-                $exists = $mysql->table($table)->where('id', $record['id'] ?? 0)->exists();
-
-                if ($exists) {
-                    $mysql->table($table)->where('id', $record['id'])->update($record);
-                    $updated++;
-                } else {
-                    $mysql->table($table)->insert($record);
-                    $inserted++;
-                }
+                $records[] = $record;
             }
+
+            // Use upsert — handles all unique constraints (PK + composite keys)
+            $existingIds = array_column($records, 'id');
+            $existingCount = $mysql->table($table)->whereIn('id', $existingIds)->count();
+
+            $mysql->table($table)->upsert($records, 'id');
+
+            $inserted += count($records) - $existingCount;
+            $updated += $existingCount;
         }
 
         $this->totalRows += $count;
