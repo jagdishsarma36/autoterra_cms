@@ -1,0 +1,8 @@
+*.log
+.DS_Store
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+.env
+.phpunit.result.cache
