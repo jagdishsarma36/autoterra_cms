@@ -114,6 +114,14 @@ class RazorpayService
     }
 
     /**
+     * Fetch a payment by ID.
+     */
+    public function fetchPayment(string $paymentId): array
+    {
+        return $this->request('GET', "/payments/{$paymentId}");
+    }
+
+    /**
      * Fetch a subscription.
      */
     public function fetchSubscription(string $subscriptionId): array

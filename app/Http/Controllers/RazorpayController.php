@@ -78,14 +78,39 @@ class RazorpayController extends Controller
             'db_order_id' => 'required|integer',
         ]);
 
+        // Step 1: Verify signature
         $isValid = $this->razorpay->verifyPaymentSignature($request->only([
             'razorpay_order_id', 'razorpay_payment_id', 'razorpay_signature',
         ]));
 
         if (!$isValid) {
+            \Illuminate\Support\Facades\Log::error('[Razorpay] Payment signature failed', [
+                'payment_id' => $request->razorpay_payment_id,
+                'order_id' => $request->razorpay_order_id,
+            ]);
             return response()->json(['success' => false, 'message' => 'Invalid payment signature'], 400);
         }
 
+        // Step 2: Cross-check with Razorpay API that payment is actually captured
+        $payment = $this->razorpay->fetchPayment($request->razorpay_payment_id);
+
+        if (isset($payment['error'])) {
+            \Illuminate\Support\Facades\Log::error('[Razorpay] Failed to fetch payment for verification', [
+                'payment_id' => $request->razorpay_payment_id,
+                'error' => $payment['error'],
+            ]);
+            return response()->json(['success' => false, 'message' => 'Could not verify payment with Razorpay'], 500);
+        }
+
+        if ($payment['status'] !== 'captured' && $payment['status'] !== 'authorized') {
+            \Illuminate\Support\Facades\Log::warning('[Razorpay] Payment not captured', [
+                'payment_id' => $request->razorpay_payment_id,
+                'status' => $payment['status'],
+            ]);
+            return response()->json(['success' => false, 'message' => 'Payment not yet captured on Razorpay (status: ' . $payment['status'] . ')'], 400);
+        }
+
+        // Step 3: Update order
         $order = Order::findOrFail($request->db_order_id);
         $order->update([
             'razorpay_payment_id' => $request->razorpay_payment_id,
@@ -124,14 +149,25 @@ class RazorpayController extends Controller
 
         $product = Product::where('slug', $request->product_slug)->first();
 
-        Subscription::create([
-            'user_id' => Auth::id(),
-            'product_id' => $product?->id,
-            'term' => $request->term,
-            'razorpay_subscription_id' => $subscription['id'],
-            'razorpay_plan_id' => $request->plan_id,
-            'status' => 'active',
-        ]);
+        try {
+            Subscription::create([
+                'user_id' => Auth::id(),
+                'product_id' => $product?->id,
+                'term' => $request->term,
+                'razorpay_subscription_id' => $subscription['id'],
+                'razorpay_plan_id' => $request->plan_id,
+                'status' => 'pending',
+            ]);
+        } catch (\Exception $e) {
+            Subscription::create([
+                'user_id' => Auth::id(),
+                'product_id' => $product?->id,
+                'term' => $request->term,
+                'razorpay_subscription_id' => $subscription['id'],
+                'razorpay_plan_id' => $request->plan_id,
+                'status' => 'active',
+            ]);
+        }
 
         return response()->json([
             'id' => $subscription['id'],
@@ -187,17 +223,34 @@ class RazorpayController extends Controller
             return response()->json(['error' => $subResult['error']], 500);
         }
 
-        // Save subscription in database
-        Subscription::create([
-            'user_id' => Auth::id(),
-            'product_id' => $product->id,
-            'term' => $request->term,
-            'razorpay_subscription_id' => $subResult['id'],
-            'razorpay_plan_id' => $planResult['id'],
-            'status' => 'active',
-            'amount' => $request->amount,
-            'currency' => $request->currency,
-        ]);
+        // Save subscription in database — use 'pending' if enum supports it, else 'active'
+        try {
+            Subscription::create([
+                'user_id' => Auth::id(),
+                'product_id' => $product->id,
+                'term' => $request->term,
+                'razorpay_subscription_id' => $subResult['id'],
+                'razorpay_plan_id' => $planResult['id'],
+                'status' => 'pending',
+                'amount' => $request->amount,
+                'currency' => $request->currency,
+            ]);
+        } catch (\Exception $e) {
+            // Fallback: save with 'active' if 'pending' is not in enum
+            \Illuminate\Support\Facades\Log::warning('[Razorpay] Could not save subscription as pending, saving as active', [
+                'error' => $e->getMessage(),
+            ]);
+            Subscription::create([
+                'user_id' => Auth::id(),
+                'product_id' => $product->id,
+                'term' => $request->term,
+                'razorpay_subscription_id' => $subResult['id'],
+                'razorpay_plan_id' => $planResult['id'],
+                'status' => 'active',
+                'amount' => $request->amount,
+                'currency' => $request->currency,
+            ]);
+        }
 
         return response()->json([
             'subscription_id' => $subResult['id'],
@@ -216,25 +269,53 @@ class RazorpayController extends Controller
             'razorpay_signature' => 'required|string',
         ]);
 
+        // Step 1: Verify signature
         $isValid = $this->razorpay->verifyPaymentSignature(array_merge(
             $request->only(['razorpay_subscription_id', 'razorpay_payment_id', 'razorpay_signature']),
             ['is_subscription' => true]
         ));
 
         if (!$isValid) {
+            \Illuminate\Support\Facades\Log::error('[Razorpay] Subscription signature failed', [
+                'subscription_id' => $request->razorpay_subscription_id,
+                'payment_id' => $request->razorpay_payment_id,
+            ]);
             return response()->json(['success' => false, 'message' => 'Invalid subscription signature'], 400);
         }
 
+        // Step 2: Cross-check with Razorpay API that payment is captured
+        $payment = $this->razorpay->fetchPayment($request->razorpay_payment_id);
+
+        if (isset($payment['error'])) {
+            \Illuminate\Support\Facades\Log::error('[Razorpay] Failed to fetch subscription payment', [
+                'payment_id' => $request->razorpay_payment_id,
+                'error' => $payment['error'],
+            ]);
+            return response()->json(['success' => false, 'message' => 'Could not verify payment with Razorpay'], 500);
+        }
+
+        if ($payment['status'] !== 'captured' && $payment['status'] !== 'authorized') {
+            \Illuminate\Support\Facades\Log::warning('[Razorpay] Subscription payment not captured', [
+                'payment_id' => $request->razorpay_payment_id,
+                'status' => $payment['status'],
+            ]);
+            return response()->json(['success' => false, 'message' => 'Payment not yet captured on Razorpay (status: ' . $payment['status'] . ')'], 400);
+        }
+
+        // Step 3: Update subscription
         $sub = Subscription::where('razorpay_subscription_id', $request->razorpay_subscription_id)->first();
         if ($sub) {
             $sub->update(['status' => 'active']);
 
-            // Send subscription confirmation email
             try {
                 Mail::to($sub->user->email)->send(new SubscriptionConfirmation($sub));
             } catch (\Exception $e) {
                 \Illuminate\Support\Facades\Log::error('Failed to send subscription email', ['error' => $e->getMessage()]);
             }
+        } else {
+            \Illuminate\Support\Facades\Log::warning('[Razorpay] Subscription not found in DB during verification', [
+                'razorpay_subscription_id' => $request->razorpay_subscription_id,
+            ]);
         }
 
         return response()->json(['success' => true, 'subscription_id' => $request->razorpay_subscription_id]);
@@ -289,8 +370,15 @@ class RazorpayController extends Controller
             case 'payment.failed':
                 $payment = $payload['payment']['entity'] ?? [];
                 $orderId = $payment['order_id'] ?? '';
-                Order::where('razorpay_order_id', $orderId)
-                    ->update(['status' => 'failed']);
+                $subId = $payment['subscription_id'] ?? '';
+                if ($orderId) {
+                    Order::where('razorpay_order_id', $orderId)
+                        ->update(['status' => 'failed']);
+                }
+                if ($subId) {
+                    Subscription::where('razorpay_subscription_id', $subId)
+                        ->update(['status' => 'failed']);
+                }
                 break;
         }
 
