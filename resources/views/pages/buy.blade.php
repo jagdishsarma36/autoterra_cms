@@ -204,6 +204,7 @@
 @section('scripts')
 <script>
 const RZP_KEY = '{{ config("razorpay.key_id") }}';
+const IS_LOGGED_IN = {{ Auth::check() ? 'true' : 'false' }};
 let PRICING = {};
 let selectedProduct = null;
 let selectedTerm = '1yr';
@@ -388,6 +389,11 @@ async function handleCheckout() {
   if (!selectedProduct) { alert('Please select a product first.'); return; }
   const price = getPrice(selectedProduct);
   if (!price) { alert('Price not available.'); return; }
+
+  if (!IS_LOGGED_IN) {
+    window.location.href = '/login?redirect=/buy';
+    return;
+  }
 
   const btn = document.getElementById('checkoutBtn');
   btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite;"></i> Processing…';

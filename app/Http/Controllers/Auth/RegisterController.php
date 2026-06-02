@@ -11,9 +11,11 @@ use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
-        return view('auth.signup');
+        return view('auth.signup', [
+            'redirect' => $request->query('redirect'),
+        ]);
     }
 
     public function register(Request $request)
@@ -43,7 +45,9 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard')
+        $redirectTo = $request->input('redirect') ?: route('dashboard');
+
+        return redirect($redirectTo)
             ->with('success', 'Account created successfully! Welcome to AutoTerra.');
     }
 }

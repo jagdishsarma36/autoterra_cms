@@ -146,6 +146,9 @@
 
     <form method="POST" action="{{ route('login') }}">
       @csrf
+      @if($redirect ?? null)
+      <input type="hidden" name="redirect" value="{{ $redirect }}">
+      @endif
       <div class="form-group">
         <label for="email">Email address</label>
         <input type="email" id="email" name="email" class="form-control" placeholder="you@company.com" autocomplete="email" value="{{ old('email') }}" required>
@@ -172,7 +175,7 @@
     </form>
 
     <div class="login-signup">
-      Don't have an account? <a href="{{ route('register') }}">Create one — it's free</a>
+      Don't have an account? <a href="{{ route('register') }}{{ isset($redirect) && $redirect ? '?redirect=' . urlencode($redirect) : '' }}">Create one — it's free</a>
     </div>
 
     <a href="/" class="login-back">

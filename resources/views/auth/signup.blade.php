@@ -119,6 +119,9 @@
 
     <form method="POST" action="{{ route('register') }}" id="signupForm" novalidate>
       @csrf
+      @if($redirect ?? null)
+      <input type="hidden" name="redirect" value="{{ $redirect }}">
+      @endif
       <div class="form-row-2">
         <div class="form-group">
           <label for="firstName">First name</label>
@@ -184,7 +187,7 @@
     </form>
 
     <div class="signup-signin">
-      Already have an account? <a href="{{ route('login') }}">Sign in</a>
+      Already have an account? <a href="{{ route('login') }}{{ isset($redirect) && $redirect ? '?redirect=' . urlencode($redirect) : '' }}">Sign in</a>
     </div>
 
     <a href="/" class="signup-back">

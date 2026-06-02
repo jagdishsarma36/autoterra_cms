@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
-        return view('auth.login');
+        return view('auth.login', [
+            'redirect' => $request->query('redirect'),
+        ]);
     }
 
     public function login(Request $request)
@@ -26,7 +28,9 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('dashboard'))
+            $redirectTo = $request->input('redirect') ?: route('dashboard');
+
+            return redirect($redirectTo)
                 ->with('success', 'Welcome back!');
         }
 
