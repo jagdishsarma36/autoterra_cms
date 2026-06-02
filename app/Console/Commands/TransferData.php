@@ -112,10 +112,10 @@ class TransferData extends Command
 
         // Process rows in chunks for efficiency
         $chunks = $rows->chunk(500);
+        $inserted = 0;
+        $updated = 0;
 
         foreach ($chunks as $chunk) {
-            $records = [];
-
             foreach ($chunk as $row) {
                 $record = [];
 
@@ -130,15 +130,22 @@ class TransferData extends Command
                     $record[$column] = $value;
                 }
 
-                $records[] = $record;
-            }
+                // Upsert: insert if new, update if ID already exists
+                $exists = $mysql->table($table)->where('id', $record['id'] ?? 0)->exists();
 
-            // Insert without touching timestamps or casting
-            $mysql->table($table)->insert($records);
+                if ($exists) {
+                    $mysql->table($table)->where('id', $record['id'])->update($record);
+                    $updated++;
+                } else {
+                    $mysql->table($table)->insert($record);
+                    $inserted++;
+                }
+            }
         }
 
         $this->totalRows += $count;
-        $this->line("  <info>{$table}</info> — {$count} rows transferred");
+        $label = "{$inserted} inserted, {$updated} updated";
+        $this->line("  <info>{$table}</info> — {$count} rows transferred ({$label})");
 
         // Reset auto-increment counter
         $maxId = $mysql->table($table)->max('id');
