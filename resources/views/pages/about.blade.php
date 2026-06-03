@@ -109,16 +109,16 @@
         </a>
   </div>
   <div>
-     @foreach(pageContentJson('about', 'infycons.linkaddress') as $infyconsLink)
-     <a href="{{ $infyconsLink['infy_url'] }}" target="_blank" class="abt-product-link">
-      <i class="{{ $infyconsLink['icon_class'] }}"></i>
-      <div>
-        <div class="abt-product-link-name">{{ $infyconsLink['title'] }}</div>
-        <div class="abt-product-link-desc">{{ $infyconsLink['description'] }}</div>
-      </div>
-      <i class="ti ti-arrow-right arrow"></i>
-    </a>
-    @endforeach
+  @foreach(pageContentJson('about', 'infycons.linkaddress') as $infyconsLink)
+      <a href="{{ $infyconsLink['infy_url'] }}" target="_blank" class="abt-product-link">
+          <i class="{{ $infyconsLink['icon_class'] }}"></i>
+          <div>
+              <div class="abt-product-link-name">{{ $infyconsLink['title'] }}</div>
+              <div class="abt-product-link-desc">{{ $infyconsLink['description'] }}</div>
+          </div>
+          <i class="ti ti-arrow-right arrow"></i>
+      </a>
+  @endforeach
     
     <div class="abt-office" style="margin-top:20px;">
       <h4><i class="ti ti-building"></i> Infyterra Technologies — HQ</h4>
