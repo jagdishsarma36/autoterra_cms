@@ -67,7 +67,32 @@
       @endforeach
   </div>
 </section>
-<!-- values section end -->
+<!-- values section end --> 
+
+ <!-- team section -->
+<section class="abt-team section-white">
+  <div class="sec-eye">{{ pageContent('about', 'team.eyebrow') }}</div>
+  <h2 class="sec-h2">{{ pageContent('about', 'team.heading') }}</h2>
+  <p class="sec-sub">{{ pageContent('about', 'team.description') }}</p>
+  <div class="abt-team-grid">
+    @foreach(pageContentJson('about', 'team.members') as $member)
+    <div class="abt-team-card">
+      <div class="abt-avatar">
+        <div class="ph" style="height:100px;border-radius:0;border:none;">
+          <i class="ti ti-user" style="font-size:28px;"></i>
+        </div>
+      </div>
+      <h4>{{ $member['name'] }}</h4>
+      <div class="role">{{ $member['role'] }}</div>
+      <a href="{{ $member['social_link'] }}" class="linkedin" target="_blank">
+        <i class="ti ti-brand-linkedin"></i>
+      </a>
+    </div>
+    
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:24px;">{{ pageContent('about', 'team.disclaimer') }}</p>
+</section>
+<!-- team section end -->
 
 <section class="cta-band"><div class="cta-band-inner"><h2>{{ pageContent('about', 'cta.heading') }}</h2><p>{{ pageContent('about', 'cta.description') }}</p><div class="cta-row"><a href="/contact" class="btn-cyan">{{ pageContent('about', 'cta.button_primary_text') }}</a><a href="/products" class="btn-ghost">{{ pageContent('about', 'cta.button_secondary_text') }}</a></div></div></section>
 @include('partials.footer')
