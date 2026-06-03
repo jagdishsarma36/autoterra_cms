@@ -30,13 +30,13 @@
   </div>
   <div>
     <div class="abt-timeline">
-      <div class="abt-tl-item">
         @foreach(pageContentJson('about', 'timeline') as $timelineItem) 
+        <div class="abt-tl-item">
         <div class="abt-tl-dot"></div>
         <div class="abt-tl-year">{{ $timelineItem['year'] }}</div>
         <div class="abt-tl-text">{{ $timelineItem['text'] }}</div>
-        @endforeach
-      </div>
+        </div>
+        @endforeach    
     </div>
   </div>
 </section>
