@@ -88,7 +88,7 @@
         <i class="ti ti-brand-linkedin"></i>
       </a>
     </div>
-    
+    @endforeach 
   </div>
   <p style="font-size:13px;color:var(--muted);margin-top:24px;">{{ pageContent('about', 'team.disclaimer') }}</p>
 </section>
