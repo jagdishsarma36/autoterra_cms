@@ -95,6 +95,25 @@
 </section>
 <!-- team section end -->
 
+<!-- clients logo -->
+<section class="abt-clients">
+  <div style="text-align:center;">
+    <div class="sec-eye" style="text-align:center;">{{ pageContent('about', 'clients.eyebrow') }}</div>
+    <h2 class="sec-h2" style="text-align:center;">{{ pageContent('about', 'clients.heading') }}</h2>
+    <p class="sec-sub" style="text-align:center;max-width:480px;margin:0 auto 0;">{{ pageContent('about', 'clients.description') }}</p>
+  </div>
+  
+  <!-- Client logos -->
+    <div class="logos-strip" style="margin-bottom:48px;padding:24px;background:#F5F8FC;border-radius:12px;">
+      @foreach(pageContentJson('home', 'testimonial.clients_logo') as $logo)
+      <div class="ph logo-ph">
+        <img src="{{ $logo }}" alt="Client logo" style="height:100%;object-fit:contain;">
+      </div>
+      @endforeach
+    </div>
+</section>
+<!-- clients logo end -->
+
 <section class="cta-band"><div class="cta-band-inner"><h2>{{ pageContent('about', 'cta.heading') }}</h2><p>{{ pageContent('about', 'cta.description') }}</p><div class="cta-row"><a href="/contact" class="btn-cyan">{{ pageContent('about', 'cta.button_primary_text') }}</a><a href="/products" class="btn-ghost">{{ pageContent('about', 'cta.button_secondary_text') }}</a></div></div></section>
 @include('partials.footer')
 @endsection
