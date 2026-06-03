@@ -70,18 +70,76 @@
       </div>
 
       <!-- DEVELOPER: Replace with AutoTerra Pro Spatial screenshot -->
+      @php
+          $media = pageContent('home', 'feature1.image_url');
+      @endphp
+
       <div class="ph" style="height:360px;">
-        <img src="{{ pageContent('home', 'feature1.image_url') }}" alt="AutoTerra Pro Spatial — point cloud classification view" style="width:100%;height:100%;object-fit:cover;">
+          @if(!empty($media))
+              {{-- YouTube/Vimeo iframe embed code --}}
+              @if(Str::contains($media, '<iframe'))
+                  {!! $media !!}
+
+              {{-- Video file --}}
+              @elseif(preg_match('/\.(mp4|webm|ogg)(\?.*)?$/i', $media))
+                  <video
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      controls
+                      style="width:100%;height:100%;object-fit:cover;"
+                  >
+                      <source src="{{ $media }}">
+                  </video>
+
+              {{-- Image --}}
+              @else
+                  <img
+                      src="{{ $media }}"
+                      alt="AutoTerra Pro Spatial — point cloud classification view"
+                      style="width:100%;height:100%;object-fit:cover;"
+                  >
+              @endif
+          @endif
       </div>
     </div>
   </section>
 
 <section class="section section-white">
     <div class="feat-grid">
-
+      @php
+          $media = pageContent('home', 'feature2.image_url');
+      @endphp
       <!-- DEVELOPER: Replace with terrain/contour screenshot -->
       <div class="ph feat-img-right" style="height:360px;">
-        <img src="{{ pageContent('home', 'feature2.image_url') }}" alt="AutoTerra Pro Spatial — point cloud classification view" style="width:100%;height:100%;object-fit:cover;">
+        @if(!empty($media))
+              {{-- YouTube/Vimeo iframe embed code --}}
+              @if(Str::contains($media, '<iframe'))
+                  {!! $media !!}
+
+              {{-- Video file --}}
+              @elseif(preg_match('/\.(mp4|webm|ogg)(\?.*)?$/i', $media))
+                  <video
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      controls
+                      style="width:100%;height:100%;object-fit:cover;"
+                  >
+                      <source src="{{ $media }}">
+                  </video>
+
+              {{-- Image --}}
+              @else
+                  <img
+                      src="{{ $media }}"
+                      alt="AutoTerra Pro Spatial — point cloud classification view"
+                      style="width:100%;height:100%;object-fit:cover;"
+                  >
+              @endif
+          @endif
       </div>
 
       <div>
