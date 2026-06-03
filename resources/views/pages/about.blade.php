@@ -4,7 +4,7 @@
 @include('partials.nav')
 <section class="page-hero" style="background:var(--navy);padding:60px;">
   <div class="sec-eye">{{ pageContent('about', 'hero.eyebrow') }}</div>
-  <h1 style="font-size:38px;font-weight:800;color:#fff;margin-bottom:14px;">{{ pageContent('about', 'hero.heading') }}</h1>
+  <h1 style="font-size:38px;font-weight:800;color:#fff;margin-bottom:14px;">{!! pageContent('about', 'hero.heading') !!}</h1>
   <p style="font-size:15px;color:rgba(210,230,248,0.5);max-width:600px;">{{ pageContent('about', 'hero.description') }}</p>
 </section>
 

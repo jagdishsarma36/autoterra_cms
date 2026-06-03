@@ -673,6 +673,25 @@ section.hero-wrap.hero-bg.ph {
     background: var(--green);
     box-shadow: 0 0 0 2px var(--green);
 }
+.abt-stats {
+    background: var(--navy);
+    padding: 56px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+}
+.abt-stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--cyan);
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+}
+.abt-stat-lbl {
+    font-size: 13px;
+    color: rgba(210, 230, 248, 0.45);
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
