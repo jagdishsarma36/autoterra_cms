@@ -9,7 +9,7 @@
 </section>
 
 <!-- Story Section -->
-<section class="section section-white" style="padding:60px;">
+<section class="section section-white abt-story" style="padding:60px;">
     <div class="sec-eye">{{ pageContent('about', 'story.eyebrow') }}</div>
         <h2 class="sec-h2">{!! pageContent('about', 'story.heading') !!}</h2>
         <div style="max-width:700px;margin-top:20px;">
