@@ -84,13 +84,14 @@
       </div>
       <h4>{{ $member['name'] }}</h4>
       <div class="role">{{ $member['role'] }}</div>
-      <a href="{{ $member['social_link'] }}" class="linkedin" target="_blank">
-        <i class="ti ti-brand-linkedin"></i>
+      @foreach($member['social_link'] as $social => $link)
+      <a href="{{ $link }}" class="linkedin" target="_blank">
+          <i class="ti ti-brand-{{ $social }}"></i>
       </a>
+      @endforeach
     </div>
     @endforeach 
   </div>
-  <p style="font-size:13px;color:var(--muted);margin-top:24px;">{{ pageContent('about', 'team.disclaimer') }}</p>
 </section>
 <!-- team section end -->
 
