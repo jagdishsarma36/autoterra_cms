@@ -17,7 +17,7 @@
           <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;">{{ $p }}</p>
           @endforeach
         <div style="margin-top:28px;">
-          {{ pageContent('about', 'story.link') }}
+          {{ pageContentJson('about', 'story.link') }}
         </div>
         </div>
     <div> 
@@ -33,7 +33,7 @@
   </div>
 </section>
 <!-- story section end -->
- 
+
 <section class="section section-light" style="padding:60px;">
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:900px;margin:0 auto;">
     @foreach(pageContentJson('about', 'stats') as $stat)
