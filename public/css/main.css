@@ -723,6 +723,17 @@ section.hero-wrap.hero-bg.ph {
     font-size: 22px;
     margin-bottom: 16px;
 }
+.abt-value-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--body);
+    margin-bottom: 8px;
+}
+.abt-value-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
