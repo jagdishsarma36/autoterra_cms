@@ -826,6 +826,27 @@ section.hero-wrap.hero-bg.ph {
     font-size: 16px;
     color: var(--muted);
 }
+.abt-office h4 i {
+    color: var(--cyan);
+    font-size: 18px;
+}
+.abt-office h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--body);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.abt-office-row {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    align-items: flex-start;
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
