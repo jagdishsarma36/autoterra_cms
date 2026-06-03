@@ -16,7 +16,7 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/plus-jakarta-sans@5/index.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-  <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/main.css') }}?v={{ time() }}">
   @php $headerCss = \App\Models\Setting::get('custom_header_css', ''); @endphp
   @if($headerCss)
   <style>{!! $headerCss !!}</style>
@@ -39,7 +39,7 @@
       window.csrfToken = m.content;
     });
   </script>
-  <script src="{{ asset('js/main.js') }}"></script>
+  <script src="{{ asset('js/main.js') }}?v={{ time() }}"></script>
   @yield('scripts')
   @php $footerJs = \App\Models\Setting::get('custom_footer_js', ''); @endphp
   @if($footerJs)
