@@ -11,7 +11,7 @@
 <!-- Story Section -->
 <section class="section section-white abt-story" style="padding:60px;">
   <div>
-    <div class="sec-eye">{{ pageContent('about', 'story.eyebrow') }}
+    <div class="sec-eye">{{ pageContent('about', 'story.eyebrow') }}</div>
         <h2 class="sec-h2">{!! pageContent('about', 'story.heading') !!}</h2>
         <div style="max-width:700px;margin-top:20px;">
           @foreach(pageContentJson('about', 'story.paragraphs') as $p)
@@ -26,8 +26,7 @@
                 {{ $link['text'] }}
             </a>
         </div>
-    <div> 
-  </div>
+  <div> 
   <div>
     <div class="abt-timeline">
         @foreach(pageContentJson('about', 'timeline') as $timelineItem)
