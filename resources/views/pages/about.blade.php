@@ -79,7 +79,7 @@
     <div class="abt-team-card">
       <div class="abt-avatar">
         <div class="ph" style="height:100px;border-radius:0;border:none;">
-          <i class="ti ti-user" style="font-size:28px;"></i>
+          <img src="{{ $member['avatar'] }}" alt="{{ $member['name'] }}" >
         </div>
       </div>
       <h4>{{ $member['name'] }}</h4>
