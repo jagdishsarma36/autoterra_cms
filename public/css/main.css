@@ -669,6 +669,10 @@ section.hero-wrap.hero-bg.ph {
     color: var(--body);
     line-height: 1.55;
 }
+.timeline-last .abt-tl-dot {
+    background: var(--green);
+    box-shadow: 0 0 0 2px var(--green);
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
