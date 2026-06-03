@@ -583,6 +583,13 @@ section.hero-wrap.hero-bg.ph {
     color: #5A7A96;
     margin-top: 2px;
 }
+.logo-ph {
+    max-height: 60px;
+    min-height: 60px;
+    padding: 8px 16px;
+    background: #E8EEF4;
+    border-width: 1px;
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;

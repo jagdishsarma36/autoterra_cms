@@ -160,7 +160,7 @@
     <!-- Client logos -->
     <div class="logos-strip" style="margin-bottom:48px;padding:24px;background:#F5F8FC;border-radius:12px;">
       @foreach(pageContentJson('home', 'testimonial.clients_logo') as $logo)
-      <div class="ph logo-ph" style="height:44px;background:#E8EEF4;border-width:1px;padding:8px 16px;">
+      <div class="ph logo-ph">
         <img src="{{ $logo }}" alt="Client logo" style="height:100%;object-fit:contain;">
       </div>
       @endforeach

@@ -88,3 +88,19 @@ function updateDots(totalPages) {
         dot.classList.toggle('active', index === currentTesti);
     });
 }
+
+window.addEventListener('load', function() {
+    jQuery('.logos-strip').owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: false,
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        responsive: {
+            0: { items: 2 },
+            768: { items: 4 },
+            1024: { items: 6 }
+        }
+    });
+});
