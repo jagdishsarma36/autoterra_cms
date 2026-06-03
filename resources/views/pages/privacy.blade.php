@@ -29,9 +29,8 @@
     <div class="legal-notice">
       <p>{{ pageContent('global', 'privacy.short_description') }}</p>
     </div>
-
-    <h2 id="terms_{{$loop->index}}">{{$loop->iteration}}.{{$item['title']}}</h2>
     @foreach(pageContentJson('global', 'privacy.description') as $item)
+      <h2 id="terms_{{$loop->index}}">{{$loop->iteration}}.{{$item['title']}}</h2>
       <p>{!! nl2br(e($item['description'])) !!}</p>
       <hr class="legal-hr">
     @endforeach
