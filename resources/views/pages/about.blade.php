@@ -17,7 +17,13 @@
           <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;">{{ $p }}</p>
           @endforeach
         <div style="margin-top:28px;">
-          {{ pageContentJson('about', 'story.link') }}
+            @php
+                $link = pageContentJson('about', 'story.link');
+            @endphp
+
+            <a href="{{ $link['url'] }}" class="btn-cyan">
+                {{ $link['text'] }}
+            </a>
         </div>
         </div>
     <div> 
