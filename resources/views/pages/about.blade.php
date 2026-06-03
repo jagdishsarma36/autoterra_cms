@@ -58,13 +58,13 @@
   <h2 class="sec-h2">{{ pageContent('about', 'values.heading') }}</h2>
   <p class="sec-sub">{{ pageContent('about', 'values.description') }}</p>
   <div class="abt-values-grid">
-    <div class="abt-value-card">
       @foreach(pageContentJson('about', 'values.cards') as $card)
-       <div class="abt-value-icon"><i class="{{ $card['icon_class'] }}"></i></div>
-       <h3>{{ $card['title'] }}</h3>
-       <p>{{ $card['description'] }}</p>
+      <div class="abt-value-card">
+        <div class="abt-value-icon"><i class="ti {{ $card['icon_class'] }}"></i></div>
+        <h3>{{ $card['title'] }}</h3>
+        <p>{{ $card['description'] }}</p>
+       </div>
       @endforeach
-    </div>
   </div>
 </section>
 <!-- values section end -->
