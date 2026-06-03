@@ -65,7 +65,6 @@
        <p>{{ $card['description'] }}</p>
       @endforeach
     </div>
-    
   </div>
 </section>
 <!-- values section end -->
