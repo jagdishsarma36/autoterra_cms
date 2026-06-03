@@ -31,6 +31,7 @@ Route::post('/form/{form}', [FormController::class, 'submit'])->name('form.submi
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 Route::get('/eula', [PageController::class, 'eula'])->name('eula');
 Route::get('/cookies', [PageController::class, 'cookies'])->name('cookies');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 
 // Auth
 Route::get('/login', [LoginController::class, 'show'])->name('login');
