@@ -10,27 +10,28 @@
 
 <!-- Story Section -->
 <section class="section section-white abt-story" style="padding:60px;">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:60px;">
-    <div>
-      <div class="sec-eye">{{ pageContent('about', 'story.eyebrow') }}</div>
-      <h2 class="sec-h2">{!! pageContent('about', 'story.heading') !!}</h2>
-      <div style="max-width:700px;margin-top:20px;">
-        @foreach(pageContentJson('about', 'story.paragraphs') as $p)
-        <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;">{{ $p }}</p>
-        @endforeach
+  <div>
+    <div class="sec-eye">{{ pageContent('about', 'story.eyebrow') }}
+        <h2 class="sec-h2">{!! pageContent('about', 'story.heading') !!}</h2>
+        <div style="max-width:700px;margin-top:20px;">
+          @foreach(pageContentJson('about', 'story.paragraphs') as $p)
+          <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;">{{ $p }}</p>
+          @endforeach
         <div style="margin-top:28px;">
-          @php
-            $link = pageContentJson('about', 'story.link');
-          @endphp
-          <a href="{{ $link['url'] }}" class="btn-cyan">
-            {{ $link['text'] }}
-          </a>
+            @php
+                $link = pageContentJson('about', 'story.link');
+            @endphp
+
+            <a href="{{ $link['url'] }}" class="btn-cyan">
+                {{ $link['text'] }}
+            </a>
         </div>
-      </div>
-    </div>
+    <div> 
+  </div>
+  <div>
     <div class="abt-timeline">
       <div class="abt-tl-item">
-        @foreach(pageContentJson('about', 'timeline') as $timelineItem)
+        @foreach(pageContentJson('about', 'timeline') as $timelineItem) 
         <div class="abt-tl-dot"></div>
         <div class="abt-tl-year">{{ $timelineItem['year'] }}</div>
         <div class="abt-tl-text">{{ $timelineItem['text'] }}</div>
