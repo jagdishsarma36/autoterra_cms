@@ -109,17 +109,17 @@
 <section class="section section-white">
     <div class="feat-grid">
       @php
-          $media = pageContent('home', 'feature2.image_url');
+          $media_1 = pageContent('home', 'feature2.image_url');
       @endphp
       <!-- DEVELOPER: Replace with terrain/contour screenshot -->
       <div class="ph feat-img-right" style="height:360px;">
-        @if(!empty($media))
+        @if(!empty($media_1))
               {{-- YouTube/Vimeo iframe embed code --}}
-              @if(Str::contains($media, '<iframe'))
-                  {!! $media !!}
+              @if(Str::contains($media_1, '<iframe'))
+                  {!! $media_1 !!}
 
               {{-- Video file --}}
-              @elseif(preg_match('/\.(mp4|webm|ogg)(\?.*)?$/i', $media))
+              @elseif(preg_match('/\.(mp4|webm|ogg)(\?.*)?$/i', $media_1))
                   <video
                       autoplay
                       muted
@@ -128,13 +128,13 @@
                       controls
                       style="width:100%;height:100%;object-fit:cover;"
                   >
-                      <source src="{{ $media }}">
+                      <source src="{{ $media_1 }}">
                   </video>
 
               {{-- Image --}}
               @else
                   <img
-                      src="{{ $media }}"
+                      src="{{ $media_1 }}"
                       alt="AutoTerra Pro Spatial — point cloud classification view"
                       style="width:100%;height:100%;object-fit:cover;"
                   >
