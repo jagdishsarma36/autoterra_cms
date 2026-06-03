@@ -130,22 +130,21 @@
         </a>
   </div>
   <div>
-  @foreach(pageContentJson('about', 'infycons.linkaddress') as $infyconsLink)
-      <a href="{{ $infyconsLink['infy_url'] }}" target="_blank" class="abt-product-link">
-          <i class="{{ $infyconsLink['icon_class'] }}"></i>
-          <div>
-              <div class="abt-product-link-name">{{ $infyconsLink['title'] }}</div>
-              <div class="abt-product-link-desc">{{ $infyconsLink['description'] }}</div>
-          </div>
-          <i class="ti ti-arrow-right arrow"></i>
-      </a>
-  @endforeach
-    
+    @foreach(pageContentJson('about', 'infycons.linkaddress') as $infyconsLink)
+        <a href="{{ $infyconsLink['infy_url'] }}" target="_blank" class="abt-product-link">
+            <i class="ti {{ $infyconsLink['icon_class'] }}"></i>
+            <div>
+                <div class="abt-product-link-name">{{ $infyconsLink['title'] }}</div>
+                <div class="abt-product-link-desc">{{ $infyconsLink['description'] }}</div>
+            </div>
+            <i class="ti ti-arrow-right arrow"></i>
+        </a>
+    @endforeach
     <div class="abt-office" style="margin-top:20px;">
-      <h4><i class="ti ti-building"></i> Infyterra Technologies — HQ</h4>
-      <div class="abt-office-row"><i class="ti ti-map-pin"></i>F-2104, 1st Floor, Tower B, Ardent Office One, Hoodi, Bangalore 560048, Karnataka, India</div>
-      <div class="abt-office-row"><i class="ti ti-phone"></i><a href="tel:+918066320710">+91 80 66320710</a></div>
-      <div class="abt-office-row"><i class="ti ti-mail"></i><a href="mailto:sales@infycons.com">sales@infycons.com</a></div>
+      <h4><i class="ti ti-building"></i> {{ pageContent('about', 'office.title') }}</h4>
+      <div class="abt-office-row"><i class="ti ti-map-pin"></i> {{ pageContent('about', 'office.address') }}</div>
+      <div class="abt-office-row"><i class="ti ti-phone"></i><a href="tel:+918066320710">{{ pageContent('about', 'office.phone') }}</a></div>
+      <div class="abt-office-row"><i class="ti ti-mail"></i><a href="mailto:sales@infycons.com">{{ pageContent('about', 'office.email') }}</a></div>
     </div>
   </div>
 </section>
