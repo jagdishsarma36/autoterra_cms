@@ -769,6 +769,63 @@ section.hero-wrap.hero-bg.ph {
     font-size: 18px;
     transition: color 0.15s;
 }
+.abt-infycons {
+    padding: 64px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+.abt-infycons h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--body);
+    letter-spacing: -0.3px;
+    margin-bottom: 14px;
+}
+.abt-infycons p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 20px;
+}
+.abt-product-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--off);
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+    margin-bottom: 10px;
+}
+.abt-office {
+    background: var(--off);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+}
+.abt-product-link i {
+    font-size: 20px;
+    color: var(--cyan);
+    flex-shrink: 0;
+}
+.abt-product-link-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--body);
+}
+.abt-product-link-desc {
+    font-size: 11px;
+    color: var(--muted);
+}
+.abt-product-link .arrow {
+    margin-left: auto;
+    font-size: 16px;
+    color: var(--muted);
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
