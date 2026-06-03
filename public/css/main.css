@@ -692,6 +692,9 @@ section.hero-wrap.hero-bg.ph {
     font-size: 13px;
     color: rgba(210, 230, 248, 0.45);
 }
+.page-hero h1 span {
+    color: var(--cyan);
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
