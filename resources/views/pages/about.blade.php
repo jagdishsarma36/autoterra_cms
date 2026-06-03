@@ -39,7 +39,6 @@
         @endforeach
     </div>
   </div>
-  </div>
 </section>
 <!-- story section end -->
 
