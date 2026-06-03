@@ -12,7 +12,7 @@
 <section class="abt-story section-white">
   <div>
     <div class="sec-eye">{{ pageContent('about', 'story.eyebrow') }}</div>
-    <h2>{{ pageContent('about', 'story.heading') }}</h2>
+    <h2>{!! pageContent('about', 'story.heading') !!}</h2>
      @foreach(pageContentJson('about', 'story.paragraphs') as $p)
       <p>{{ $p }}</p>
       @endforeach
