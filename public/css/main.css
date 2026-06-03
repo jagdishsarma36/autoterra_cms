@@ -729,6 +729,30 @@ section.hero-wrap.hero-bg.ph {
 .testi-card{
     flex:0 0 calc(50% - 10px); /* 2 cards visible */
 }
+/****privacy******/
+.legal-hero {
+    background: var(--navy);
+    padding: 64px 60px 56px;
+    position: relative;
+    overflow: hidden;
+}
+
+.legal-hero h1 {
+    font-size: 34px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.6px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+.legal-hero h1 span {
+    color: var(--cyan);
+}
+
+.legal-hero-meta {
+    font-size: 13px;
+    color: rgba(210, 230, 248, 0.50);
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
