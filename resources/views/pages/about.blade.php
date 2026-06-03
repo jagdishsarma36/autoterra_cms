@@ -40,7 +40,7 @@
 <!-- story section end -->
 
 <!-- stats section -->
-<section class="section section-light" style="padding:60px;">
+<section class=" section-stats" >
 <div class="abt-stats">
    @foreach(pageContentJson('about', 'stats') as $stat)
   <div>
@@ -51,6 +51,24 @@
 </div>
 </section>
 <!-- stats section end -->
+
+<!-- values section -->
+ <section class="abt-values">
+  <div class="sec-eye">{{ pageContent('about', 'values.eyebrow') }}</div>
+  <h2 class="sec-h2">{{ pageContent('about', 'values.heading') }}</h2>
+  <p class="sec-sub">{{ pageContent('about', 'values.description') }}</p>
+  <div class="abt-values-grid">
+    <div class="abt-value-card">
+      @foreach(pageContentJson('about', 'values.cards') as $card)
+       <div class="abt-value-icon"><i class="{{ $card['icon_class'] }}"></i></div>
+       <h3>{{ $card['title'] }}</h3>
+       <p>{{ $card['description'] }}</p>
+      @endforeach
+    </div>
+    
+  </div>
+</section>
+<!-- values section end -->
 
 <section class="cta-band"><div class="cta-band-inner"><h2>{{ pageContent('about', 'cta.heading') }}</h2><p>{{ pageContent('about', 'cta.description') }}</p><div class="cta-row"><a href="/contact" class="btn-cyan">{{ pageContent('about', 'cta.button_primary_text') }}</a><a href="/products" class="btn-ghost">{{ pageContent('about', 'cta.button_secondary_text') }}</a></div></div></section>
 @include('partials.footer')
