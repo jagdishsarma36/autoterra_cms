@@ -12,6 +12,33 @@
   </div>
 </section>
 
+<section>
+<div class="legal-wrap">
+
+  <!-- Sidebar TOC -->
+  <nav class="legal-toc">
+    <div class="legal-toc-title">On this page</div>
+    @foreach(pageContentJson('global', 'privacy.description') as $item)
+      <a href="#terms_{{$loop->index}}">{{ $item['title'] }}</a>
+    @endforeach
+  </nav>
+
+  <!-- Main content -->
+  <div class="legal-content">
+
+    <div class="legal-notice">
+      <p>{{ pageContent('global', 'privacy.short_description') }}</p>
+    </div>
+
+    <h2 id="terms_{{$loop->index}}">{{$loop->iteration}}.{{$item['title']}}</h2>
+    @foreach(pageContentJson('global', 'privacy.description') as $item)
+      <p>{!! nl2br(e($item['description'])) !!}</p>
+      <hr class="legal-hr">
+    @endforeach
+  </div><!-- /legal-content -->
+</div>
+</section>
+
 
 @include('partials.footer')
 @endsection
