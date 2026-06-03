@@ -590,6 +590,39 @@ section.hero-wrap.hero-bg.ph {
     background: #E8EEF4;
     border-width: 1px;
 }
+.bg-video {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    max-height: 100%;
+}
+.hero-wrap-inner {
+    z-index: 99;
+    /* position: relative; */
+    background: var(--ph-bg);
+    border: 2px dashed rgba(0, 168, 248, 0.28);
+}
+.hero-wrap-inner:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.5);
+    z-index: -1;
+}
+section.hero-wrap.hero-bg.ph {
+    position: relative;
+    overflow: hidden;
+}
+.bg-video video {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;

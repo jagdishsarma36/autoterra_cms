@@ -4,6 +4,16 @@
 @include('partials.nav')
 
 <section class="hero-wrap hero-bg ph">
+  @php
+    $videoUrl = pageContent('home', 'hero.video_url');
+  @endphp
+  @if(!empty($videoUrl))
+  <div class="bg-video">
+      <video autoplay muted loop playsinline preload="auto">
+          <source src="{{ $videoUrl }}" type="video/mp4">
+      </video>
+  </div>
+  @endif
   <div class="hero-wrap-inner">
   <div class="hero-bg-box" style="height:540px;border-radius:0;border:none;">
     <div class="hero-content">
