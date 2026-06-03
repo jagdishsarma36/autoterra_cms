@@ -847,6 +847,12 @@ section.hero-wrap.hero-bg.ph {
     margin-bottom: 10px;
     align-items: flex-start;
 }
+.abt-office-row i {
+    font-size: 16px;
+    color: var(--cyan);
+    flex-shrink: 0;
+    margin-top: 1px;
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
