@@ -39,13 +39,19 @@
 </section>
 <!-- story section end -->
 
+<!-- stats section -->
 <section class="section section-light" style="padding:60px;">
+<div class="abt-stats">
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:900px;margin:0 auto;">
-    @foreach(pageContentJson('about', 'stats') as $stat)
-    <div style="text-align:center;"><div style="font-size:36px;font-weight:800;color:var(--cyan);">{{ $stat['number'] }}</div><div style="font-size:13px;color:var(--muted);">{{ $stat['label'] }}</div></div>
+   @foreach(pageContentJson('about', 'stats') as $stat)
+    <div style="text-align:center;"><div style="font-size:36px;font-weight:800;color:var(--cyan);">{{ $stat['number'] }}</div><div style="font-size:13px;color:var(--muted);">{{ $stat['label'] }}</div>
+    </div>
     @endforeach
   </div>
+</div>
 </section>
+<!-- stats section end -->
+
 <section class="cta-band"><div class="cta-band-inner"><h2>{{ pageContent('about', 'cta.heading') }}</h2><p>{{ pageContent('about', 'cta.description') }}</p><div class="cta-row"><a href="/contact" class="btn-cyan">{{ pageContent('about', 'cta.button_primary_text') }}</a><a href="/products" class="btn-ghost">{{ pageContent('about', 'cta.button_secondary_text') }}</a></div></div></section>
 @include('partials.footer')
 @endsection
