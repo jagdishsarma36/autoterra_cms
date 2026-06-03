@@ -30,13 +30,15 @@
   </div>
   <div>
     <div class="abt-timeline">
-        @foreach(pageContentJson('about', 'timeline') as $timelineItem) 
-        <div class="abt-tl-item"> </div>
-        <div class="abt-tl-dot"></div>
-        <div class="abt-tl-year">{{ $timelineItem['year'] }}</div>
-        <div class="abt-tl-text">{{ $timelineItem['text'] }}</div>
-        @endforeach    
+        @foreach(pageContentJson('about', 'timeline') as $timelineItem)
+        <div class="abt-tl-item">
+            <div class="abt-tl-dot"></div>
+            <div class="abt-tl-year">{{ $timelineItem['year'] }}</div>
+            <div class="abt-tl-text">{{ $timelineItem['text'] }}</div>
+        </div>
+        @endforeach
     </div>
+  </div>
   </div>
 </section>
 <!-- story section end -->
