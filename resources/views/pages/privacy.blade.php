@@ -31,7 +31,7 @@
     </div>
     @foreach(pageContentJson('global', 'privacy.description') as $item)
       <h2 id="terms_{{$loop->index}}">{{$loop->iteration}}.{{$item['title']}}</h2>
-      <p>{!! nl2br(e($item['description'])) !!}.{{ $item['description'] }}</p>
+      <p>{!! nl2br(e($item['description'])) !!}.{!!$item['description']!!}</p>
       <hr class="legal-hr">
     @endforeach
   </div><!-- /legal-content -->
