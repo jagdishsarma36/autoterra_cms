@@ -3,7 +3,7 @@
 @section('body')
 @include('partials.nav')
 <section style="background:var(--navy);padding:56px 60px;">
-  <h1 style="font-size:34px;font-weight:800;color:#fff;margin-bottom:12px;">{{ pageContent('contact', 'hero.heading') }}</h1>
+  <h1 style="font-size:34px;font-weight:800;color:#fff;margin-bottom:12px;">{!! pageContent('contact', 'hero.heading') !!}</h1>
   <p style="font-size:15px;color:rgba(210,230,248,0.5);max-width:600px;">{{ pageContent('contact', 'hero.description') }}</p>
 </section>
 <section style="padding:56px 60px;max-width:800px;">
