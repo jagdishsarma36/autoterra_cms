@@ -32,9 +32,8 @@
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
       @foreach($fields as $field)
-      {{ dd($field->width) }}
       @php $span = $field->width == 100 ? 'grid-column: 1 / -1;' : ''; @endphp
-      <div style="{{ $span }}">
+      <div style="{{ $span }}" class="field_width_{{ $field->width }}">
         @if($field->type === 'hidden')
           <input type="hidden" name="field_{{ $field->name }}" value="{{ $field->placeholder }}">
         @else
