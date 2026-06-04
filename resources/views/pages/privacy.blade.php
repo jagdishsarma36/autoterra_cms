@@ -27,7 +27,15 @@
   <div class="legal-content">
 
     <div class="legal-notice">
-      <p>{{ pageContent('global', 'privacy.short_description') }}</p>
+        @php
+            $short = pageContent('global', 'privacy.short_description');
+        @endphp
+
+        @if(Str::contains($short, '<'))
+            {!! $short !!}
+        @else
+            {!! '<p>' . implode('</p><p>', explode("\n", e($short))) . '</p>' !!}
+        @endif
     </div>
     @foreach(pageContentJson('global', 'privacy.description') as $item)
       <h2 id="terms_{{$loop->index}}">{{$loop->iteration}}.{{$item['title']}}</h2>
