@@ -11,7 +11,7 @@
 <!-- Hero Section -->
 <section class="ct-hero" style="background:var(--navy);padding:56px 60px;">
   <div class="ct-hero-inner">
-    <h1>Get in touch with<br><span>{!! pageContent('contact', 'hero.heading') !!}</span></h1>
+    <h1><span>{!! pageContent('contact', 'hero.heading') !!}</span></h1>
     <p>{{ pageContent('contact', 'hero.description') }}</p>
   </div>
 </section>
@@ -129,8 +129,8 @@
     <div class="ct-steps">
       <div class="ct-steps-title">{{ pageContent('contact', 'form.heading') }}</div>
       @foreach(pageContentJson('contact', 'contact.info') as $contactInfo)
-      <div class="ct-step" {{ $loop->last ? 'contact.info-last' : '' }}>
-        <div class="ct-step-num">1</div>
+      <div class="ct-step">
+         <div class="ct-step-num">{{ $loop->iteration }}</div>
         <div class="ct-step-body">
           <h4>{{ $contactInfo['info_title'] }}</h4>
           <p>{{ $contactInfo['info_text'] }}</p>
