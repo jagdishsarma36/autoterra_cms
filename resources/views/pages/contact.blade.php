@@ -129,8 +129,8 @@
     <div class="ct-steps">
       <div class="ct-steps-title">{{ pageContent('contact', 'form.heading') }}</div>
       @foreach(pageContentJson('contact', 'contact.info') as $contactInfo)
-      <div class="ct-step" {{ $loop->last ? 'contact.info-last' : '' }}>
-        <div class="ct-step-num">1</div>
+      <div class="ct-step">
+         <div class="ct-step-num">{{ $loop->iteration }}</div>
         <div class="ct-step-body">
           <h4>{{ $contactInfo['info_title'] }}</h4>
           <p>{{ $contactInfo['info_text'] }}</p>
