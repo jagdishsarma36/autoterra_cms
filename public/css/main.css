@@ -992,6 +992,7 @@ section.hero-wrap.hero-bg.ph {
     line-height: 1.75;
     margin-bottom: 6px;
     list-style-position: inside;
+    padding-top: 6px;
 }
 .legal-toc a:hover {
     color: var(--cyan);
