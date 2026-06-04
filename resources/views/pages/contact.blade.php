@@ -16,23 +16,19 @@
 <!-- contact form and info -->
 <section style="padding:56px 60px;max-width:800px;">
 <div class="ct-main">
-
   <!-- ── LEFT: FORM ── -->
   <div class="ct-form-wrap">
-
     <div id="ctFormContent">
       <p class="ct-form-title">{{ $form->name }}</p>
       @if($form->description)
         <p class="ct-form-sub"> {{ $form->description }} </p>
       @endif
-
         @if(session('form_success'))
   <div style="background:#D1FAE5;border:1px solid #6EE7B7;border-radius:8px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:10px;">
     <i class="ti ti-check-circle" style="font-size:20px;color:#065F46;"></i>
     <span style="font-size:14px;color:#065F46;font-weight:600;">{{ session('form_success') }}</span>
   </div>
   @endif
-
   @if($errors->any())
   <div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;padding:16px 20px;margin-bottom:24px;">
     <div style="font-size:14px;color:#B91C1C;font-weight:600;margin-bottom:8px;">Please fix the following errors:</div>
@@ -41,10 +37,8 @@
     @endforeach
     </div>
     @endif
-
     <form method="POST" action="{{ route('form.submit', $form->slug) }}">
       @csrf
-
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form_{{ $form->slug }}">
         @foreach($fields as $field)
         @php $span = $field->width == 100 || $field->width == 1 ? 'grid-column: 1 / -1;' : ''; @endphp
@@ -56,7 +50,6 @@
               {{ $field->label }} @if($field->is_required)<span style="color:#EF4444;">*</span>@endif
             </label>
           @endif
-
           @if($field->type === 'text' || $field->type === 'email' || $field->type === 'number' || $field->type === 'phone' || $field->type === 'date' || $field->type === 'time')
             <input type="{{ $field->type === 'phone' ? 'tel' : $field->type }}"
               name="field_{{ $field->name }}"
@@ -65,7 +58,6 @@
               @if($field->is_required) required @endif
               style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:7px;font-family:inherit;font-size:14px;color:var(--body);box-sizing:border-box;outline:none;">
           @endif
-
           @if($field->type === 'textarea')
             <textarea name="field_{{ $field->name }}"
               placeholder="{{ $field->placeholder }}"
@@ -73,7 +65,6 @@
               rows="4"
               style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:7px;font-family:inherit;font-size:14px;color:var(--body);box-sizing:border-box;resize:vertical;outline:none;">{{ old('field_' . $field->name) }}</textarea>
           @endif
-
           @if($field->type === 'select')
             <select name="field_{{ $field->name }}"
               @if($field->is_required) required @endif
@@ -84,7 +75,6 @@
               @endforeach
             </select>
           @endif
-
           @if($field->type === 'radio')
             <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
               @foreach($field->options as $option)
@@ -98,7 +88,6 @@
               @endforeach
             </div>
           @endif
-
           @if($field->type === 'checkbox')
             <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
               @foreach($field->options as $option)
@@ -111,40 +100,32 @@
               @endforeach
             </div>
           @endif
-
           @if($field->type === 'file')
             <input type="file" name="field_{{ $field->name }}"
               @if($field->is_required) required @endif
               style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px;">
           @endif
-
           @if($field->help_text)
           <p style="font-size:12px;color:var(--muted);margin-top:4px;">{{ $field->help_text }}</p>
           @endif
         </div>
         @endforeach
       </div>
-
       <div style="margin-top:24px;">
         <button type="submit"
           style="width:100%;padding:13px 0;background:var(--cyan);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;">
           {{ $form->submit_button_text }}
         </button>
       </div>
-    </form>
-      
-    </div><!-- /ctFormContent -->
-
-  </div><!-- /ct-form-wrap -->
-
-  <!-- ── RIGHT: INFO PANEL ── -->
+    </form>     
+    </div>
+  </div>
   <div class="ct-info-wrap">
-
     <!-- What happens next -->
     <div class="ct-steps">
       <div class="ct-steps-title">{{ pageContent('contact', 'form.heading') }}</div>
       @foreach(pageContentJson('contact', 'contact.info') as $contactInfo)
-      <div class="ct-step">
+      <div class="ct-step" {{ $loop->last ? 'contact.info-last' : '' }}>
         <div class="ct-step-num">1</div>
         <div class="ct-step-body">
           <h4>{{ $contactInfo['info_title'] }}</h4>
@@ -153,11 +134,8 @@
       </div>
       @endforeach
     </div>
-
     <div class="ct-divider"></div>
-
     <!-- Contact details -->
-
     <div class="ct-contact-items">
     @foreach(pageContentJson('contact', 'form.contact') as $contactform)
       <div class="ct-contact-item">
@@ -176,23 +154,19 @@
                 }
             @endphp
             <a href="{{ $href }}">
-                {{ $contactform['link_url'] }}">{{ $contactform['link_text'] }}
+              {{ $contactform['link_text'] }}
             </a>
-            <!-- <a href="{{ $contactform['link_url'] }}">{{ $contactform['link_text'] }}</a> -->
           </div>
         </div>
       </div>
     @endforeach
     </div>
-
     <!-- Response time indicator -->
     <div class="ct-resp-badge">
       <i class="ti ti-clock-check"></i>
       <span><strong>Typical response time:</strong> within 1 business day for demos and trials. Support tickets: 4 business hours for Pro Spatial customers.</span>
     </div>
-
     <div class="ct-divider"></div>
-
     <!-- Offices -->
     <div class="ct-offices">
       <div class="ct-offices-title">{{ pageContent('contact', 'contact.address_heading') }}</div>
@@ -207,10 +181,7 @@
       @endforeach
     </div>
   </div><!-- /ct-info-wrap -->
-
 </div>
 </section>
-
-
 @include('partials.footer')
 @endsection
