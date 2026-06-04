@@ -30,10 +30,10 @@
   <form method="POST" action="{{ route('form.submit', $form->slug) }}">
     @csrf
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="form_{{ $form->slug }}">
       @foreach($fields as $field)
       @php $span = $field->width == 100 || $field->width == 1 ? 'grid-column: 1 / -1;' : ''; @endphp
-      <div style="{{ $span }}" class="field_width_{{ $field->width }}">
+      <div style="{{ $span }}" class="field_width_{{ $field->width }}" data-name="{{ $field->name }}" data-type="{{ $field->type }}">
         @if($field->type === 'hidden')
           <input type="hidden" name="field_{{ $field->name }}" value="{{ $field->placeholder }}">
         @else
