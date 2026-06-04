@@ -9,7 +9,7 @@
 @endphp
 
 <!-- Hero Section -->
-<section class="ct-hero">
+<section class="ct-hero" style="background:var(--navy);padding:56px 60px;">
   <div class="ct-hero-inner">
     <h1>Get in touch with<br><span>{!! pageContent('contact', 'hero.heading') !!}</span></h1>
     <p>{{ pageContent('contact', 'hero.description') }}</p>
