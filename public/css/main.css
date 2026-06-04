@@ -853,7 +853,6 @@ section.hero-wrap.hero-bg.ph {
     flex-shrink: 0;
     margin-top: 1px;
 }
-/* contact page */
 .ct-hero h1 {
     font-size: 34px;
     font-weight: 800;
@@ -861,198 +860,6 @@ section.hero-wrap.hero-bg.ph {
     letter-spacing: -0.6px;
     margin-bottom: 12px;
     line-height: 1.2;
-}
-.ct-main {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 0;
-    align-items: start;
-}
-.ct-form-wrap {
-    padding: 56px 60px;
-    background: #fff;
-    border-right: 1px solid var(--border);
-}
-.ct-form-title {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--body);
-    letter-spacing: -0.3px;
-    margin-bottom: 6px;
-}
-.ct-form-sub {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 32px;
-    line-height: 1.65;
-}
-.ct-info-wrap {
-    padding: 56px 40px;
-    background: var(--off);
-    min-height: 100%;
-}
-.ct-steps {
-    margin-bottom: 36px;
-}
-.ct-steps-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--body);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 20px;
-}
-.ct-step {
-    display: flex;
-    gap: 14px;
-    margin-bottom: 20px;
-}
-.ct-step-num {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--cyan);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-}
-.ct-step-body h4 {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--body);
-    margin-bottom: 3px;
-}
-.ct-step-body p {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-}
-.ct-contact-items {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-}
-.ct-contact-item {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-}
-.ct-contact-icon {
-    width: 34px;
-    height: 34px;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--cyan);
-    font-size: 18px;
-    flex-shrink: 0;
-}
-.ct-contact-lbl {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 2px;
-}
-.ct-contact-val {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--body);
-}
-.ct-contact-val a {
-    color: var(--cyan);
-}
-.ct-contact-val a {
-    color: var(--cyan);
-}
-.ct-contact-val a {
-    color: var(--cyan);
-}
-.ct-resp-badge {
-    margin-top: 28px;
-    background: var(--green-lt);
-    border: 1px solid rgba(29, 168, 112, 0.20);
-    border-radius: 8px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: #0B6A48;
-}
-.ct-resp-badge i {
-    font-size: 20px;
-    color: var(--green);
-    flex-shrink: 0;
-}
-.ct-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 28px 0;
-}
-.ct-offices {
-    margin-top: 28px;
-}
-.ct-offices-title {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 14px;
-}
-.ct-office {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 14px;
-    font-size: 13px;
-    color: var(--body);
-}
-.ct-office i {
-    color: var(--cyan);
-    font-size: 16px;
-    flex-shrink: 0;
-    margin-top: 1px;
-}
-
-.field_wrap_request_for {
-    display: flex;
-    flex-direction: column-block;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 28px;
-}
-
-.field_wrap_request_for label:first-of-type {
-    display: none;
-}
-.form-control {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    font-family: inherit;
-    font-size: 14px;
-    color: var(--body);
-    background: #fff;
-    outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
-}
-.form-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--body);
-    margin-bottom: 6px;
 }
 /****QUOTE*******/
 .qt-trust {
@@ -1111,6 +918,94 @@ section.hero-wrap.hero-bg.ph {
 .legal-hero-meta {
     font-size: 13px;
     color: rgba(210, 230, 248, 0.50);
+}
+.legal-toc {
+    position: sticky;
+    top: 80px;
+}
+.legal-toc-title {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+.legal-toc a {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 0;
+    border-left: 2px solid var(--border);
+    padding-left: 14px;
+    line-height: 1.4;
+    transition: color 0.18s, border-color 0.18s;
+}
+.legal-notice {
+    background: var(--off);
+    border-left: 3px solid var(--cyan);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+}
+.notice p {
+    margin: 0;
+}
+.legal-content p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.85;
+    margin-bottom: 14px;
+}
+.legal-wrap {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 60px 40px 80px;
+    align-items: start;
+}
+.legal-content h2 {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--body);
+    letter-spacing: -0.3px;
+    margin: 40px 0 12px;
+    padding-top: 8px;
+}
+.legal-content h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--body);
+    margin: 24px 0 8px;
+}
+.legal-hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 10px 0 0;
+}
+.legal-content li {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 6px;
+    list-style-position: inside;
+}
+.legal-toc a:hover {
+    color: var(--cyan);
+    border-left-color: var(--cyan);
+}
+.legal-content a {
+    color: var(--cyan);
+    text-decoration: none;
+}
+strong {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.85;
+    margin-bottom: 14px;
 }
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
