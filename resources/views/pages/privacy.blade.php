@@ -31,7 +31,11 @@
     </div>
     @foreach(pageContentJson('global', 'privacy.description') as $item)
       <h2 id="terms_{{$loop->index}}">{{$loop->iteration}}.{{$item['title']}}</h2>
-        <p class="legal-hero-meta">{{ pageContent('global', 'privacy.hero_description') }}</p>
+        @if(Str::contains($item['description'], '<'))
+        {!! $item['description'] !!}
+        @else
+            {!! '<p>' . implode('</p><p>', explode("\n", e($item['description']))) . '</p>' !!}
+        @endif
       <hr class="legal-hr">
     @endforeach
   </div><!-- /legal-content -->
