@@ -1030,6 +1030,17 @@ section.hero-wrap.hero-bg.ph {
     color: var(--body);
     margin-bottom: 6px;
 }
+.ct-hero-inner {
+    max-width: 600px;
+}
+.ct-hero h1 span {
+    color: var(--cyan);
+}
+.ct-hero p {
+    font-size: 15px;
+    color: rgba(210, 230, 248, 0.50);
+    line-height: 1.75;
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
