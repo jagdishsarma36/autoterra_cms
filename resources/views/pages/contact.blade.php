@@ -14,7 +14,7 @@
 </section>
 
 <!-- contact form and info -->
-<section style="padding:56px 60px;max-width:800px;">
+<section >
 <div class="ct-main">
   <!-- ── LEFT: FORM ── -->
   <div class="ct-form-wrap">
