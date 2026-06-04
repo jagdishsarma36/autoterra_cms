@@ -37,6 +37,22 @@
             {!! '<p>' . implode('</p><p>', explode("\n", e($short))) . '</p>' !!}
         @endif
     </div>
+     @if(pageContentJson('global', 'privacy.links'))
+      <div class="legal-links">
+        <ul>
+          @foreach(pageContentJson('global', 'privacy.links') as $link)
+            <li>
+              <a href="{{ $link['link_url'] }}" 
+                 class="legal-link"
+                 @if(Str::startsWith($link['link_url'], 'http')) target="_blank" @endif>
+                 
+                {{ $link['link_text'] }}
+              </a>
+            </li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
     @foreach(pageContentJson('global', 'privacy.description') as $item)
       <h2 id="terms_{{$loop->index}}">{{$loop->iteration}}.{{$item['title']}}</h2>
         @if(Str::contains($item['description'], '<'))
