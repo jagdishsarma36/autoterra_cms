@@ -58,10 +58,13 @@
       </h2>
 
       @php
-        // Escape content first
-        $content = e($item['description']);
+        // Detect HTML
+        $hasHtml = Str::contains($item['description'], '<');
 
-        // Replace matching words with anchor tags
+        // Use raw HTML OR escaped text
+        $content = $hasHtml ? $item['description'] : e($item['description']);
+
+        // Replace matching text with links
         foreach ($links as $link) {
             if (!empty($link['link_text']) && !empty($link['link_url'])) {
 
@@ -73,8 +76,10 @@
             }
         }
 
-        // Convert new lines to paragraphs
-        $content = '<p>' . implode('</p><p>', explode("\n", $content)) . '</p>';
+        // Convert line breaks to paragraphs (only for plain text)
+        if (!$hasHtml) {
+            $content = '<p>' . implode('</p><p>', explode("\n", $content)) . '</p>';
+        }
       @endphp
 
       {!! $content !!}
