@@ -37,7 +37,7 @@
             {!! '<p>' . implode('</p><p>', explode("\n", e($short))) . '</p>' !!}
         @endif
     </div>
-     @if(pageContentJson('global', 'privacy.links'))
+       @if(pageContentJson('global', 'privacy.links'))
       <div class="legal-links">
         <ul>
           @foreach(pageContentJson('global', 'privacy.links') as $link)
