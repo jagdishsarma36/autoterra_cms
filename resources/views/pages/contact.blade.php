@@ -8,10 +8,14 @@
   $fields = $form ? $form->fields()->orderBy('sort_order')->get() : collect();
 @endphp
 
-<section style="background:var(--navy);padding:56px 60px;">
-  <h1 style="font-size:34px;font-weight:800;color:#fff;margin-bottom:12px;">{!! pageContent('contact', 'hero.heading') !!}</h1>
-  <p style="font-size:15px;color:rgba(210,230,248,0.5);max-width:600px;">{{ pageContent('contact', 'hero.description') }}</p>
+<!-- Hero Section -->
+<section class="ct-hero">
+  <div class="ct-hero-inner">
+    <h1>Get in touch with<br><span>{!! pageContent('contact', 'hero.heading') !!}</span></h1>
+    <p>{{ pageContent('contact', 'hero.description') }}</p>
+  </div>
 </section>
+<!-- Hero Section End -->
 
 <!-- contact form and info -->
 <section >
