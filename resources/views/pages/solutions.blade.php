@@ -445,7 +445,9 @@
             </div>
 
             <h2>{{ $uav['heading'] }}</h2>
-            <p>{{ $uav['description'] }}</p>
+             @foreach($uav['description'] as $desc)
+            <p>{{ $desc }}</p>
+            @endforeach
         </div>
 
         <div class="sol-section-inner reverse">
