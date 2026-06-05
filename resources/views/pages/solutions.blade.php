@@ -443,38 +443,53 @@
                 <i class="ti {{ $uav['icon'] }}"></i>
                 {{ $uav['title'] }}
             </div>
+
             <h2>{{ $uav['heading'] }}</h2>
             <p>{{ $uav['description'] }}</p>
         </div>
+
         <div class="sol-section-inner reverse">
+
             <!-- Left Side -->
             <div>
-                @if(!empty($uav['image_url']) && $uav['image_url'] != '#')
+
+                @if(!empty($uav['image_url']))
                     <div class="ph" style="height:360px;">
                         <img src="{{ $uav['image_url'] }}"
-                        alt="{{ $uav['title'] }}"
-                        class="img-fluid">
+                            alt="{{ $uav['title'] }}"
+                            class="img-fluid">
                     </div>
                 @endif
-                @if(!empty($uav['recommended_editions']))
+
+                @if(!empty($uav['products']))
                     <div class="sol-products-strip" style="margin-top:20px;">
-                        <div class="sol-products-strip-lbl">Recommended editions</div>
+                        <div class="sol-products-strip-lbl">
+                            Recommended editions
+                        </div>
+
                         <div class="sol-product-pills">
-                            @foreach($uav['recommended_editions'] as $edition)
-                                <a href="{{ $edition['url'] }}" class="sol-pill">
-                                    <i class="ti ti-package"></i>
-                                    {{ $edition['name'] }}
-                                    @if(!empty($edition['highlight']))
+                            @foreach($uav['products'] as $product)
+                                <a href="{{ $product['link'] }}"
+                                class="sol-pill">
+
+                                    <i class="ti {{ $product['icon'] }}"></i>
+                                    {{ $product['name'] }}
+
+                                    @if(!empty($product['featured']))
                                         <span class="hot-dot"></span>
                                     @endif
+
                                 </a>
                             @endforeach
                         </div>
                     </div>
                 @endif
+
             </div>
+
             <!-- Right Side -->
             <div>
+
                 @if(!empty($uav['workflow']))
                     <div class="sol-workflow">
                         @foreach($uav['workflow'] as $step)
@@ -482,6 +497,7 @@
                                 <div class="sol-step-num {{ $uav['theme'] }}">
                                     {{ $step['step'] }}
                                 </div>
+
                                 <div class="sol-step-body">
                                     <strong>{{ $step['title'] }}</strong>
                                     {{ $step['description'] }}
@@ -490,22 +506,26 @@
                         @endforeach
                     </div>
                 @endif
+
                 @if(!empty($uav['deliverables']))
                     <div class="sol-deliverables" style="margin:20px 0;">
                         @foreach($uav['deliverables'] as $deliverable)
                             <div class="sol-deliv-item">
                                 <i class="ti ti-circle-check-filled"
-                                  style="color:var(--blue);"></i>
+                                style="color:var(--{{ $uav['theme'] }});"></i>
                                 {{ $deliverable }}
                             </div>
                         @endforeach
                     </div>
                 @endif
+
                 @if(!empty($uav['cta']))
-                    <a href="{{ $uav['cta']['url'] }}" class="btn-cyan">
+                    <a href="{{ $uav['cta']['link'] }}"
+                    class="btn-cyan">
                         {{ $uav['cta']['text'] }}
                     </a>
                 @endif
+
             </div>
         </div>
     </section>
