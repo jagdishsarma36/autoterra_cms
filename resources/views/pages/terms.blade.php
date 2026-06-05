@@ -1,22 +1,27 @@
 @extends('layouts.app')
 @section('title', 'AutoTerra')
 @section('body')
-
 @include('partials.nav')
 
 <section class="legal-hero">
+  <div class="legal-hero-glow"></div>
   <div class="legal-hero-inner">
+    <div class="sec-eye" style="margin-bottom:12px;">
+      {{ pageContent('global', 'terms.hero_eyebrow') }}
+    </div>
     <h1>{!! pageContent('global', 'terms.hero_heading') !!}</h1>
-    <p>{{ pageContent('global', 'terms.hero_description') }}</p>
+    <p class="legal-hero-meta">
+      {{ pageContent('global', 'terms.hero_description') }}
+    </p>
   </div>
 </section>
 
 <section>
 <div class="legal-wrap">
 
-  <!-- Sidebar -->
+  <!-- Sidebar TOC -->
   <nav class="legal-toc">
-    <div>On this page</div>
+    <div class="legal-toc-title">On this page</div>
     @foreach(pageContentJson('global', 'terms.description') as $item)
       <a href="#terms_{{$loop->index}}">
         {{ $item['title'] }}
@@ -24,55 +29,60 @@
     @endforeach
   </nav>
 
-  <!-- Content -->
+  <!-- Main content -->
   <div class="legal-content">
 
+    <!-- Short Description -->
+    <div class="legal-notice">
+      @php
+        $short = pageContent('global', 'terms.short_description');
+      @endphp
+
+      @if(Str::contains($short, '<'))
+        {!! $short !!}
+      @else
+        {!! '<p>' . implode('</p><p>', explode("\n", e($short))) . '</p>' !!}
+      @endif
+    </div>
+
+    <!-- Prepare Links -->
     @php
-      $links = pageContentJson('global', 'terms.links'); // load links
+      $links = pageContentJson('global', 'terms.description.links') ?? [];
     @endphp
 
+    <!-- Description Sections -->
     @foreach(pageContentJson('global', 'terms.description') as $item)
 
       <h2 id="terms_{{$loop->index}}">
-        {{$loop->iteration}}. {{$item['title']}}
+        {{$loop->iteration}}.{{$item['title']}}
       </h2>
 
       @php
-        $text = $item['description'];
+        // Detect HTML
+        $hasHtml = Str::contains($item['description'], '<');
 
-        // 🔥 APPLY LINKS
-        if (!empty($links)) {
-            foreach ($links as $link) {
+        // Use raw HTML OR escaped text
+        $content = $hasHtml ? $item['description'] : e($item['description']);
 
-                if (!empty($link['link_text']) && !empty($link['link_url'])) {
+        // Replace matching text with links
+        foreach ($links as $link) {
+            if (!empty($link['link_text']) && !empty($link['link_url'])) {
 
-                    $url = $link['link_url'];
+                $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
+                        .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
+                        .'>'.$link['link_text'].'</a>';
 
-                    // Convert internal links to full URL
-                    if (!\Illuminate\Support\Str::startsWith($url, ['http', 'mailto'])) {
-                        $url = url($url);
-                    }
-
-                    $anchor = '<a href="'.$url.'" target="_blank">'.$link['link_text'].'</a>';
-
-                    // Replace text with link
-                    $text = str_replace($link['link_text'], $anchor, $text);
-                }
+                $content = str_replace($link['link_text'], $anchor, $content);
             }
         }
 
-        // ✅ RENDER CONTENT
-        if(\Illuminate\Support\Str::contains($text, '<')) {
-            echo $text;
-        } else {
-            $paragraphs = explode("\n", $text);
-            foreach ($paragraphs as $p) {
-                if(trim($p) !== '') {
-                    echo '<p>' . $p . '</p>'; // no e()
-                }
-            }
+        // Convert line breaks to paragraphs (only for plain text)
+        if (!$hasHtml) {
+            $content = '<p>' . implode('</p><p>', explode("\n", $content)) . '</p>';
         }
       @endphp
+
+      {!! $content !!}
 
       @if(!$loop->last)
         <hr class="legal-hr">
@@ -80,11 +90,10 @@
 
     @endforeach
 
-  </div>
+  </div><!-- /legal-content -->
 
 </div>
 </section>
 
 @include('partials.footer')
-
 @endsection
