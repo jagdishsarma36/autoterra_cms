@@ -93,7 +93,7 @@
             </div>
         </div>
         @if(!empty($survey['cta']))
-        <div">
+        <div style="margin-top:24px;">
             <a href="{{ $survey['cta_url'] ?: '#' }}" class="btn-cyan">
                 {{ $survey['cta'] }}
             </a>
