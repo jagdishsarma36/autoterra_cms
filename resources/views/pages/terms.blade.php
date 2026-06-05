@@ -11,7 +11,7 @@
     </div>
     <h1>{!! pageContent('global', 'terms.hero_heading') !!}</h1>
     <p class="legal-hero-meta">
-      {{ pageContent('global', 'terms.herosub_description') }}
+      {{ pageContent('global', 'terms.herosub_heading') }}
     </p>
   </div>
 </section>
