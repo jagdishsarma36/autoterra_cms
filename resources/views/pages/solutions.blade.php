@@ -2,6 +2,15 @@
 @section('title', 'AutoTerra')
 @section('body')
 @include('partials.nav')
-<section style="background:var(--navy);padding:60px;"><h1 style="font-size:34px;font-weight:800;color:#fff;">{{ ucfirst(str_replace('-', ' ', request()->path())) }}</h1><p style="font-size:15px;color:rgba(210,230,248,0.5);margin-top:12px;">This page is under development.</p></section>
+
+<!-- solutions page hero section -->
+<section class="sol-hero">
+  <div class="sol-hero-inner">
+    <h1>{!! pageContent('solutions', 'hero.heading') !!}</h1>
+    <p>{{ pageContent('solutions', 'hero.description') }}</p>
+  </div>
+</section>
+<!-- solutions page hero section end -->
+
 @include('partials.footer')
 @endsection
