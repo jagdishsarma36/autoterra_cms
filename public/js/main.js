@@ -103,4 +103,10 @@ jQuery(document).ready(function() {
             1024: { items: 6 }
         }
     });
+// contact active button
+    $(document).on('change', '.field_wrap_request_for input[type="radio"]', function () {
+    $('.field_wrap_request_for .radio-label').removeClass('active');
+    $(this).closest('.radio-label').addClass('active');
+    });
 });
+
