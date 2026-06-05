@@ -7,11 +7,11 @@
   <div class="legal-hero-glow"></div>
   <div class="legal-hero-inner">
     <div class="sec-eye" style="margin-bottom:12px;">
-      {{ pageContent('global', 'terms.hero_eyebrow') }}
+      {{ pageContent('global', 'terms.header_eyebrow') }}
     </div>
     <h1>{!! pageContent('global', 'terms.hero_heading') !!}</h1>
     <p class="legal-hero-meta">
-      {{ pageContent('global', 'terms.hero_description') }}
+      {{ pageContent('global', 'terms.herosub_description') }}
     </p>
   </div>
 </section>
