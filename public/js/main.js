@@ -39,19 +39,36 @@ function initSlider() {
 }
 
 // Try immediately
+// if (!initSlider()) {
+
+//     // Watch for dynamically added slides
+//     const observer = new MutationObserver(function() {
+//         if (initSlider()) {
+//             observer.disconnect();
+//         }
+//     });
+
+//     observer.observe(document.getElementById('carousel-slides'), {
+//         childList: true,
+//         subtree: true
+//     });
+// }
 if (!initSlider()) {
 
-    // Watch for dynamically added slides
-    const observer = new MutationObserver(function() {
-        if (initSlider()) {
-            observer.disconnect();
-        }
-    });
+    const carouselSlides = document.getElementById('carousel-slides');
 
-    observer.observe(document.getElementById('carousel-slides'), {
-        childList: true,
-        subtree: true
-    });
+    if (carouselSlides) {
+        const observer = new MutationObserver(function() {
+            if (initSlider()) {
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(carouselSlides, {
+            childList: true,
+            subtree: true
+        });
+    }
 }
 
 let currentTesti = 0;
