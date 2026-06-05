@@ -126,44 +126,50 @@ jQuery(document).ready(function() {
     $(this).closest('.radio-label').addClass('active');
     });
 });
-document.addEventListener("DOMContentLoaded", function () {
+function initScrollActive(options = {}) {
+    const {
+        tocSelector = '.legal-toc a',
+        sectionSelector = 'h2[id]',
+        activeClass = 'active',
+        offset = 150
+    } = options;
 
-    const links = document.querySelectorAll('.legal-toc a');
-    const sections = document.querySelectorAll('h2[id]');
+    const links = document.querySelectorAll(tocSelector);
+    const sections = document.querySelectorAll(sectionSelector);
+
+    if (!links.length || !sections.length) return;
 
     function setActiveOnScroll() {
         let currentSectionId = "";
 
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - 150; // adjust offset
+            const sectionTop = section.offsetTop - offset;
 
             if (window.scrollY >= sectionTop) {
                 currentSectionId = section.getAttribute('id');
             }
         });
 
-        // Apply active
         links.forEach(link => {
-            link.classList.remove('active');
+            link.classList.remove(activeClass);
 
             if (link.getAttribute('href') === "#" + currentSectionId) {
-                link.classList.add('active');
+                link.classList.add(activeClass);
             }
         });
     }
 
-    // Run on scroll
+    // Scroll event
     window.addEventListener('scroll', setActiveOnScroll);
 
-    // Run once on load
+    // Run once
     setActiveOnScroll();
 
-    // Click handling (optional but smooth UX)
+    // Click handling
     links.forEach(link => {
         link.addEventListener('click', function () {
-            links.forEach(el => el.classList.remove('active'));
-            this.classList.add('active');
+            links.forEach(el => el.classList.remove(activeClass));
+            this.classList.add(activeClass);
         });
     });
-
-});
+}
