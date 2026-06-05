@@ -1114,6 +1114,9 @@ label.radio-label:hover {
     padding: 64px 60px 56px;
     border-bottom: 1px solid rgba(0, 168, 248, 0.10);
 }
+.sol-hero-inner {
+    max-width: 640px;
+}
 .sol-hero h1 {
     font-size: 36px;
     font-weight: 800;
