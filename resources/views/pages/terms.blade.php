@@ -47,7 +47,7 @@
 
     <!-- Prepare Links -->
     @php
-      $links = pageContentJson('global', 'terms.description.links') ?? [];
+      $links = pageContentJson('global', 'terms.descriptions.links') ?? [];
     @endphp
 
     <!-- Description Sections -->
