@@ -126,47 +126,41 @@ jQuery(document).ready(function() {
     $(this).closest('.radio-label').addClass('active');
     });
 });
-function scrollActive(tocSelector, sectionSelector, activeClass = 'active') {
+document.addEventListener("DOMContentLoaded", function () {
 
-    const links = document.querySelectorAll(tocSelector);
-    const sections = document.querySelectorAll(sectionSelector);
-
-    if (!links.length || !sections.length) {
-        console.log('ScrollActive: elements not found');
-        return;
-    }
+    const links = document.querySelectorAll('.legal-toc a');
+    const sections = document.querySelectorAll('h2[id]');
 
     function setActiveOnScroll() {
         let currentSectionId = "";
 
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - 150;
+            const rect = section.getBoundingClientRect();
 
-            if (window.scrollY >= sectionTop) {
+            if (rect.top <= 150 && rect.bottom > 150) {
                 currentSectionId = section.getAttribute('id');
             }
         });
 
         links.forEach(link => {
-            link.classList.remove(activeClass);
+            link.classList.remove('active');
 
             if (link.getAttribute('href') === "#" + currentSectionId) {
-                link.classList.add(activeClass);
+                link.classList.add('active');
             }
         });
     }
 
-    //  IMPORTANT FIX
-    window.addEventListener('scroll', setActiveOnScroll, { passive: true });
-
-    //  RUN AFTER FULL LOAD (Blade content safe)
+    window.addEventListener('scroll', setActiveOnScroll);
     window.addEventListener('load', setActiveOnScroll);
 
-    // Click
+    setActiveOnScroll();
+
     links.forEach(link => {
         link.addEventListener('click', function () {
-            links.forEach(el => el.classList.remove(activeClass));
-            this.classList.add(activeClass);
+            links.forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
         });
     });
-}
+
+});
