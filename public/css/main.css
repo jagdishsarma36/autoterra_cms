@@ -1278,7 +1278,7 @@ label.radio-label:hover {
     margin: 0px 0px 16px 6px;
 }
 .legal-toc a.active {
-    color: #5a7a96;
+    color: #00a8f8;
     font-weight: 600;
     border-left: 3px solid #5a7a96;
     background: rgba(90, 122, 150, 0.08);
