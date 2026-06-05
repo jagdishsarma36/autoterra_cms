@@ -1133,6 +1133,159 @@ label.radio-label:hover {
 .sol-hero h1 span {
     color: var(--cyan);
 }
+.sol-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 0;
+    align-items: start;
+}
+.sol-sidebar {
+    position: sticky;
+    top: 56px;
+    padding: 32px 24px;
+    background: var(--off);
+    border-right: 1px solid var(--border);
+    min-height: calc(100vh - 56px);
+}
+.sol-sidebar-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+}
+nav.sol-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.sol-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+.sol-nav-item i {
+    font-size: 17px;
+    flex-shrink: 0;
+}
+.sol-section {
+    padding: 64px 60px;
+    border-bottom: 1px solid var(--border);
+}
+.sol-section-head {
+    margin-bottom: 0;
+}
+.sol-vert-label.cyan {
+    color: var(--cyan);
+}
+.sol-vert-label i {
+    font-size: 16px;
+}
+.sol-section h2 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--body);
+    letter-spacing: -0.4px;
+    line-height: 1.2;
+    margin-bottom: 14px;
+}
+.sol-section p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 20px;
+}
+.sol-section-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 52px;
+    align-items: start;
+    margin-top: 36px;
+}
+.sol-workflow {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.sol-deliverables {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+}
+.sol-workflow-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+.sol-step-num.cyan {
+    background: var(--cyan-lt);
+    color: var(--blue);
+}
+.sol-step-body {
+    font-size: 13px;
+    color: var(--body);
+    line-height: 1.55;
+}
+.sol-products-strip {
+    background: var(--off);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+}
+.sol-products-strip-lbl {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+.sol-product-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.sol-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--body);
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+}
+.sol-pill i {
+    font-size: 14px;
+    color: var(--cyan);
+}
+.sol-step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 800;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
