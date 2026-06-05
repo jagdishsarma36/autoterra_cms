@@ -1286,6 +1286,26 @@ nav.sol-nav {
     justify-content: center;
     margin-top: 1px;
 }
+.sol-pill:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+.sol-step-num.amber {
+    background: var(--amber-lt);
+    color: #9A5F10;
+}
+.sol-step-num.green {
+    background: var(--green-lt);
+    color: #0B6A48;
+}
+.sol-step-num.blue {
+    background: rgba(8, 96, 176, 0.10);
+    color: var(--blue);
+}
+.sol-step-num.purple {
+    background: rgba(124, 77, 188, 0.10);
+    color: #7C4DBC;
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
