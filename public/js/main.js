@@ -126,4 +126,39 @@ jQuery(document).ready(function() {
     $(this).closest('.radio-label').addClass('active');
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
 
+    const links = document.querySelectorAll('.legal-toc a');
+    const sections = document.querySelectorAll('h2[id]');
+
+    // ✅ Click active
+    links.forEach(link => {
+        link.addEventListener('click', function () {
+            links.forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // ✅ Scroll active
+    window.addEventListener('scroll', () => {
+        let current = "";
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 120;
+            const sectionHeight = section.offsetHeight;
+
+            if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        links.forEach(link => {
+            link.classList.remove('active');
+
+            if (link.getAttribute('href') === "#" + current) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+});
