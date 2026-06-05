@@ -82,7 +82,7 @@
           @if($field->type === 'radio')
             <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
               @foreach($field->options as $option)
-              <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--body);cursor:pointer;">
+              <label class="radio-label field_lbl_{{ $field->name }}" style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--body);cursor:pointer;">
                 <input type="radio" name="field_{{ $field->name }}" value="{{ $option }}"
                   {{ old('field_' . $field->name) === $option ? 'checked' : '' }}
                   @if($field->is_required) required @endif
@@ -95,7 +95,7 @@
           @if($field->type === 'checkbox')
             <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
               @foreach($field->options as $option)
-              <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--body);cursor:pointer;">
+              <label class="checkbox-label field_lbl_{{ $field->name }}" style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--body);cursor:pointer;">
                 <input type="checkbox" name="field_{{ $field->name }}[]" value="{{ $option }}"
                   {{ in_array($option, old('field_' . $field->name, [])) ? 'checked' : '' }}
                   style="accent-color:var(--cyan);">
