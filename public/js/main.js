@@ -131,6 +131,11 @@ function scrollActive(tocSelector, sectionSelector, activeClass = 'active') {
     const links = document.querySelectorAll(tocSelector);
     const sections = document.querySelectorAll(sectionSelector);
 
+    if (!links.length || !sections.length) {
+        console.log('ScrollActive: elements not found');
+        return;
+    }
+
     function setActiveOnScroll() {
         let currentSectionId = "";
 
@@ -151,9 +156,13 @@ function scrollActive(tocSelector, sectionSelector, activeClass = 'active') {
         });
     }
 
-    window.addEventListener('scroll', setActiveOnScroll);
-    setActiveOnScroll();
+    //  IMPORTANT FIX
+    window.addEventListener('scroll', setActiveOnScroll, { passive: true });
 
+    //  RUN AFTER FULL LOAD (Blade content safe)
+    window.addEventListener('load', setActiveOnScroll);
+
+    // Click
     links.forEach(link => {
         link.addEventListener('click', function () {
             links.forEach(el => el.classList.remove(activeClass));
