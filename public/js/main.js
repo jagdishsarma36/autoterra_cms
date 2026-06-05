@@ -128,59 +128,101 @@ jQuery(document).ready(function() {
 });
 document.addEventListener("DOMContentLoaded", function () {
 
-    const links = document.querySelectorAll('.legal-toc a');
-    const sections = document.querySelectorAll('h2[id]');
+    function initScrollSpy({
+        linkSelector = '.legal-toc a',
+        sectionSelector = 'h2[id]',
+        offset = 150,
+        scrollOffset = 140,
+        activeClass = 'active'
+    } = {}) {
 
-    function setActiveOnScroll() {
-        let currentSectionId = "";
+        const links = document.querySelectorAll(linkSelector);
+        const sections = document.querySelectorAll(sectionSelector);
 
-        sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
+        if (!links.length || !sections.length) return;
 
-            // pick last section above viewport (no gap issue)
-            if (rect.top <= 150) {
-                currentSectionId = section.getAttribute('id');
+        let ticking = false;
+
+        function setActiveOnScroll() {
+            let currentSectionId = "";
+
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+
+                // Active only when section is in visible range
+                if (rect.top <= offset && rect.bottom > offset) {
+                    currentSectionId = section.id;
+                }
+            });
+
+            // fallback (top case)
+            if (!currentSectionId) {
+                sections.forEach(section => {
+                    if (section.getBoundingClientRect().top <= offset) {
+                        currentSectionId = section.id;
+                    }
+                });
+            }
+
+            // fallback to first section
+            if (!currentSectionId && sections.length) {
+                currentSectionId = sections[0].id;
+            }
+
+            links.forEach(link => {
+                link.classList.remove(activeClass);
+
+                if (link.getAttribute('href') === "#" + currentSectionId) {
+                    link.classList.add(activeClass);
+                }
+            });
+
+            ticking = false;
+        }
+
+        // optimized scroll (performance)
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                window.requestAnimationFrame(setActiveOnScroll);
+                ticking = true;
             }
         });
 
-        // fallback (top of page)
-        if (!currentSectionId && sections.length) {
-            currentSectionId = sections[0].getAttribute('id');
-        }
+        window.addEventListener('load', setActiveOnScroll);
+        setActiveOnScroll();
 
+        // click scroll
         links.forEach(link => {
-            link.classList.remove('active');
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
 
-            if (link.getAttribute('href') === "#" + currentSectionId) {
-                link.classList.add('active');
-            }
+                const target = document.querySelector(this.getAttribute('href'));
+
+                if (!target) return;
+
+                links.forEach(el => el.classList.remove(activeClass));
+                this.classList.add(activeClass);
+
+                window.scrollTo({
+                    top: target.offsetTop - scrollOffset,
+                    behavior: 'smooth'
+                });
+            });
         });
     }
 
-    // scroll event
-    window.addEventListener('scroll', setActiveOnScroll);
+    //  INIT (default)
+    initScrollSpy();
 
-    // run on load
-    window.addEventListener('load', setActiveOnScroll);
-    setActiveOnScroll();
-
-    // click behavior
-    links.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            links.forEach(el => el.classList.remove('active'));
-            this.classList.add('active');
-
-            const target = document.querySelector(this.getAttribute('href'));
-
-            if (target) {
-                window.scrollTo({
-                    top: target.offsetTop - 140,
-                    behavior: 'smooth'
-                });
-            }
-        });
+    //  Example reuse (uncomment if needed)
+    /*
+    initScrollSpy({
+        linkSelector: '.sidebar a',
+        sectionSelector: '.section',
+        offset: 120,
+        scrollOffset: 100,
+        activeClass: 'active'
     });
+    */
 
 });
