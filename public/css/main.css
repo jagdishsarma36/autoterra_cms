@@ -1182,6 +1182,9 @@ section.hero-wrap.hero-bg.ph {
     color: var(--cyan);
     text-decoration: none;
 }
+.legal-content ul {
+    margin: 0px 0px 16px 6px;
+}
 strong {
     font-size: 14px;
     color: var(--muted);

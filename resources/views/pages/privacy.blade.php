@@ -47,7 +47,7 @@
 
     <!-- Prepare Links -->
     @php
-      $links = pageContentJson('global', 'privacy.links') ?? [];
+      $links = pageContentJson('global', 'privacy.description.links') ?? [];
     @endphp
 
     <!-- Description Sections -->
@@ -84,7 +84,9 @@
 
       {!! $content !!}
 
-      <hr class="legal-hr">
+      @if(!$loop->last)
+        <hr class="legal-hr">
+      @endif
 
     @endforeach
 
