@@ -1185,12 +1185,6 @@ section.hero-wrap.hero-bg.ph {
 .legal-content ul {
     margin: 0px 0px 16px 6px;
 }
-strong {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.85;
-    margin-bottom: 14px;
-}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
