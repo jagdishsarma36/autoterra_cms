@@ -131,33 +131,38 @@ document.addEventListener("DOMContentLoaded", function () {
     const links = document.querySelectorAll('.legal-toc a');
     const sections = document.querySelectorAll('h2[id]');
 
-    // ✅ Click active
+    function setActiveOnScroll() {
+        let currentSectionId = "";
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 150; // adjust offset
+
+            if (window.scrollY >= sectionTop) {
+                currentSectionId = section.getAttribute('id');
+            }
+        });
+
+        // Apply active
+        links.forEach(link => {
+            link.classList.remove('active');
+
+            if (link.getAttribute('href') === "#" + currentSectionId) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    // Run on scroll
+    window.addEventListener('scroll', setActiveOnScroll);
+
+    // Run once on load
+    setActiveOnScroll();
+
+    // Click handling (optional but smooth UX)
     links.forEach(link => {
         link.addEventListener('click', function () {
             links.forEach(el => el.classList.remove('active'));
             this.classList.add('active');
-        });
-    });
-
-    // ✅ Scroll active
-    window.addEventListener('scroll', () => {
-        let current = "";
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 120;
-            const sectionHeight = section.offsetHeight;
-
-            if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        links.forEach(link => {
-            link.classList.remove('active');
-
-            if (link.getAttribute('href') === "#" + current) {
-                link.classList.add('active');
-            }
         });
     });
 
