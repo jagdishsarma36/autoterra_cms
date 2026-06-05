@@ -137,10 +137,16 @@ document.addEventListener("DOMContentLoaded", function () {
         sections.forEach(section => {
             const rect = section.getBoundingClientRect();
 
-            if (rect.top <= 150 && rect.bottom > 150) {
+            // pick last section above viewport (no gap issue)
+            if (rect.top <= 150) {
                 currentSectionId = section.getAttribute('id');
             }
         });
+
+        // fallback (top of page)
+        if (!currentSectionId && sections.length) {
+            currentSectionId = sections[0].getAttribute('id');
+        }
 
         links.forEach(link => {
             link.classList.remove('active');
@@ -151,15 +157,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // scroll event
     window.addEventListener('scroll', setActiveOnScroll);
-    window.addEventListener('load', setActiveOnScroll);
 
+    // run on load
+    window.addEventListener('load', setActiveOnScroll);
     setActiveOnScroll();
 
+    // click behavior
     links.forEach(link => {
-        link.addEventListener('click', function () {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+
             links.forEach(el => el.classList.remove('active'));
             this.classList.add('active');
+
+            const target = document.querySelector(this.getAttribute('href'));
+
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 140,
+                    behavior: 'smooth'
+                });
+            }
         });
     });
 
