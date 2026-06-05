@@ -1108,6 +1108,28 @@ label.radio-label:hover {
     font-size: 18px;
     color: var(--blue);
 }
+/***solutions page ***/
+.sol-hero {
+    background: var(--navy);
+    padding: 64px 60px 56px;
+    border-bottom: 1px solid rgba(0, 168, 248, 0.10);
+}
+.sol-hero h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.6px;
+    line-height: 1.2;
+    margin-bottom: 14px;
+}
+.sol-hero p {
+    font-size: 15px;
+    color: rgba(210, 230, 248, 0.50);
+    line-height: 1.75;
+}
+.sol-hero h1 span {
+    color: var(--cyan);
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
