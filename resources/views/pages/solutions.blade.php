@@ -437,17 +437,22 @@
 
 <!-- uav section -->
     @foreach(pageContentJson('solutions', 'solutions.rightcontent_uav') as $uav)
-    <section class="sol-section section-light" id="{{ $uav['id'] }}">
+    <section class="sol-section section-light" id="{{ $uav['id'] ?? '' }}">
         <div class="sol-section-head">
-            <div class="sol-vert-label {{ $uav['theme'] }}">
-                <i class="ti {{ $uav['icon'] }}"></i>
-                {{ $uav['title'] }}
+
+            <div class="sol-vert-label {{ $uav['theme'] ?? '' }}">
+                <i class="ti {{ $uav['icon'] ?? '' }}"></i>
+                {{ $uav['title'] ?? '' }}
             </div>
 
-            <h2>{{ $uav['heading'] }}</h2>
-             @foreach($uav['description'] as $desc)
-            <p>{{ $desc }}</p>
-            @endforeach
+            <h2>{{ $uav['heading'] ?? '' }}</h2>
+
+            @if(!empty($uav['description']) && is_array($uav['description']))
+                @foreach($uav['description'] as $desc)
+                    <p>{{ $desc }}</p>
+                @endforeach
+            @endif
+
         </div>
 
         <div class="sol-section-inner reverse">
@@ -458,24 +463,24 @@
                 @if(!empty($uav['image_url']))
                     <div class="ph" style="height:360px;">
                         <img src="{{ $uav['image_url'] }}"
-                            alt="{{ $uav['title'] }}"
+                            alt="{{ $uav['title'] ?? '' }}"
                             class="img-fluid">
                     </div>
                 @endif
 
-                @if(!empty($uav['products']))
+                @if(!empty($uav['products']) && is_array($uav['products']))
                     <div class="sol-products-strip" style="margin-top:20px;">
+
                         <div class="sol-products-strip-lbl">
-                            Recommended editions
+                            Recommended Editions
                         </div>
 
                         <div class="sol-product-pills">
                             @foreach($uav['products'] as $product)
-                                <a href="{{ $product['link'] }}"
+                                <a href="{{ $product['url'] ?? '#' }}"
                                 class="sol-pill">
 
-                                    <i class="ti {{ $product['icon'] }}"></i>
-                                    {{ $product['name'] }}
+                                    {{ $product['name'] ?? '' }}
 
                                     @if(!empty($product['featured']))
                                         <span class="hot-dot"></span>
@@ -484,6 +489,7 @@
                                 </a>
                             @endforeach
                         </div>
+
                     </div>
                 @endif
 
@@ -492,43 +498,50 @@
             <!-- Right Side -->
             <div>
 
-                @if(!empty($uav['workflow']))
+                @if(!empty($uav['steps']) && is_array($uav['steps']))
                     <div class="sol-workflow">
-                        @foreach($uav['workflow'] as $step)
+
+                        @foreach($uav['steps'] as $step)
                             <div class="sol-workflow-step">
-                                <div class="sol-step-num {{ $uav['theme'] }}">
-                                    {{ $step['step'] }}
+
+                                <div class="sol-step-num {{ $uav['theme'] ?? '' }}">
+                                    {{ $step['step'] ?? '' }}
                                 </div>
 
                                 <div class="sol-step-body">
-                                    <strong>{{ $step['title'] }}</strong>
-                                    {{ $step['description'] }}
+                                    <strong>{{ $step['title'] ?? '' }}</strong>
+                                    {{ $step['description'] ?? '' }}
                                 </div>
+
                             </div>
                         @endforeach
+
                     </div>
                 @endif
 
-                @if(!empty($uav['deliverables']))
+                @if(!empty($uav['notice']))
+                    <div class="sol-notice-box" style="margin:20px 0;">
+                        <h4>{{ $uav['notice']['title'] ?? '' }}</h4>
+                        <p>{{ $uav['notice']['description'] ?? '' }}</p>
+                    </div>
+                @endif
+
+                @if(!empty($uav['deliverables']) && is_array($uav['deliverables']))
                     <div class="sol-deliverables" style="margin:20px 0;">
+
                         @foreach($uav['deliverables'] as $deliverable)
                             <div class="sol-deliv-item">
                                 <i class="ti ti-circle-check-filled"
-                                style="color:var(--{{ $uav['theme'] }});"></i>
+                                style="color:var(--{{ $uav['theme'] ?? 'purple' }});"></i>
                                 {{ $deliverable }}
                             </div>
                         @endforeach
+
                     </div>
                 @endif
 
-                @if(!empty($uav['cta']))
-                    <a href="{{ $uav['cta']['link'] }}"
-                    class="btn-cyan">
-                        {{ $uav['cta']['text'] }}
-                    </a>
-                @endif
-
             </div>
+
         </div>
     </section>
     @endforeach
