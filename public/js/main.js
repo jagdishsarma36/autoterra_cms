@@ -126,24 +126,16 @@ jQuery(document).ready(function() {
     $(this).closest('.radio-label').addClass('active');
     });
 });
-function initScrollActive(options = {}) {
-    const {
-        tocSelector = '.legal-toc a',
-        sectionSelector = 'h2[id]',
-        activeClass = 'active',
-        offset = 150
-    } = options;
+function scrollActive(tocSelector, sectionSelector, activeClass = 'active') {
 
     const links = document.querySelectorAll(tocSelector);
     const sections = document.querySelectorAll(sectionSelector);
-
-    if (!links.length || !sections.length) return;
 
     function setActiveOnScroll() {
         let currentSectionId = "";
 
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - offset;
+            const sectionTop = section.offsetTop - 150;
 
             if (window.scrollY >= sectionTop) {
                 currentSectionId = section.getAttribute('id');
@@ -159,13 +151,9 @@ function initScrollActive(options = {}) {
         });
     }
 
-    // Scroll event
     window.addEventListener('scroll', setActiveOnScroll);
-
-    // Run once
     setActiveOnScroll();
 
-    // Click handling
     links.forEach(link => {
         link.addEventListener('click', function () {
             links.forEach(el => el.classList.remove(activeClass));
