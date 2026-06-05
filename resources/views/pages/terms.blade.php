@@ -27,6 +27,10 @@
   <!-- Content -->
   <div class="legal-content">
 
+    @php
+      $links = pageContentJson('global', 'terms.links'); // load links
+    @endphp
+
     @foreach(pageContentJson('global', 'terms.description') as $item)
 
       <h2 id="terms_{{$loop->index}}">
@@ -36,15 +40,35 @@
       @php
         $text = $item['description'];
 
-        if(Str::contains($text, '<')) {
-            // HTML → render directly
+        // 🔥 APPLY LINKS
+        if (!empty($links)) {
+            foreach ($links as $link) {
+
+                if (!empty($link['link_text']) && !empty($link['link_url'])) {
+
+                    $url = $link['link_url'];
+
+                    // Convert internal links to full URL
+                    if (!\Illuminate\Support\Str::startsWith($url, ['http', 'mailto'])) {
+                        $url = url($url);
+                    }
+
+                    $anchor = '<a href="'.$url.'" target="_blank">'.$link['link_text'].'</a>';
+
+                    // Replace text with link
+                    $text = str_replace($link['link_text'], $anchor, $text);
+                }
+            }
+        }
+
+        // ✅ RENDER CONTENT
+        if(\Illuminate\Support\Str::contains($text, '<')) {
             echo $text;
         } else {
-            // Plain text → convert \n to paragraphs
             $paragraphs = explode("\n", $text);
             foreach ($paragraphs as $p) {
                 if(trim($p) !== '') {
-                    echo '<p>' . e($p) . '</p>';
+                    echo '<p>' . $p . '</p>'; // no e()
                 }
             }
         }
