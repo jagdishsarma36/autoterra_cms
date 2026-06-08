@@ -31,6 +31,55 @@
       <p>{!! pageContent('eula', 'eula.warning_text') !!}</p>
     </div>
   </div>
+  @foreach(pageContentJson('eula', 'eula.right_content') as $eulaRightContent)
+    <h2 id="{{ $eulaRightContent['id'] }}">{{ $eulaRightContent['title'] }}</h2>
+    {{-- Content Paragraphs --}}
+    @if(!empty($eulaRightContent['content']))
+        @foreach($eulaRightContent['content'] as $paragraph)
+            <p>{{ $paragraph }}</p>
+        @endforeach
+    @endif
+    {{-- List Items --}}
+    @if(!empty($eulaRightContent['list']))
+        <ul>
+            @foreach($eulaRightContent['list'] as $item)
+                <li>{{ $item }}</li>
+            @endforeach
+        </ul>
+    @endif
+    {{-- Note --}}
+    @if(!empty($eulaRightContent['note']))
+        <p>{{ $eulaRightContent ['note'] }}</p>
+    @endif
+    {{-- Additional Content --}}
+    @if(!empty($eulaRightContent['additional']))
+        @foreach($eulaRightContent['additional'] as $additional)
+            <p>{{ $additional }}</p>
+        @endforeach
+    @endif
+    {{-- Contact Section --}}
+    @if(!empty($eulaRightContent['contact']))
+        <ul>
+            @if(!empty($eulaRightContent['contact']['email']))
+                <li>
+                    <strong>Email:</strong>
+                    <a href="mailto:{{ $eulaRightContent['contact']['email'] }}">
+                        {{ $eulaRightContent['contact']['email'] }}
+                    </a>
+                </li>
+            @endif
+            @if(!empty($eulaRightContent['contact']['address']))
+                <li>
+                    <strong>Post:</strong>
+                    {{ $eulaRightContent['contact']['address'] }}
+                </li>
+            @endif
+        </ul>
+    @endif
+    @if(!$loop->last)
+        <hr class="legal-hr">
+    @endif
+  @endforeach
 </div>
 
 @include('partials.footer')
