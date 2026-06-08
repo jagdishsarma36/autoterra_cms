@@ -65,6 +65,7 @@
     @php
       $links = pageContentJson('cookies', 'cookies.links') ?? [];
       $tables = pageContentJson('cookies', 'cookies.table') ?? [];
+      $tableParagraph = pageContent('cookies', 'cookies.table.p'); // ✅ NEW
     @endphp
 
     <!-- Description Sections -->
@@ -99,6 +100,7 @@
       {{-- TABLE INSERTION IN SECTION 4 --}}
       @if($loop->iteration == 4 && !empty($tables))
         <div class="legal-content">
+
           <table class="cookie-table">
             <thead>
               <tr>
@@ -117,6 +119,35 @@
               @endforeach
             </tbody>
           </table>
+
+          {{-- PARAGRAPH BELOW TABLE --}}
+          @if(!empty($tableParagraph))
+            @php
+              $hasHtml = Str::contains($tableParagraph, '<');
+              $paraContent = $hasHtml ? $tableParagraph : e($tableParagraph);
+
+              // Inject links same as above
+              foreach ($links as $link) {
+                  if (!empty($link['link_text']) && !empty($link['link_url'])) {
+
+                      $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
+                              .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
+                              .'>'.$link['link_text'].'</a>';
+
+                      $paraContent = str_replace($link['link_text'], $anchor, $paraContent);
+                  }
+              }
+
+              if (!$hasHtml) {
+                  $paraContent = '<p>' . implode('</p><p>', explode("\n", $paraContent)) . '</p>';
+              }
+            @endphp
+
+            <div class="cookie-table-note">
+              {!! $paraContent !!}
+            </div>
+          @endif
+
         </div>
       @endif
 
