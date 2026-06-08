@@ -1512,6 +1512,85 @@ nav.sol-nav {
     background: #E0F4FF;
     color: #0860B0;
 }
+/* autoterra pro page */
+.pro-hero {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+.pro-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.pro-hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(105deg, rgba(7, 16, 26, 0.92) 50%, rgba(8, 60, 120, 0.55) 100%);
+}
+.pro-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 72px 60px;
+    max-width: 660px;
+}
+.pro-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+span.pro-badge {
+    background: rgba(8, 96, 176, 0.25);
+    color: #93C5FD;
+    border: 1px solid rgba(8, 96, 176, 0.45);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+.pro-hero-content h1 {
+    font-size: 40px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    letter-spacing: -0.8px;
+    margin-bottom: 16px;
+}
+.pro-hero-content h1 .at {
+    color: rgba(255, 255, 255, 0.65);
+}
+.pro-hero-content h1 .pro {
+    color: var(--cyan);
+}
+.pro-hero-content p {
+    font-size: 15px;
+    color: rgba(210, 230, 248, 0.65);
+    line-height: 1.75;
+    margin-bottom: 32px;
+    max-width: 560px;
+}
+.pro-hero-btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.btn-ghost {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    border-radius: 7px;
+    padding: 13px 28px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: border-color 0.2s;
+    display: inline-block;
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
