@@ -90,6 +90,9 @@ class PageContentResource extends Resource
                                 'blog' => 'Blog',
                                 'login' => 'Login',
                                 'signup' => 'Signup',
+                                'eula' => 'EULA',
+                                'products' => 'Products',
+                                'cookies' => 'Cookies',
                             ])
                             ->required()
                             ->searchable(),
