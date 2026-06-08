@@ -39,13 +39,9 @@
         $short = pageContent('cookies', 'cookies.short_description');
         $links = pageContentJson('cookies', 'cookies.links') ?? [];
 
-        // Detect HTML
         $hasHtml = Str::contains($short, '<');
-
-        // Use raw HTML OR escaped text
         $shortContent = $hasHtml ? $short : e($short);
 
-        // Replace matching text with links
         foreach ($links as $link) {
             if (!empty($link['link_text']) && !empty($link['link_url'])) {
 
@@ -57,7 +53,6 @@
             }
         }
 
-        // Convert line breaks to paragraphs (only for plain text)
         if (!$hasHtml) {
             $shortContent = '<p>' . implode('</p><p>', explode("\n", $shortContent)) . '</p>';
         }
@@ -66,9 +61,10 @@
       {!! $shortContent !!}
     </div>
 
-    <!-- Prepare Links -->
+    <!-- Prepare Links + Table -->
     @php
       $links = pageContentJson('cookies', 'cookies.links') ?? [];
+      $tables = pageContentJson('cookies', 'cookies.table') ?? [];
     @endphp
 
     <!-- Description Sections -->
@@ -79,13 +75,9 @@
       </h2>
 
       @php
-        // Detect HTML
         $hasHtml = Str::contains($item['description'], '<');
-
-        // Use raw HTML OR escaped text
         $content = $hasHtml ? $item['description'] : e($item['description']);
 
-        // Replace matching text with links
         foreach ($links as $link) {
             if (!empty($link['link_text']) && !empty($link['link_url'])) {
 
@@ -97,13 +89,36 @@
             }
         }
 
-        // Convert line breaks to paragraphs (only for plain text)
         if (!$hasHtml) {
             $content = '<p>' . implode('</p><p>', explode("\n", $content)) . '</p>';
         }
       @endphp
 
       {!! $content !!}
+
+      {{-- TABLE INSERTION IN SECTION 4 --}}
+      @if($loop->iteration == 4 && !empty($tables))
+        <div class="legal-content">
+          <table class="cookie-table">
+            <thead>
+              <tr>
+                @foreach($tables[0] as $heading)
+                  <th>{{ $heading }}</th>
+                @endforeach
+              </tr>
+            </thead>
+            <tbody>
+              @foreach(array_slice($tables, 1) as $row)
+                <tr>
+                  @foreach($row as $cell)
+                    <td>{{ $cell }}</td>
+                  @endforeach
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      @endif
 
       @if(!$loop->last)
         <hr class="legal-hr">
