@@ -30,12 +30,12 @@
     <div class="legal-warn">
       <p>{!! pageContent('eula', 'eula.warning_text') !!}</p>
     </div>
-    @foreach(pageContentJson('eula') ?? [] as $eulaRightContent)
+    @foreach(pageContentJson('eula', 'eula.right_content') ?? [] as $eulaRightContent)
     <h2 id="{{ $eulaRightContent['id'] ?? '' }}">
         {{ $eulaRightContent['title'] ?? '' }}
     </h2>
     @foreach($eulaRightContent['content'] ?? [] as $paragraph)
-        <p>{!! $paragraph !!}</p>
+        <p>{{ $paragraph }}</p>
     @endforeach
     @if(!empty($eulaRightContent['list']))
         <ul>
@@ -47,11 +47,9 @@
     @if(!empty($eulaRightContent['note']))
         <p>{{ $eulaRightContent['note'] }}</p>
     @endif
-    @if(!empty($eulaRightContent['additional']))
-        @foreach($eulaRightContent['additional'] as $additional)
-            <p>{{ $additional }}</p>
-        @endforeach
-    @endif
+    @foreach($eulaRightContent['additional'] ?? [] as $additional)
+        <p>{{ $additional }}</p>
+    @endforeach
     @if(!empty($eulaRightContent['contact']))
         <ul>
             @if(!empty($eulaRightContent['contact']['email']))
