@@ -1456,6 +1456,23 @@ nav.sol-nav {
     border-left: 3px solid #5a7a96;
     background: rgba(90, 122, 150, 0.08);
 }
+/* eula page */
+.legal-warn {
+    background: #FEF3E2;
+    border-left: 3px solid #C87A20;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+}
+.legal-warn p {
+    margin: 0;
+    color: #7A4800;
+    font-size: 14px;
+    line-height: 1.7;
+}
+.legal-content a:hover {
+    text-decoration: underline;
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
