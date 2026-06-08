@@ -35,7 +35,7 @@
         {{ $eulaRightContent['title'] ?? '' }}
     </h2>
     @foreach($eulaRightContent['content'] ?? [] as $paragraph)
-        <p>{{ $paragraph }}</p>
+        <p>{!! $paragraph !!}</p>
     @endforeach
     @if(!empty($eulaRightContent['list']))
         <ul>
