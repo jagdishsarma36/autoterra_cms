@@ -2,6 +2,17 @@
 @section('title', 'AutoTerra')
 @section('body')
 @include('partials.nav')
-<section style="background:var(--navy);padding:60px;"><h1 style="font-size:34px;font-weight:800;color:#fff;">{{ ucfirst(str_replace('-', ' ', request()->path())) }}</h1><p style="font-size:15px;color:rgba(210,230,248,0.5);margin-top:12px;">This page is under development.</p></section>
+
+<!-- eula hero section -->
+<section class="legal-hero">
+  <div class="legal-hero-glow"></div>
+  <div class="legal-hero-inner">
+    <div class="sec-eye" style="margin-bottom:12px;">{{ pageContent('eula', 'hero.pil_text') }}</div>
+    <h1>{!! pageContent('eula', 'hero.heading') !!}</h1>
+    <p class="legal-hero-meta">{{ pageContent('eula', 'hero.sub_heading') }}</p>
+  </div>
+</section>
+<!-- eula hero section end -->
+
 @include('partials.footer')
 @endsection
