@@ -31,7 +31,7 @@
       <p>{!! pageContent('eula', 'eula.warning_text') !!}</p>
     </div>
     @foreach(pageContentJson('eula', 'eula.right_content') ?? [] as $eulaRightContent)
-    <h2 id="{{ $eulaRightContent['id'] ?? '' }}">
+    <h2 id="{!! $eulaRightContent['id'] ?? '' !!}">
         {{ $eulaRightContent['title'] ?? '' }}
     </h2>
     @foreach($eulaRightContent['content'] ?? [] as $paragraph)
