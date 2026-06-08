@@ -1643,6 +1643,26 @@ border: 1px solid var(--border);
 border-radius: 6px;
 padding: 5px 12px;
 }
+/****resources page ***/
+.res-hero {
+    background: var(--navy);
+    padding: 56px 60px 48px;
+    border-bottom: 1px solid rgba(0, 168, 248, 0.10);
+}
+.res-hero h1 {
+    font-size: 34px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.6px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+}
+.res-hero p {
+    font-size: 14px;
+    color: rgba(210, 230, 248, 0.45);
+    line-height: 1.75;
+    max-width: 560px;
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
