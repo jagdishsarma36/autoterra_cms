@@ -2,20 +2,39 @@
 @section('title', 'AutoTerra Pro — AutoTerra')
 @section('body')
 @include('partials.nav')
-<section class="page-hero">
-  <div class="sec-eye">{{ pageContent('pro', 'hero.badge') }}</div>
-  <h1>{{ pageContent('pro', 'hero.heading') }}</h1>
-  <p>{{ pageContent('pro', 'hero.description') }}</p>
-  <div style="display:flex;gap:14px;margin-top:24px;">
-    <a href="/quote" class="btn-cyan">{{ pageContent('pro', 'hero.button_primary_text') }}</a>
-    <a href="/contact" class="btn-ghost" style="color:rgba(210,230,248,0.65);border-color:rgba(210,230,248,0.25);">{{ pageContent('pro', 'hero.button_secondary_text') }}</a>
+<!-- Hero Section -->
+<section class="pro-hero">
+  <div class="pro-hero-bg">
+    <div class="ph" style="height:100%;min-height:480px;border-radius:0;border:none;">
+      <img src="{{ pageContent('pro', 'hero.sec_img') }}" alt="Hero Background" ">
+    </div>
+  </div>
+  <div class="pro-hero-overlay"></div>
+  <div class="pro-hero-content">
+    <div class="pro-badge-row">
+      <span class="pro-badge">{{ pageContent('pro', 'hero.badge') }}</span>
+    </div>
+    <h1>{!! pageContent('pro', 'hero.heading') !!}</h1>
+    <p>{{ pageContent('pro', 'hero.description') }}</p>
+    <div class="pro-hero-btns">
+    @foreach(pageContentJson('pro', 'hero.button_primary_text') as $button)
+    <a href="{{ $button['bttn_url'] }}" class="{{ $button['class'] }}">
+        @if(!empty($button['icon_class']))
+            <i class="ti {{ $button['icon_class'] }}"></i>
+        @endif
+        {{ $button['bttn_text'] }}
+    </a>
+    @endforeach
+    </div>
   </div>
 </section>
+
 <section class="section section-light">
   <div class="sec-eye">{{ pageContent('pro', 'section1.eyebrow') }}</div>
   <h2 class="sec-h2">{{ pageContent('pro', 'section1.heading') }}</h2>
   <p class="sec-sub">{{ pageContent('pro', 'section1.description') }}</p>
 </section>
+
 <section class="section section-white">
   <div class="sec-eye">{{ pageContent('pro', 'who.eyebrow') }}</div>
   <h2 class="sec-h2">{{ pageContent('pro', 'who.heading') }}</h2>
@@ -28,6 +47,7 @@
     @endforeach
   </div>
 </section>
+
 <section class="cta-band"><div class="cta-band-inner"><h2>{{ pageContent('pro', 'cta.heading') }}</h2><p>{{ pageContent('pro', 'cta.description') }}</p><div class="cta-row"><a href="/buy" class="btn-cyan">{{ pageContent('pro', 'cta.button_primary_text') }}</a><a href="/contact" class="btn-ghost">{{ pageContent('pro', 'cta.button_secondary_text') }}</a></div></div></section>
 @include('partials.footer')
 @endsection
