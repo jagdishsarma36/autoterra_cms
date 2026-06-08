@@ -32,7 +32,10 @@
     </div>
   </div>
   @foreach(pageContentJson('eula', 'eula.right_content') as $eulaRightContent)
-    <h2 id="{{ $eulaRightContent['id'] }}">{{ $eulaRightContent['title'] }}</h2>
+    <h2 id="terms_{{$loop->index}}">
+        {{$loop->iteration}}.{{$eulaRightContent['title']}}
+    </h2>
+    <!-- <h2 id="{{ $eulaRightContent['id'] }}">{{ $eulaRightContent['title'] }}</h2> -->
     {{-- Content Paragraphs --}}
     @if(!empty($eulaRightContent['content']))
         @foreach($eulaRightContent['content'] as $paragraph)
