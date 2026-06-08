@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title', 'AutoTerra')
+
 @section('body')
 @include('partials.nav')
+
 <section class="legal-hero">
   <div class="legal-hero-glow"></div>
   <div class="legal-hero-inner">
@@ -35,13 +37,33 @@
     <div class="legal-notice">
       @php
         $short = pageContent('cookies', 'cookies.short_description');
+        $links = pageContentJson('cookies', 'cookies.links') ?? [];
+
+        // Detect HTML
+        $hasHtml = Str::contains($short, '<');
+
+        // Use raw HTML OR escaped text
+        $shortContent = $hasHtml ? $short : e($short);
+
+        // Replace matching text with links
+        foreach ($links as $link) {
+            if (!empty($link['link_text']) && !empty($link['link_url'])) {
+
+                $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
+                        .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
+                        .'>'.$link['link_text'].'</a>';
+
+                $shortContent = str_replace($link['link_text'], $anchor, $shortContent);
+            }
+        }
+
+        // Convert line breaks to paragraphs (only for plain text)
+        if (!$hasHtml) {
+            $shortContent = '<p>' . implode('</p><p>', explode("\n", $shortContent)) . '</p>';
+        }
       @endphp
 
-      @if(Str::contains($short, '<'))
-        {!! $short !!}
-      @else
-        {!! '<p>' . implode('</p><p>', explode("\n", e($short))) . '</p>' !!}
-      @endif
+      {!! $shortContent !!}
     </div>
 
     <!-- Prepare Links -->
@@ -53,7 +75,7 @@
     @foreach(pageContentJson('cookies', 'cookies.description') as $item)
 
       <h2 id="terms_{{$loop->index}}">
-        {{$loop->iteration}}.{{$item['title']}}
+        {{$loop->iteration}}. {{$item['title']}}
       </h2>
 
       @php
@@ -92,5 +114,7 @@
   </div><!-- /legal-content -->
 
 </div>
-</section>@include('partials.footer')
+</section>
+
+@include('partials.footer')
 @endsection
