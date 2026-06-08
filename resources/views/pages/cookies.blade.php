@@ -33,30 +33,6 @@
   <!-- Main content -->
   <div class="legal-content">
 
-    @php
-      function applyLinks($content, $links) {
-          foreach ($links as $link) {
-              if (!empty($link['link_text']) && !empty($link['link_url'])) {
-
-                  // Normalize text (remove arrow)
-                  $plainText = trim(str_replace('↗', '', $link['link_text']));
-
-                  $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
-                          .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
-                          .'>'.$plainText.' <span class="ext">↗</span></a>';
-
-                  // Replace both versions
-                  $content = str_replace(
-                      [$link['link_text'], $plainText],
-                      $anchor,
-                      $content
-                  );
-              }
-          }
-          return $content;
-      }
-    @endphp
-
     <!-- Short Description -->
     <div class="legal-notice">
       @php
@@ -66,7 +42,16 @@
         $hasHtml = Str::contains($short, '<');
         $shortContent = $hasHtml ? $short : e($short);
 
-        $shortContent = applyLinks($shortContent, $links);
+        foreach ($links as $link) {
+            if (!empty($link['link_text']) && !empty($link['link_url'])) {
+
+                $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
+                        .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
+                        .'>'.$link['link_text'].'</a>';
+
+                $shortContent = str_replace($link['link_text'], $anchor, $shortContent);
+            }
+        }
 
         if (!$hasHtml) {
             $shortContent = '<p>' . implode('</p><p>', explode("\n", $shortContent)) . '</p>';
@@ -78,6 +63,7 @@
 
     <!-- Prepare Data -->
     @php
+      $links = pageContentJson('cookies', 'cookies.links') ?? [];
       $tables = pageContentJson('cookies', 'cookies.table') ?? [];
       $tableParagraph = pageContent('cookies', 'cookies.table.p');
     @endphp
@@ -93,7 +79,16 @@
         $hasHtml = Str::contains($item['description'], '<');
         $content = $hasHtml ? $item['description'] : e($item['description']);
 
-        $content = applyLinks($content, $links);
+        foreach ($links as $link) {
+            if (!empty($link['link_text']) && !empty($link['link_url'])) {
+
+                $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
+                        .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
+                        .'>'.$link['link_text'].'</a>';
+
+                $content = str_replace($link['link_text'], $anchor, $content);
+            }
+        }
 
         if (!$hasHtml) {
             $content = '<p>' . implode('</p><p>', explode("\n", $content)) . '</p>';
@@ -120,7 +115,7 @@
                 <tr>
                   @foreach($row as $key => $cell)
 
-                    {{-- Badge logic --}}
+                    {{-- Apply badge only for Type column --}}
                     @if($key === 'Type')
                       @php
                         $value = strtolower($cell);
@@ -132,6 +127,7 @@
                           {{ $cell }}
                         </span>
                       </td>
+
                     @else
                       <td>{{ $cell }}</td>
                     @endif
@@ -148,7 +144,16 @@
               $hasHtml = Str::contains($tableParagraph, '<');
               $paraContent = $hasHtml ? $tableParagraph : e($tableParagraph);
 
-              $paraContent = applyLinks($paraContent, $links);
+              foreach ($links as $link) {
+                  if (!empty($link['link_text']) && !empty($link['link_url'])) {
+
+                      $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
+                              .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
+                              .'>'.$link['link_text'].'</a>';
+
+                      $paraContent = str_replace($link['link_text'], $anchor, $paraContent);
+                  }
+              }
 
               if (!$hasHtml) {
                   $paraContent = '<p>' . implode('</p><p>', explode("\n", $paraContent)) . '</p>';
