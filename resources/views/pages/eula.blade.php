@@ -30,17 +30,13 @@
     <div class="legal-warn">
       <p>{!! pageContent('eula', 'eula.warning_text') !!}</p>
     </div>
-  </div>
-  @foreach(pageContentJson('eula', 'eula.right_content') ?? [] as $eulaRightContent)
-
+    @foreach(pageContentJson('eula', 'eula.right_content') ?? [] as $eulaRightContent)
     <h2 id="{{ $eulaRightContent['id'] ?? '' }}">
         {{ $eulaRightContent['title'] ?? '' }}
     </h2>
-
     @foreach($eulaRightContent['content'] ?? [] as $paragraph)
         <p>{{ $paragraph }}</p>
     @endforeach
-
     @if(!empty($eulaRightContent['list']))
         <ul>
             @foreach($eulaRightContent['list'] as $item)
@@ -48,15 +44,12 @@
             @endforeach
         </ul>
     @endif
-
     @if(!empty($eulaRightContent['note']))
         <p>{{ $eulaRightContent['note'] }}</p>
     @endif
-
     @foreach($eulaRightContent['additional'] ?? [] as $additional)
         <p>{{ $additional }}</p>
     @endforeach
-
     @if(!empty($eulaRightContent['contact']))
         <ul>
             @if(!empty($eulaRightContent['contact']['email']))
@@ -67,7 +60,6 @@
                     </a>
                 </li>
             @endif
-
             @if(!empty($eulaRightContent['contact']['address']))
                 <li>
                     <strong>Post:</strong>
@@ -76,13 +68,11 @@
             @endif
         </ul>
     @endif
-
     @unless($loop->last)
         <hr class="legal-hr">
     @endunless
-
-@endforeach
-</div>
+    @endforeach
+    </div>
 
 @include('partials.footer')
 @endsection
