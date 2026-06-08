@@ -1590,6 +1590,11 @@ span.pro-badge {
     font-weight: 500;
     transition: border-color 0.2s;
     display: inline-block;
+}/****resources page ***/
+.res-hero {
+    background: var(--navy);
+    padding: 56px 60px 48px;
+    border-bottom: 1px solid rgba(0, 168, 248, 0.10);
 }
 .pro-diff {
     background: var(--off);
