@@ -1436,7 +1436,7 @@ nav.sol-nav {
     color: var(--muted);
     line-height: 1.75;
     margin-bottom: 6px;
-    list-style-position: inside;
+    list-style-position: outside;
     padding-top: 6px;
 }
 .legal-toc a:hover {
@@ -1448,7 +1448,7 @@ nav.sol-nav {
     text-decoration: none;
 }
 .legal-content ul {
-    margin: 0px 0px 16px 6px;
+    margin: 0px 0px 16px 25px;
 }
 .legal-toc a.active {
     color: #00a8f8;
