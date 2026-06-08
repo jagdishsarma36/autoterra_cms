@@ -1596,33 +1596,53 @@ span.pro-badge {
     padding: 56px 60px 48px;
     border-bottom: 1px solid rgba(0, 168, 248, 0.10);
 }
-.sec-eye {
+.pro-diff {
+    background: var(--off);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 60px;
+}
+.pro-diff-inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+span.pro-diff-label {
     font-size: 11px;
     font-weight: 700;
-    color: var(--cyan);
-    letter-spacing: 1.4px;
+    color: var(--muted);
     text-transform: uppercase;
-    margin-bottom: 10px;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
 }
-.res-hero h1 {
-    font-size: 34px;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.6px;
-    line-height: 1.2;
-    margin-bottom: 12px;
-}
-.res-hero h1 span {
-    color: var(--cyan);
-}
-.res-hero p {
+.pro-diff-item i {
     font-size: 14px;
-    color: rgba(210, 230, 248, 0.45);
-    line-height: 1.75;
-    max-width: 560px;
+    color: var(--blue);
 }
-
-
+.pro-diff-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+}
+.pro-diff-items {
+    display: flex; gap: 10px; flex-wrap: wrap;
+}
+.pro-diff-item {
+    display: flex;
+align-items: center;
+gap: 6px;
+font-size: 12px;
+font-weight: 600;
+color: var(--body);
+background: #fff;
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: 5px 12px;
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
