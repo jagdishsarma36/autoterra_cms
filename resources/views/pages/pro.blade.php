@@ -29,6 +29,18 @@
   </div>
 </section>
 
+<!-- Differentiators -->
+<div class="pro-diff">
+  <div class="pro-diff-inner">
+    <span class="pro-diff-label">{{ pageContent('pro', 'differentiators.heading') }}</span>
+    <div class="pro-diff-items">
+      @foreach(pageContentJson('pro', 'differentiators.items') as $item)
+      <span class="pro-diff-item"><i class="ti {{ $item['icon_class'] }}"></i> {{ $item['text'] }}</span>
+      @endforeach
+    </div>
+  </div>
+</div>
+
 <section class="section section-light">
   <div class="sec-eye">{{ pageContent('pro', 'section1.eyebrow') }}</div>
   <h2 class="sec-h2">{{ pageContent('pro', 'section1.heading') }}</h2>
