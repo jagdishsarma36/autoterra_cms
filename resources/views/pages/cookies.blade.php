@@ -61,11 +61,11 @@
       {!! $shortContent !!}
     </div>
 
-    <!-- Prepare Links + Table -->
+    <!-- Prepare Data -->
     @php
       $links = pageContentJson('cookies', 'cookies.links') ?? [];
       $tables = pageContentJson('cookies', 'cookies.table') ?? [];
-      $tableParagraph = pageContent('cookies', 'cookies.table.p'); // ✅ NEW
+      $tableParagraph = pageContent('cookies', 'cookies.table.p');
     @endphp
 
     <!-- Description Sections -->
@@ -104,16 +104,34 @@
           <table class="cookie-table">
             <thead>
               <tr>
-                @foreach($tables[0] as $heading)
+                @foreach(array_keys($tables[0]) as $heading)
                   <th>{{ $heading }}</th>
                 @endforeach
               </tr>
             </thead>
+
             <tbody>
-              @foreach(array_slice($tables, 1) as $row)
+              @foreach($tables as $row)
                 <tr>
-                  @foreach($row as $cell)
-                    <td>{{ $cell }}</td>
+                  @foreach($row as $key => $cell)
+
+                    {{-- Apply badge only for Type column --}}
+                    @if($key === 'Type')
+                      @php
+                        $value = strtolower($cell);
+                        $class = str_contains($value, 'required') ? 'badge-req' : 'badge-opt';
+                      @endphp
+
+                      <td>
+                        <span class="{{ $class }}">
+                          {{ $cell }}
+                        </span>
+                      </td>
+
+                    @else
+                      <td>{{ $cell }}</td>
+                    @endif
+
                   @endforeach
                 </tr>
               @endforeach
@@ -126,7 +144,6 @@
               $hasHtml = Str::contains($tableParagraph, '<');
               $paraContent = $hasHtml ? $tableParagraph : e($tableParagraph);
 
-              // Inject links same as above
               foreach ($links as $link) {
                   if (!empty($link['link_text']) && !empty($link['link_url'])) {
 

@@ -1473,6 +1473,45 @@ nav.sol-nav {
 .legal-content a:hover {
     text-decoration: underline;
 }
+.cookie-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 13px;
+}
+.cookie-table th {
+    background: var(--off);
+    color: var(--body);
+    font-weight: 700;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+}
+.cookie-table td {
+    padding: 10px 14px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+}
+.badge-opt {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: #F0FFF8;
+    color: #0D8050;
+}
+.badge-req {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: #E0F4FF;
+    color: #0860B0;
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
