@@ -6,11 +6,11 @@
   <div class="legal-hero-glow"></div>
   <div class="legal-hero-inner">
     <div class="sec-eye" style="margin-bottom:12px;">
-      {{ pageContent('global', 'privacy.hero_eyebrow') }}
+      {{ pageContent('cookies', 'cookies.hero_eyebrow') }}
     </div>
-    <h1>{!! pageContent('global', 'privacy.hero_heading') !!}</h1>
+    <h1>{!! pageContent('cookies', 'cookies.hero_heading') !!}</h1>
     <p class="legal-hero-meta">
-      {{ pageContent('global', 'privacy.hero_description') }}
+      {{ pageContent('cookies', 'cookies.hero_description') }}
     </p>
   </div>
 </section>
@@ -21,7 +21,7 @@
   <!-- Sidebar TOC -->
   <nav class="legal-toc">
     <div class="legal-toc-title">On this page</div>
-    @foreach(pageContentJson('global', 'privacy.description') as $item)
+    @foreach(pageContentJson('cookies', 'cookies.description') as $item)
       <a href="#terms_{{$loop->index}}">
         {{ $item['title'] }}
       </a>
@@ -34,7 +34,7 @@
     <!-- Short Description -->
     <div class="legal-notice">
       @php
-        $short = pageContent('global', 'privacy.short_description');
+        $short = pageContent('cookies', 'cookies.short_description');
       @endphp
 
       @if(Str::contains($short, '<'))
@@ -46,11 +46,11 @@
 
     <!-- Prepare Links -->
     @php
-      $links = pageContentJson('global', 'privacy.description.links') ?? [];
+      $links = pageContentJson('cookies', 'cookies.links') ?? [];
     @endphp
 
     <!-- Description Sections -->
-    @foreach(pageContentJson('global', 'privacy.description') as $item)
+    @foreach(pageContentJson('cookies', 'cookies.description') as $item)
 
       <h2 id="terms_{{$loop->index}}">
         {{$loop->iteration}}.{{$item['title']}}
