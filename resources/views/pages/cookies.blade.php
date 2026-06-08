@@ -33,25 +33,38 @@
   <!-- Main content -->
   <div class="legal-content">
 
+    @php
+      $links = pageContentJson('cookies', 'cookies.links') ?? [];
+
+      //  Build safe replacement map (LONGEST FIRST)
+      $replaceMap = [];
+
+      foreach ($links as $link) {
+          if (!empty($link['link_text']) && !empty($link['link_url'])) {
+
+              $replaceMap[$link['link_text']] =
+                  '<a href="'.$link['link_url'].'" class="legal-link"'
+                  .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
+                  .'>'.$link['link_text'].'</a>';
+          }
+      }
+
+      // Sort by key length (avoid conflicts like "Privacy Policy" inside "Google Privacy Policy ↗")
+      uksort($replaceMap, function ($a, $b) {
+          return strlen($b) - strlen($a);
+      });
+    @endphp
+
     <!-- Short Description -->
     <div class="legal-notice">
       @php
         $short = pageContent('cookies', 'cookies.short_description');
-        $links = pageContentJson('cookies', 'cookies.links') ?? [];
 
         $hasHtml = Str::contains($short, '<');
         $shortContent = $hasHtml ? $short : e($short);
 
-        foreach ($links as $link) {
-            if (!empty($link['link_text']) && !empty($link['link_url'])) {
-
-                $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
-                        .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
-                        .'>'.$link['link_text'].'</a>';
-
-                $shortContent = str_replace($link['link_text'], $anchor, $shortContent);
-            }
-        }
+        //  Safe replacement
+        $shortContent = strtr($shortContent, $replaceMap);
 
         if (!$hasHtml) {
             $shortContent = '<p>' . implode('</p><p>', explode("\n", $shortContent)) . '</p>';
@@ -63,7 +76,6 @@
 
     <!-- Prepare Data -->
     @php
-      $links = pageContentJson('cookies', 'cookies.links') ?? [];
       $tables = pageContentJson('cookies', 'cookies.table') ?? [];
       $tableParagraph = pageContent('cookies', 'cookies.table.p');
     @endphp
@@ -79,16 +91,8 @@
         $hasHtml = Str::contains($item['description'], '<');
         $content = $hasHtml ? $item['description'] : e($item['description']);
 
-        foreach ($links as $link) {
-            if (!empty($link['link_text']) && !empty($link['link_url'])) {
-
-                $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
-                        .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
-                        .'>'.$link['link_text'].'</a>';
-
-                $content = str_replace($link['link_text'], $anchor, $content);
-            }
-        }
+        //  Safe replacement
+        $content = strtr($content, $replaceMap);
 
         if (!$hasHtml) {
             $content = '<p>' . implode('</p><p>', explode("\n", $content)) . '</p>';
@@ -115,7 +119,7 @@
                 <tr>
                   @foreach($row as $key => $cell)
 
-                    {{-- Apply badge only for Type column --}}
+                    {{-- Badge for Type --}}
                     @if($key === 'Type')
                       @php
                         $value = strtolower($cell);
@@ -127,7 +131,6 @@
                           {{ $cell }}
                         </span>
                       </td>
-
                     @else
                       <td>{{ $cell }}</td>
                     @endif
@@ -144,16 +147,8 @@
               $hasHtml = Str::contains($tableParagraph, '<');
               $paraContent = $hasHtml ? $tableParagraph : e($tableParagraph);
 
-              foreach ($links as $link) {
-                  if (!empty($link['link_text']) && !empty($link['link_url'])) {
-
-                      $anchor = '<a href="'.$link['link_url'].'" class="legal-link"'
-                              .(Str::startsWith($link['link_url'], 'http') ? ' target="_blank"' : '')
-                              .'>'.$link['link_text'].'</a>';
-
-                      $paraContent = str_replace($link['link_text'], $anchor, $paraContent);
-                  }
-              }
+              //  Safe replacement
+              $paraContent = strtr($paraContent, $replaceMap);
 
               if (!$hasHtml) {
                   $paraContent = '<p>' . implode('</p><p>', explode("\n", $paraContent)) . '</p>';
