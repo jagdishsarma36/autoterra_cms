@@ -127,7 +127,6 @@
   <div class="sec-eye">{{ $who['who_eyebrow'] }}</div>
   <h2 class="sec-h2">{{ $who['who_heading'] }}</h2>
   <p class="sec-sub">{{ $who['who_text'] }}</p>
-
   <div class="pro-who-grid">
      @foreach($who['who_cards'] as $card)
     <div class="pro-who-card">
@@ -140,18 +139,33 @@
 </section>
 @endforeach
 
-<section class="section section-white">
-  <div class="sec-eye">{{ pageContent('pro', 'who.eyebrow') }}</div>
-  <h2 class="sec-h2">{{ pageContent('pro', 'who.heading') }}</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:28px;">
-    @foreach(pageContentJson('pro', 'who.personas') as $persona)
-    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px;">
-      <h3 style="font-size:16px;font-weight:800;margin-bottom:8px;">{{ $persona['title'] }}</h3>
-      <p style="font-size:13px;color:var(--muted);line-height:1.7;">{{ $persona['description'] }}</p>
+<!--pro section -->
+@foreach(pageContentJson('pro', 'pro.content') as $pro_content)
+<section class="pro-position section-white">
+  <div class="sec-eye">{{ $pro_content['pro_eyebrow'] }}</div>
+  <h2 class="sec-h2">{{ $pro_content['pro_heading'] }}</h2>
+  <p class="sec-sub">{{ $pro_content['pro_text'] }}</p>
+
+  <div class="pro-ladder">
+    @foreach($pro_content['ladder_steps'] as $step)
+    <div class="pro-ladder-step above">
+      <div class="pro-step-label">{{ $step['label'] }}</div>
+      <div class="pro-step-name">{{ $step['name'] }}</div>
+      <div class="pro-step-desc">{{ $step['description'] }}</div>
     </div>
     @endforeach
   </div>
+  <div class="pro-upgrade-note">
+    <i class="ti ti-info-circle"></i>
+    <span>
+        {{ $pro_content['upgrade_note'] }}
+        <a href="{{ $pro_content['upgrade_link'] }}" style="color:var(--blue);font-weight:700;">
+            AutoTerra Pro Spatial
+        </a>
+    </span>
+  </div>
 </section>
+@endforeach
 
 <section class="cta-band"><div class="cta-band-inner"><h2>{{ pageContent('pro', 'cta.heading') }}</h2><p>{{ pageContent('pro', 'cta.description') }}</p><div class="cta-row"><a href="/buy" class="btn-cyan">{{ pageContent('pro', 'cta.button_primary_text') }}</a><a href="/contact" class="btn-ghost">{{ pageContent('pro', 'cta.button_secondary_text') }}</a></div></div></section>
 @include('partials.footer')
