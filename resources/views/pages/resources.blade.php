@@ -45,10 +45,6 @@
 {{-- DOCS SECTION --}}
 @php
   $docs = pageContentJson('resources', 'resources.documentation');
-
-  if (is_string($docs)) {
-      $docs = json_decode($docs, true);
-  }
 @endphp
 
 @if(!empty($docs) && is_array($docs))
