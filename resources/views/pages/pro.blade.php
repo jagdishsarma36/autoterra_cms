@@ -83,7 +83,7 @@
             </div>
         </div>
         <div>
-            <div class="ph" style="height:460px;">
+            <div class="ph pro-img">
                 @if(!empty($section['image_url']))
                 @if(Str::contains($section['image_url'], '<iframe'))
                     {!! $section['image_url'] !!}
