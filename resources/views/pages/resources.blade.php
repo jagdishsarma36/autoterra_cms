@@ -19,7 +19,7 @@
 </section>
 
 @php
-  $buttons = pageContentJson('resources', 'resources.buttons'), true;
+  $buttons = pageContentJson('resources', 'resources.buttons');
 @endphp
 
 <section class="res-tabs" id="resTabs">
