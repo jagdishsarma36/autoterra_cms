@@ -44,54 +44,22 @@
 
 {{-- DOCS SECTION --}}
 <section class="res-section section-white" id="docs">
-  
-  <div class="sec-eye">
-    {{ pageContent('resources', 'resources.page_seceye') }}
-  </div>
-
-  <h2 class="sec-h2">
-    {{ pageContent('resources', 'resources.sec-h2') }}
-  </h2>
-
-  <p class="sec-sub">
-    {{ pageContent('resources', 'resources.sec-sub') }}
-  </p>
-
-  @php
-    $docs = pageContentJson('resources', 'resources.res_doc_grid');
-  @endphp
-
+@foreach(pageContentJson('resources', 'resources.documentation') as $res_doc)
+  <div class="sec-eye">{{  $res_doc['sec_eye']  }}</div>
+  <h2 class="sec-h2">{{ $res_doc['head'] }}</h2>
+  <p class="sec-sub">{{  $res_doc['description']  }}</p>
   <div class="res-doc-grid">
-
-    @if(!empty($docs) && is_array($docs))
-
-      @foreach($docs as $doc)
-
-        <div class="res-doc-card">
-
-          <div class="res-doc-icon cyan">
-            <i class="ti {{ $doc['icon'] ?? '' }}"></i>
-          </div>
-
-          <div class="res-doc-content">
-            <h4>{{ $doc['title'] ?? '' }}</h4>
-            <p>{{ $doc['description'] ?? '' }}</p>
-
-            <a href="{{ $doc['link_url'] ?? '#' }}" class="res-link">
-              {{ $doc['link_text'] ?? 'Open guide' }}
-              <i class="ti ti-arrow-right"></i>
-            </a>
-          </div>
-
-        </div>
-
-      @endforeach
-
-    @endif
-
+    @foreach($res_doc['list'] as $card)
+    <a href="#" class="res-doc-card">
+      <div class="res-doc-icon cyan"><i class="ti {{ $card['icon'] }}"></i></div>
+      <h4>{{ $card['title'] }}</h4>
+      <p>{{ $card['description'] }}</p>
+      <span class="res-link">{{ $card['link_text'] }} <i class="ti ti-arrow-right"></i></span>
+    </a>
+    @endforeach
   </div>
-
 </section>
+@endforeach
 
 @include('partials.footer')
 @endsection
