@@ -1817,6 +1817,44 @@ p.pro-desc {
 .pro-ladder-step.current .pro-step-desc {
     color: rgba(210, 230, 248, 0.40);
 }
+.pro-specs {
+    background: var(--off);
+    padding: 68px 60px;
+}
+.pro-specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 32px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.pro-specs-table thead th {
+    background: var(--navy);
+    color: #fff;
+    padding: 13px 20px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+.pro-specs-table tbody tr:nth-child(odd) td {
+    background: #fff;
+}
+.pro-specs-table tbody td {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+.spec-cat {
+    font-weight: 700;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
 /****resources page ***/
 .res-hero {
     background: var(--navy);
