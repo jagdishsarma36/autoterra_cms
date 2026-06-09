@@ -1723,6 +1723,29 @@ padding: 5px 12px;
     line-height: 1.75;
     max-width: 560px;
 }
+.res-tab {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 18px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: color 0.15s, border-color 0.15s;
+}
+.res-tab.active {
+    color: var(--cyan);
+    border-bottom-color: var(--cyan);
+}
+.res-tab i {
+    font-size: 17px;
+}
+
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
