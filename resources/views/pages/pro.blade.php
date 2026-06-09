@@ -145,10 +145,9 @@
   <div class="sec-eye">{{ $pro_content['pro_eyebrow'] }}</div>
   <h2 class="sec-h2">{{ $pro_content['pro_heading'] }}</h2>
   <p class="sec-sub">{{ $pro_content['pro_text'] }}</p>
-
   <div class="pro-ladder">
     @foreach($pro_content['ladder_steps'] as $step)
-    <div class="pro-ladder-step above">
+    <div class="{{ $step['class'] ?? 'pro-ladder-step above' }}"></div>
       <div class="pro-step-label">{{ $step['label'] }}</div>
       <div class="pro-step-name">{{ $step['name'] }}</div>
       <div class="pro-step-desc">{{ $step['description'] }}</div>
@@ -157,12 +156,7 @@
   </div>
   <div class="pro-upgrade-note">
     <i class="ti ti-info-circle"></i>
-    <span>
-        {{ $pro_content['upgrade_note'] }}
-        <a href="{{ $pro_content['upgrade_link'] }}" style="color:var(--blue);font-weight:700;">
-            AutoTerra Pro Spatial
-        </a>
-    </span>
+    <span>{!! $pro_content['upgrade_note'] !!}</span>
   </div>
 </section>
 @endforeach
