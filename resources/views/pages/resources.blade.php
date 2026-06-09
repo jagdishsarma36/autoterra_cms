@@ -38,10 +38,10 @@
   <div class="sec-eye">
     {{ pageContent('resources', 'resources.page_seceye') }}
   </div>
-  <h2>
+  <h2 class="sec-h2">
     {{ pageContent('resources', 'resources.sec-h2') }}
   </h2>
-  <p>
+  <p class="sec-sub">
     {{ pageContent('resources', 'resources.sec-sub') }}
   </p>
 </section>
