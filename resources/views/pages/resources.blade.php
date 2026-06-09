@@ -44,7 +44,7 @@
 
 {{-- DOCS SECTION --}}
 @php
-  $docs = pageContentJson('resources', 'resources.documentation');
+  $docs = pageContentJson('resources', 'reources.documentation');
   if (!is_array($docs)) {
       $docs = [];
   }
