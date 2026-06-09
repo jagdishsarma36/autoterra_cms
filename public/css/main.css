@@ -1615,7 +1615,6 @@ span.pro-badge {
 .pro-h3 {
     font-size: 22px;
     font-weight: 800;
-    color: var(--body);
     letter-spacing: -0.3px;
     line-height: 1.2;
     margin-bottom: 14px;
@@ -1715,6 +1714,39 @@ p.pro-desc {
 .pro-cap-card:hover {
     background: rgba(0, 168, 248, 0.12);
     border-color: rgba(0, 168, 248, 0.25);
+}
+.pro-who {
+    background: var(--off);
+    padding: 68px 60px;
+}
+.pro-who-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 36px;
+}
+.pro-who-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+}
+.pro-who-card i {
+    font-size: 28px;
+    color: var(--blue);
+    margin-bottom: 12px;
+    display: block;
+}
+.pro-who-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--body);
+    margin-bottom: 8px;
+}
+.pro-who-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
 }
 /****resources page ***/
 .res-hero {
@@ -1827,6 +1859,7 @@ padding: 5px 12px;
 .sec-h2 {
     font-size: 28px;
     font-weight: 800;
+    color: var(--body);
     letter-spacing: -0.5px;
     margin-bottom: 12px;
     line-height: 1.2;
