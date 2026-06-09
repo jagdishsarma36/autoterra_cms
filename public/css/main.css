@@ -2086,6 +2086,13 @@ padding: 5px 12px;
 i.ti-terminal-2.res-highlight {
     color: #c87a20;
 }
+.cus_ti-terminal-2_res-highlight .res-doc-icon.cyan {
+    background: var(--amber-lt);
+    color: #9A5F10;
+}
+.cus_ti-terminal-2_res-highlight .res-link {
+color:#c87a20;
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
