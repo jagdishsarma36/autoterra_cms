@@ -138,6 +138,7 @@
     @endforeach
   </div>
 </section>
+@endforeach
 
 <section class="section section-white">
   <div class="sec-eye">{{ pageContent('pro', 'who.eyebrow') }}</div>
