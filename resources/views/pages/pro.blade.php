@@ -54,8 +54,8 @@
         <div class="pro-feat-item">
           <i class="ti ti-circle-check-filled"></i>
           <div>
-            <div class="lbl">{{ $sec_content['heading'] }}</div>
-            <div class="sub">{{ $sec_content['text'] }}</div>
+            <div class="lbl">{{ $sec_content['heading'] ?? '' }}</div>
+            <div class="sub">{{ $sec_content['text'] ?? '' }}</div>
           </div>
         </div>
                
