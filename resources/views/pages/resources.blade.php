@@ -59,10 +59,6 @@
 
   @php
     $docs = pageContentJson('resources', 'resources.res_doc_grid');
-
-    if (is_string($docs)) {
-        $docs = json_decode($docs, true);
-    }
   @endphp
 
   <div class="res-doc-grid">
