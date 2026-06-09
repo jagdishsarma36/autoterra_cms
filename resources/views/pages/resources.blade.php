@@ -8,11 +8,9 @@
   <div class="sec-eye">
     {{ pageContent('resources', 'resources.hero_eyebrow') }}
   </div>
-
   <h1>
     {!! pageContent('resources', 'resources.hero_heading') !!}
   </h1>
-
   <p>
     {{ pageContent('resources', 'resources.hero_description') }}
   </p>
@@ -35,5 +33,18 @@
     @endforeach
   @endif
 </section>
+
+<section class="res-section section-white" id="docs">
+  <div class="sec-eye">
+    {{ pageContent('resources', 'resources.page_seceye') }}
+  </div>
+  <h2>
+    {{ pageContent('resources', 'resources.sec-h2') }}
+  </h2>
+  <p>
+    {!! pageContent('resources', 'resources.sec-subs') !!}
+  </p>
+</section>
+
 @include('partials.footer')
 @endsection
