@@ -85,7 +85,16 @@
         <div>
             <div class="ph" style="height:460px;">
                 @if(!empty($section['image_url']))
+                @if(Str::contains($section['image_url'], '<iframe'))
+                    {!! $section['image_url'] !!}
+                @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $section['image_url']))
+                    <video autoplay muted loop playsinline controls>
+                        <source src="{{ $section['image_url'] }}">
+                        Your browser does not support the video tag.
+                    </video>
+                @else
                     <img src="{{ $section['image_url'] }}" alt="section image">
+                @endif
                 @endif
             </div>
         </div>
