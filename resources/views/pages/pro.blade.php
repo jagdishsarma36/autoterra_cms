@@ -41,41 +41,35 @@
   </div>
 </div>
 
+<!-- Sections content all-->
 @php
     $contents = pageContentJson('pro', 'section1.content');
     $sections = [];
     $current = null;
-
     foreach ($contents as $item) {
         if (isset($item['sec_heading'])) {
             if ($current) {
                 $sections[] = $current;
             }
-
             $current = $item;
             $current['features'] = [];
         } else {
             $current['features'][] = $item;
         }
     }
-
     if ($current) {
         $sections[] = $current;
     }
 @endphp
-
 @foreach($sections as $section)
 <section class="pro-section {{ $loop->odd ? 'section-white' : 'section-light' }}">
     <div class="pro-eyebrow">{{ $section['sec_eyebrow'] ?? '' }}</div>
-
     <div class="pro-grid">
         <div>
             <h3 class="pro-h3">{{ $section['sec_heading'] ?? '' }}</h3>
-
             <p class="pro-desc">
                 {{ $section['sec_text'] ?? '' }}
             </p>
-
             <div class="pro-feat-list">
                 @foreach($section['features'] as $feature)
                     <div class="pro-feat-item">
@@ -88,7 +82,6 @@
                 @endforeach
             </div>
         </div>
-
         <div>
             <div class="ph" style="height:460px;">
                 @if(!empty($section['image_url']))
@@ -99,6 +92,34 @@
     </div>
 </section>
 @endforeach
+<!-- Sections content all end-->
+
+<!-- capabilities -->
+ <section class="pro-caps">
+  <div style="text-align:center;margin-bottom:0;">
+  @foreach(pageContentJson('pro', 'capabilities.contents') as $cap)
+    <div class="sec-eye" style="text-align:center;">{{ $cap['cap_eyebrow'] }}</div>
+    <h2 class="sec-h2 sec-h2-light" style="text-align:center;">{{ $cap['cap_heading'] }}</h2>
+    <p class="sec-sub sec-sub-light" style="text-align:center;max-width:520px;margin:0 auto;">{{ $cap['cap_text'] }}</p>
+  </div>
+  @foreach($cap['features'] as $feature)
+  <div class="pro-caps-grid">
+    <div class="pro-cap-card">
+      <div class="pro-cap-icon"><i class="ti {{ $feature['icon_class'] }}"></i></div>
+      <h4>{{ $feature['heading'] }}</h4>
+      <p>{{ $feature['text'] }}</p>
+      <div class="pro-cap-features">
+        @foreach($feature['items'] as $item)
+            <span class="pro-cap-feat">
+                <i class="ti ti-check"></i> {{ $item }}
+            </span>
+        @endforeach
+      </div>
+    </div>
+    @endforeach
+    @endforeach
+  </div>
+</section>
 
 <section class="section section-white">
   <div class="sec-eye">{{ pageContent('pro', 'who.eyebrow') }}</div>
