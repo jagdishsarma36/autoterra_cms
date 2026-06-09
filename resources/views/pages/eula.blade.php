@@ -30,13 +30,21 @@
     <div class="legal-warn">
       <p>{!! pageContent('eula', 'eula.warning_text') !!}</p>
     </div>
-    @foreach(pageContentJson('eula', 'eula.right_content') ?? [] as $eulaRightContent)
-    <h2 id="{!! $eulaRightContent['id'] ?? '' !!}">
-        {{ $eulaRightContent['title'] ?? '' }}
+  </div>
+<<<<<<< Updated upstream
+=======
+  @foreach(pageContentJson('eula', 'eula.right_content') as $eulaRightContent)
+    <h2 id="terms_{{$loop->index}}">
+        {{$loop->iteration}}.{{$eulaRightContent['title']}}
     </h2>
-    @foreach($eulaRightContent['content'] ?? [] as $paragraph)
-        <p>{!! $paragraph !!}</p>
-    @endforeach
+    <!-- <h2 id="{{ $eulaRightContent['id'] }}">{{ $eulaRightContent['title'] }}</h2> -->
+    {{-- Content Paragraphs --}}
+    @if(!empty($eulaRightContent['content']))
+        @foreach($eulaRightContent['content'] as $paragraph)
+            <p>{{ $paragraph }}</p>
+        @endforeach
+    @endif
+    {{-- List Items --}}
     @if(!empty($eulaRightContent['list']))
         <ul>
             @foreach($eulaRightContent['list'] as $item)
@@ -44,12 +52,17 @@
             @endforeach
         </ul>
     @endif
+    {{-- Note --}}
     @if(!empty($eulaRightContent['note']))
-        <p>{{ $eulaRightContent['note'] }}</p>
+        <p>{{ $eulaRightContent ['note'] }}</p>
     @endif
-    @foreach($eulaRightContent['additional'] ?? [] as $additional)
-        <p>{{ $additional }}</p>
-    @endforeach
+    {{-- Additional Content --}}
+    @if(!empty($eulaRightContent['additional']))
+        @foreach($eulaRightContent['additional'] as $additional)
+            <p>{{ $additional }}</p>
+        @endforeach
+    @endif
+    {{-- Contact Section --}}
     @if(!empty($eulaRightContent['contact']))
         <ul>
             @if(!empty($eulaRightContent['contact']['email']))
@@ -68,11 +81,11 @@
             @endif
         </ul>
     @endif
-    @unless($loop->last)
+    @if(!$loop->last)
         <hr class="legal-hr">
-    @endunless
-    @endforeach
-    </div>
+    @endif
+  @endforeach
+>>>>>>> Stashed changes
 </div>
 
 @include('partials.footer')
