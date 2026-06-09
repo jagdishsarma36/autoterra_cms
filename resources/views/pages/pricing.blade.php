@@ -2,15 +2,20 @@
 @section('title', 'Pricing — AutoTerra')
 @section('body')
 @include('partials.nav')
-<section style="background:var(--navy);padding:64px 60px;text-align:center;border-bottom:1px solid rgba(0,168,248,0.10);">
-  <div class="sec-eye" style="text-align:center;">{{ pageContent('pricing', 'hero.eyebrow') }}</div>
-  <h1 style="font-size:36px;font-weight:800;color:#fff;letter-spacing:-0.7px;line-height:1.2;margin-bottom:14px;">{!! pageContent('pricing', 'hero.heading') !!}</h1>
-  <p style="font-size:15px;color:rgba(210,230,248,0.50);line-height:1.75;max-width:540px;margin:0 auto;">{{ pageContent('pricing', 'hero.description') }}</p>
-  <div style="background:rgba(0,168,248,0.08);border:1px solid rgba(0,168,248,0.20);border-radius:8px;padding:12px 20px;display:inline-flex;align-items:center;gap:10px;font-size:13px;color:rgba(210,230,248,0.65);max-width:600px;margin:24px auto 0;">
-    <i class="ti ti-world" style="font-size:18px;color:var(--cyan);"></i>
-    <span>{{ pageContent('pricing', 'hero.region_note') }}</span>
+
+<!-- Pricing hero Section -->
+@foreach(pageContentJson('pricing', 'hero.sec_heading_text') as $hero)
+<section class="pr-hero">
+  <div class="sec-eye">{{ $hero['eyebrow'] }}</div>
+  <h1>{!! $hero['heading'] !!}</h1>
+  <p>{!! $hero['description'] !!}</p>
+  <div class="pr-region-note">
+    <i class="ti ti-world"></i>
+    <span>{!! $hero['region_note'] !!}</span>
   </div>
 </section>
+@endforeach
+
 <section style="background:var(--off);padding:56px 60px;">
   <div class="sec-eye">Questions</div>
   <h2 class="sec-h2" style="margin-bottom:24px;">Common pricing questions</h2>
