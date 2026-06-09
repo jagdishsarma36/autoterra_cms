@@ -43,23 +43,32 @@
 </section>
 
 {{-- DOCS SECTION --}}
-@foreach((array) pageContentJson('resources', 'resources.documentation') as $res_doc)
+@php
+  $docs = pageContentJson('resources', 'resources.documentation');
+  if (!is_array($docs)) {
+      $docs = [];
+  }
+@endphp
+@foreach($docs as $res_doc)
 <section class="res-section section-white" id="docs">
   <div class="sec-eye">{{ $res_doc['sec_eye'] ?? '' }}</div>
   <h2 class="sec-h2">{{ $res_doc['head'] ?? '' }}</h2>
   <p class="sec-sub">{{ $res_doc['description'] ?? '' }}</p>
-
   <div class="res-doc-grid">
-    @foreach(($res_doc['list'] ?? []) as $card)
+    @php
+      $cards = $res_doc['list'] ?? [];
+      if (!is_array($cards)) {
+          $cards = [];
+      }
+    @endphp
+    @foreach($cards as $card)
       <a href="{{ $card['link_url'] ?? '#' }}" class="res-doc-card">
-        <div class="res-doc-icon cyan">
-          <i class="ti {{ $card['icon'] ?? '' }}"></i>
-        </div>
+        <div class="res-doc-icon cyan"><i class="ti {{ $card['icon'] ?? '' }}"></i></div>
         <h4>{{ $card['title'] ?? '' }}</h4>
         <p>{{ $card['list_description'] ?? '' }}</p>
         <span class="res-link">
-          {{ $card['link_text'] ?? '' }}
-          <i class="ti ti-arrow-right"></i>
+          {{ $card['link_text'] ?? 'Open guide' }}
+          <i class="ti ti-arrow-right" style="font-size:12px;"></i>
         </span>
       </a>
     @endforeach
