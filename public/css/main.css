@@ -1815,6 +1815,24 @@ padding: 5px 12px;
 .res-tab i {
     font-size: 17px;
 }
+.res-section {
+    padding: 56px 60px;
+    border-bottom: 1px solid var(--border);
+}
+.sec-h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--body);
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+.sec-sub {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 36px;
+}
 
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
