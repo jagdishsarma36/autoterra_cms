@@ -22,16 +22,20 @@
 {{-- TABS --}}
 @php
   $buttons = pageContentJson('resources', 'resources.buttons');
+
+  if (is_string($buttons)) {
+      $buttons = json_decode($buttons, true);
+  }
 @endphp
 
 <section class="res-tabs" id="resTabs">
-  @if(!empty($buttons))
+  @if(!empty($buttons) && is_array($buttons))
     @foreach($buttons as $index => $btn)
       <a 
-        href="#{{ trim($btn['link_url']) }}"
+        href="#{{ trim($btn['link_url'] ?? '') }}"
         class="res-tab {{ $index === 0 ? 'active' : '' }}"
       >
-        <i class="ti {{ $btn['icon'] }}"></i>
+        <i class="ti {{ $btn['icon'] ?? '' }}"></i>
         {{ trim($btn['link_text'] ?? $btn['tsxt'] ?? '') }}
       </a>
     @endforeach
@@ -40,6 +44,7 @@
 
 {{-- DOCS SECTION --}}
 <section class="res-section section-white" id="docs">
+  
   <div class="sec-eye">
     {{ pageContent('resources', 'resources.page_seceye') }}
   </div>
@@ -54,28 +59,41 @@
 
   @php
     $docs = pageContentJson('resources', 'resources.res_doc_grid');
+
+    if (is_string($docs)) {
+        $docs = json_decode($docs, true);
+    }
   @endphp
 
   <div class="res-doc-grid">
-    @if(!empty($docs))
+
+    @if(!empty($docs) && is_array($docs))
+
       @foreach($docs as $doc)
+
         <div class="res-doc-card">
 
-          <i class="ti {{ $doc['icon'] }}"></i>
+          <div class="res-doc-icon cyan">
+            <i class="ti {{ $doc['icon'] ?? '' }}"></i>
+          </div>
 
           <div class="res-doc-content">
-            <h3>{{ trim($doc['title']) }}</h3>
-            <p>{{ trim($doc['description']) }}</p>
+            <h4>{{ $doc['title'] ?? '' }}</h4>
+            <p>{{ $doc['description'] ?? '' }}</p>
 
-            <a href="{{ trim($doc['link_url']) }}" class="res-doc-link">
-              {{ trim($doc['link_text']) }}
+            <a href="{{ $doc['link_url'] ?? '#' }}" class="res-link">
+              {{ $doc['link_text'] ?? 'Open guide' }}
             </a>
           </div>
 
         </div>
+
       @endforeach
+
     @endif
+
   </div>
+
 </section>
 
 @include('partials.footer')
