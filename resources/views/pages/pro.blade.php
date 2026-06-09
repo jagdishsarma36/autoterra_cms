@@ -41,10 +41,31 @@
   </div>
 </div>
 
-<section class="section section-light">
-  <div class="sec-eye">{{ pageContent('pro', 'section1.eyebrow') }}</div>
-  <h2 class="sec-h2">{{ pageContent('pro', 'section1.heading') }}</h2>
-  <p class="sec-sub">{{ pageContent('pro', 'section1.description') }}</p>
+<!-- section1 content -->
+<section class="pro-section section-white">
+  <div class="pro-eyebrow">{{ pageContent('pro', 'section1.eyebrow') }}</div>
+  <div class="pro-grid">
+    <div>
+      <h3 class="pro-h3">{{ pageContent('pro', 'section1.heading') }}</h3>
+      <p class="pro-desc">{{ pageContent('pro', 'section1.description') }}</p>
+      <div class="pro-feat-list">
+      @foreach(pageContentJson('pro', 'section1.content') as $sec_content)
+        <div class="pro-feat-item">
+          <i class="ti ti-circle-check-filled"></i>
+          <div>
+            <div class="lbl">{{ $sec_content['heading'] }}</div>
+            <div class="sub">{{ $sec_content['text'] }}</div>
+          </div>
+        </div>
+      @endforeach          
+      </div>
+    </div>
+    <div>
+      <div class="ph" style="height:460px;">
+        <img src="{{ pageContent('pro', 'section1.image') }}" alt="sec1_img" ">
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="section section-white">
