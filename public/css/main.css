@@ -1748,6 +1748,75 @@ p.pro-desc {
     color: var(--muted);
     line-height: 1.65;
 }
+.pro-position {
+    padding: 68px 60px;
+}
+.pro-ladder {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-top: 36px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+.pro-ladder-step.above {
+    background: var(--off);
+}
+.pro-step-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+.pro-ladder-step.above .pro-step-name {
+    color: var(--muted);
+}
+.pro-step-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+.pro-upgrade-note {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: var(--cyan-lt);
+    border: 1px solid rgba(0, 168, 248, 0.25);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--blue);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+.pro-upgrade-note i {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+.pro-ladder-step {
+    flex: 1;
+    padding: 20px 18px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+    background: #fff;
+    transition: background 0.15s;
+}
+.pro-ladder-step.current {
+    background: var(--navy);
+    box-shadow: inset 0 0 0 2px var(--blue);
+}
+.pro-ladder-step.current .pro-step-label {
+    color: rgba(210, 230, 248, 0.45);
+}
+.pro-ladder-step.current .pro-step-name {
+    color: #fff;
+}
+.pro-ladder-step.current .pro-step-desc {
+    color: rgba(210, 230, 248, 0.40);
+}
 /****resources page ***/
 .res-hero {
     background: var(--navy);
