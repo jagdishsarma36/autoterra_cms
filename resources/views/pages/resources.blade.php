@@ -62,7 +62,7 @@
       }
     @endphp
     @foreach($cards as $card)
-      <a href="{{ $card['link_url'] ?? '#' }}" class="res-doc-card cus_{{ str_replace('-', '_', $card['icon'] ?? 'default') }}">
+      <a href="{{ $card['link_url'] ?? '#' }}" class="res-doc-card cus_{{ str_replace(' ', '_', $card['icon'] ?? 'default') }}">
         <div class="res-doc-icon cyan"><i class="ti {{ $card['icon'] ?? '' }}"></i></div>
         <h4>{{ $card['title'] ?? '' }}</h4>
         <p>{{ $card['list_description'] ?? '' }}</p>
