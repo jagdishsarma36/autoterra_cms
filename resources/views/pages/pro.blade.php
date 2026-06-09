@@ -161,6 +161,31 @@
 </section>
 @endforeach
 
+<!-- specs pro -->
+@foreach(pageContentJson('pro', 'prospecs.content') as $spec)
+<section class="pro-specs">
+  <div class="sec-eye">{{ $spec['specs_eyebrow'] ?? '' }}</div>
+  <h2 class="sec-h2">{{ $spec['specs_heading'] ?? '' }}</h2>
+  <p class="sec-sub">{!! $spec['specs_text'] ?? '' !!}</p>
+  <table class="pro-specs-table">
+    <thead>
+      <tr>
+          <th style="width:220px;">Capability</th>
+          <th>Detail</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($spec['specifications'] ?? [] as $item)
+        <tr>
+            <td class="spec-cat">{{ $item['capability'] ?? '' }}</td>
+            <td class="spec-val">{{ $item['detail'] ?? '' }}</td>
+        </tr>
+      @endforeach
+    </tbody>
+  </table>
+</section>
+@endforeach
+
 <section class="cta-band"><div class="cta-band-inner"><h2>{{ pageContent('pro', 'cta.heading') }}</h2><p>{{ pageContent('pro', 'cta.description') }}</p><div class="cta-row"><a href="/buy" class="btn-cyan">{{ pageContent('pro', 'cta.button_primary_text') }}</a><a href="/contact" class="btn-ghost">{{ pageContent('pro', 'cta.button_secondary_text') }}</a></div></div></section>
 @include('partials.footer')
 @endsection
