@@ -43,29 +43,41 @@
 </section>
 
 {{-- DOCS SECTION --}}
-@foreach(pageContentJson('resources', 'resources.documentation') as $res_doc)
-<section class="res-section section-white" id="docs">
-  <div class="sec-eye">{{ $res_doc['sec_eye'] }}</div>
-  <h2 class="sec-h2">{{ $res_doc['head'] }}</h2>
-  <p class="sec-sub">{{ $res_doc['description'] }}</p>
+@php
+  $docs = pageContentJson('resources', 'resources.documentation');
 
-  <div class="res-doc-grid">
-    @foreach($res_doc['list'] as $card)
-      <a href="{{ $card['link_url'] }}" class="res-doc-card">
-        <div class="res-doc-icon cyan">
-          <i class="ti {{ $card['icon'] }}"></i>
-        </div>
-        <h4>{{ $card['title'] }}</h4>
-        <p>{{ $card['list_description'] }}</p>
-        <span class="res-link">
-          {{ $card['link_text'] }}
-          <i class="ti ti-arrow-right"></i>
-        </span>
-      </a>
-    @endforeach
-  </div>
-</section>
-@endforeach
+  if (is_string($docs)) {
+      $docs = json_decode($docs, true);
+  }
+@endphp
+
+@if(!empty($docs) && is_array($docs))
+  @foreach($docs as $res_doc)
+    <section class="res-section section-white" id="docs">
+      <div class="sec-eye">{{ $res_doc['sec_eye'] ?? '' }}</div>
+      <h2 class="sec-h2">{{ $res_doc['head'] ?? '' }}</h2>
+      <p class="sec-sub">{{ $res_doc['description'] ?? '' }}</p>
+
+      <div class="res-doc-grid">
+        @if(!empty($res_doc['list']) && is_array($res_doc['list']))
+          @foreach($res_doc['list'] as $card)
+            <a href="{{ $card['link_url'] ?? '#' }}" class="res-doc-card">
+              <div class="res-doc-icon cyan">
+                <i class="ti {{ $card['icon'] ?? '' }}"></i>
+              </div>
+              <h4>{{ $card['title'] ?? '' }}</h4>
+              <p>{{ $card['list_description'] ?? '' }}</p>
+              <span class="res-link">
+                {{ $card['link_text'] ?? '' }}
+                <i class="ti ti-arrow-right"></i>
+              </span>
+            </a>
+          @endforeach
+        @endif
+      </div>
+    </section>
+  @endforeach
+@endif
 
 @include('partials.footer')
 @endsection
