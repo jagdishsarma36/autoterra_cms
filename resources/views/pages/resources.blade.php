@@ -50,7 +50,7 @@
   <p class="sec-sub">{{  $res_doc['description']  }}</p>
   <div class="res-doc-grid">
     @foreach($res_doc['list'] as $card)
-    <a href="#" class="res-doc-card">
+    <a href="{{ $card['link_url'] }}" class="res-doc-card">
       <div class="res-doc-icon cyan"><i class="ti {{ $card['icon'] }}"></i></div>
       <h4>{{ $card['title'] }}</h4>
       <p>{{ $card['description'] }}</p>
