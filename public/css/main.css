@@ -1594,6 +1594,9 @@ span.pro-badge {
 .pro-section {
     padding: 68px 60px;
 }
+.sec-h2-light {
+    color: #fff;
+}
 .pro-eyebrow {
     font-size: 10px;
     font-weight: 700;
@@ -1712,9 +1715,6 @@ p.pro-desc {
 .pro-cap-card:hover {
     background: rgba(0, 168, 248, 0.12);
     border-color: rgba(0, 168, 248, 0.25);
-}
-.sec-h2-light {
-    color: #fff;
 }
 /****resources page ***/
 .res-hero {
