@@ -121,6 +121,24 @@
   </div>
 </section>
 
+<!-- who is it for section -->
+@foreach(pageContentJson('pro', 'who.content') as $who)
+<section class="pro-who">
+  <div class="sec-eye">{{ $who['who_eyebrow'] }}</div>
+  <h2 class="sec-h2">{{ $who['who_heading'] }}</h2>
+  <p class="sec-sub">{{ $who['who_text'] }}</p>
+
+  <div class="pro-who-grid">
+     @foreach($who['who_cards'] as $card)
+    <div class="pro-who-card">
+      <i class="ti {{ $card['icon'] }}"></i>
+      <h4>{{ $card['heading'] }}</h4>
+      <p>{{ $card['text'] }}</p>
+    </div>
+    @endforeach
+  </div>
+</section>
+
 <section class="section section-white">
   <div class="sec-eye">{{ pageContent('pro', 'who.eyebrow') }}</div>
   <h2 class="sec-h2">{{ pageContent('pro', 'who.heading') }}</h2>
