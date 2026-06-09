@@ -25,15 +25,15 @@
 <section class="res-tabs" id="resTabs">
   @if(!empty($buttons))
     @foreach($buttons as $index => $btn)
-      <button 
+      <a 
+        href="{{ trim($btn['link_url']) }}"
         class="res-tab {{ $index === 0 ? 'active' : '' }}"
-        onclick="scrollToRes('{{ trim($btn['link_url']) }}', this)">
+        >
         <i class="ti {{ $btn['icon'] }}"></i>
-        {{ trim($btn['tsxt']) }}
-      </button>
+        {{ trim($btn['link_text']) }}
+      </a>
     @endforeach
   @endif
 </section>
-
 @include('partials.footer')
 @endsection
