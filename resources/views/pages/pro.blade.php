@@ -101,22 +101,22 @@
     <div class="sec-eye" style="text-align:center;">{{ $cap['cap_eyebrow'] }}</div>
     <h2 class="sec-h2 sec-h2-light" style="text-align:center;">{{ $cap['cap_heading'] }}</h2>
     <p class="sec-sub sec-sub-light" style="text-align:center;max-width:520px;margin:0 auto;">{{ $cap['cap_text'] }}</p>
-    @foreach($cap['features'] as $feature)
     <div class="pro-caps-grid">
-    <div class="pro-cap-card">
-      <div class="pro-cap-icon"><i class="ti {{ $feature['icon_class'] }}"></i></div>
-      <h4>{{ $feature['heading'] }}</h4>
-      <p>{{ $feature['text'] }}</p>
-      <div class="pro-cap-features">
-        @foreach($feature['items'] as $item)
+      @foreach($cap['features'] as $feature)
+      <div class="pro-cap-card">
+        <div class="pro-cap-icon"><i class="ti {{ $feature['icon_class'] }}"></i></div>
+        <h4>{{ $feature['heading'] }}</h4>
+        <p>{{ $feature['text'] }}</p>
+        <div class="pro-cap-features">
+          @foreach($feature['items'] as $item)
             <span class="pro-cap-feat">
-                <i class="ti ti-check"></i> {{ $item }}
+              <i class="ti ti-check"></i> {{ $item }}
             </span>
-        @endforeach
-            </div>
-          </div>
-        @endforeach
+          @endforeach
+        </div>
       </div>
+      @endforeach
+    </div>
     @endforeach
   </div>
 </section>
