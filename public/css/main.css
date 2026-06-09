@@ -1908,6 +1908,49 @@ border: 1px solid var(--border);
 border-radius: 6px;
 padding: 5px 12px;
 }
+/* pricing section */
+.pr-hero {
+    background: var(--navy);
+    padding: 64px 60px 56px;
+    border-bottom: 1px solid rgba(0, 168, 248, 0.10);
+    text-align: center;
+}
+.pr-hero h1 span {
+    color: var(--cyan);
+}
+.pr-hero h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.7px;
+    line-height: 1.2;
+    margin-bottom: 14px;
+}
+.pr-hero p {
+    font-size: 15px;
+    color: rgba(210, 230, 248, 0.50);
+    line-height: 1.75;
+    max-width: 540px;
+    margin: 0 auto;
+}
+.pr-region-note {
+    background: rgba(0, 168, 248, 0.08);
+    border: 1px solid rgba(0, 168, 248, 0.20);
+    border-radius: 8px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(210, 230, 248, 0.65);
+    max-width: 600px;
+    margin: 24px auto 0;
+}
+.pr-region-note i {
+    font-size: 18px;
+    color: var(--cyan);
+    flex-shrink: 0;
+}
 /****resources page ***/
 .res-hero {
     background: var(--navy);
