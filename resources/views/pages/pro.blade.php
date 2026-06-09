@@ -41,36 +41,64 @@
   </div>
 </div>
 
-@foreach(pageContentJson('pro', 'section1.content') as $sec_content)
-<!-- section1 content -->
-<section class="pro-section {{ $loop->odd ? 'section-white' : 'section-light' }} ">
-  <div class="pro-eyebrow">{{ $sec_content['sec_eyebrow'] ?? '' }}</div>
-  <div class="pro-grid">
-    <div>
-      <h3 class="pro-h3">{{ $sec_content['sec_heading'] ?? '' }}</h3>
-      <p class="pro-desc">{{ $sec_content['sec_text'] ?? '' }}</p>
-      <div class="pro-feat-list">
-      
-        <div class="pro-feat-item">
-          <i class="ti ti-circle-check-filled"></i>
-          <div>
-            <div class="lbl">{{ $sec_content['heading'] ?? '' }}</div>
-            <div class="sub">{{ $sec_content['text'] ?? '' }}</div>
-          </div>
+@php
+    $contents = pageContentJson('pro', 'section1.content');
+    $sections = [];
+    $current = null;
+
+    foreach ($contents as $item) {
+        if (isset($item['sec_heading'])) {
+            if ($current) {
+                $sections[] = $current;
+            }
+
+            $current = $item;
+            $current['features'] = [];
+        } else {
+            $current['features'][] = $item;
+        }
+    }
+
+    if ($current) {
+        $sections[] = $current;
+    }
+@endphp
+
+@foreach($sections as $section)
+<section class="pro-section {{ $loop->odd ? 'section-white' : 'section-light' }}">
+    <div class="pro-eyebrow">{{ $section['sec_eyebrow'] ?? '' }}</div>
+
+    <div class="pro-grid">
+        <div>
+            <h3 class="pro-h3">{{ $section['sec_heading'] ?? '' }}</h3>
+
+            <p class="pro-desc">
+                {{ $section['sec_text'] ?? '' }}
+            </p>
+
+            <div class="pro-feat-list">
+                @foreach($section['features'] as $feature)
+                    <div class="pro-feat-item">
+                        <i class="ti ti-circle-check-filled"></i>
+                        <div>
+                            <div class="lbl">{{ $feature['heading'] ?? '' }}</div>
+                            <div class="sub">{{ $feature['text'] ?? '' }}</div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
-               
-      </div>
+
+        <div>
+            <div class="ph" style="height:460px;">
+                @if(!empty($section['image_url']))
+                    <img src="{{ $section['image_url'] }}" alt="section image">
+                @endif
+            </div>
+        </div>
     </div>
-    <div>
-      <div class="ph" style="height:460px;">
-        @if(!empty($sec_content['image_url']))
-        <img src="{{ $sec_content['image_url'] }}" alt="sec1_img">
-        @endif
-      </div>
-    </div>
-  </div>
 </section>
-@endforeach 
+@endforeach
 
 <section class="section section-white">
   <div class="sec-eye">{{ pageContent('pro', 'who.eyebrow') }}</div>
