@@ -42,7 +42,7 @@
     {{ pageContent('resources', 'resources.sec-h2') }}
   </h2>
   <p>
-    {!! pageContent('resources', 'resources.sec-subs') !!}
+    {!! pageContent('resources', 'resources.sec-sub') !!}
   </p>
 </section>
 
