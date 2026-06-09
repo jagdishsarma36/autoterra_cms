@@ -101,7 +101,6 @@
     <div class="sec-eye" style="text-align:center;">{{ $cap['cap_eyebrow'] }}</div>
     <h2 class="sec-h2 sec-h2-light" style="text-align:center;">{{ $cap['cap_heading'] }}</h2>
     <p class="sec-sub sec-sub-light" style="text-align:center;max-width:520px;margin:0 auto;">{{ $cap['cap_text'] }}</p>
-    </div>
     @foreach($cap['features'] as $feature)
     <div class="pro-caps-grid">
     <div class="pro-cap-card">
