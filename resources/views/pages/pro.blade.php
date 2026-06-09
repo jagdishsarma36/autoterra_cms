@@ -147,7 +147,7 @@
   <p class="sec-sub">{{ $pro_content['pro_text'] }}</p>
   <div class="pro-ladder">
     @foreach($pro_content['ladder_steps'] as $step)
-    <div class="{{ $step['class'] ?? 'pro-ladder-step above' }}"></div>
+    <div class="{{ $step['class'] ?? 'pro-ladder-step above' }}">
       <div class="pro-step-label">{{ $step['label'] }}</div>
       <div class="pro-step-name">{{ $step['name'] }}</div>
       <div class="pro-step-desc">{{ $step['description'] }}</div>
