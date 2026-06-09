@@ -79,6 +79,7 @@
 
             <a href="{{ $doc['link_url'] ?? '#' }}" class="res-link">
               {{ $doc['link_text'] ?? 'Open guide' }}
+              <i class="ti ti-arrow-right"></i>
             </a>
           </div>
 
