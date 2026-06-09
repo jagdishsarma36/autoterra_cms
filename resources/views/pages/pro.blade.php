@@ -44,11 +44,11 @@
 @foreach(pageContentJson('pro', 'section1.content') as $sec_content)
 <!-- section1 content -->
 <section class="pro-section {{ $loop->odd ? 'section-white' : 'section-light' }} ">
-  <div class="pro-eyebrow">{{ $sec_content['sec_eyebrow'] }}</div>
+  <div class="pro-eyebrow">{{ $sec_content['sec_eyebrow'] ?? '' }}</div>
   <div class="pro-grid">
     <div>
-      <h3 class="pro-h3">{{ $sec_content['sec_heading'] }}</h3>
-      <p class="pro-desc">{{ $sec_content['sec_text'] }}</p>
+      <h3 class="pro-h3">{{ $sec_content['sec_heading'] ?? '' }}</h3>
+      <p class="pro-desc">{{ $sec_content['sec_text'] ?? '' }}</p>
       <div class="pro-feat-list">
       
         <div class="pro-feat-item">
@@ -63,7 +63,9 @@
     </div>
     <div>
       <div class="ph" style="height:460px;">
-        <img src="{{ $sec_content['image_url'] }}" alt="sec1_img" ">
+        @if(!empty($sec_content['image_url']))
+        <img src="{{ $sec_content['image_url'] }}" alt="sec1_img">
+        @endif
       </div>
     </div>
   </div>
