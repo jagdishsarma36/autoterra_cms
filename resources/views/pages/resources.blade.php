@@ -331,23 +331,23 @@
 @php
   $cta = pageContentJson('resources', 'resources.cta_band');
 
-  if (!is_array($cta)) {
-      $cta = [];
+  if (is_string($cta)) {
+      $cta = json_decode($cta, true);
+  }
+
+  if (is_array($cta) && isset($cta[0])) {
+      $cta = $cta[0];
   }
 @endphp
 
 <section class="cta-band">
   <div class="cta-band-inner">
 
-    <h2>
-      {{ $cta['heading'] ?? '' }}
-    </h2>
+    <h2>{{ $cta['heading'] ?? '' }}</h2>
 
-    <p>
-      {{ $cta['description'] ?? '' }}
-    </p>
+    <p>{{ $cta['description'] ?? '' }}</p>
 
-    @if(!empty($cta['buttons']) && is_array($cta['buttons']))
+    @if(!empty($cta['buttons']))
       <div class="cta-row">
         @foreach($cta['buttons'] as $btn)
           <a href="{{ $btn['link'] ?? '#' }}" class="{{ $btn['class'] ?? '' }}">
