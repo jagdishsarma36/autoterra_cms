@@ -144,7 +144,7 @@ $pricing = pageContentJson('pricing', 'pricing.cards');
             @endforeach
         </div>
         @if(!empty($track['footer_note']))
-        <p>
+        <p class="pr-track-footer-note">
             {{ $track['footer_note'] }}
             @if(!empty($track['footer_link']))
             <a href="{{ $track['footer_link']['url'] }}"
