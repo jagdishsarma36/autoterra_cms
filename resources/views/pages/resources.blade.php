@@ -75,6 +75,64 @@
   </div>
 </section>
 @endforeach
+@php
+  $videosSection = pageContentJson('resources', 'resources.videos');
+
+  if (!is_array($videosSection)) {
+      $videosSection = [];
+  }
+
+  $videos = $videosSection['videos'] ?? [];
+@endphp
+
+<section class="res-section section-light" id="videos">
+  <div class="sec-eye">
+    {{ $videosSection['sec_eye'] ?? '' }}
+  </div>
+  <h2 class="sec-h2">
+    {{ $videosSection['head'] ?? '' }}
+  </h2>
+  <p class="sec-sub">
+    {{ $videosSection['description'] ?? '' }}
+  </p>
+  <div class="res-video-grid">
+    @foreach($videos as $video)
+      <a href="{{ $video['link_url'] ?? '#' }}" class="res-video-card">
+        <div class="res-video-thumb">
+          {{-- Thumbnail --}}
+          @if(!empty($video['thumbnail']))
+            <img src="{{ asset('images/' . $video['thumbnail']) }}" alt="{{ $video['title'] ?? '' }}">
+          @else
+            <div class="ph" style="height:160px;border-radius:0;border:none;">
+              <i class="ti ti-player-play" style="font-size:28px;"></i>
+            </div>
+          @endif
+          <div class="res-play-btn">
+            <i class="ti ti-player-play-filled"></i>
+          </div>
+        </div>
+        <div class="res-video-body">
+          <div class="tag">
+            {{ $video['tag'] ?? '' }}
+          </div>
+          <h4>
+            {{ $video['title'] ?? '' }}
+          </h4>
+          <div class="meta">
+            <i class="ti ti-clock"></i>
+            {{ $video['duration'] ?? '' }} · {{ $video['quality'] ?? '' }} · {{ $video['year'] ?? '' }}
+          </div>
+        </div>
+      </a>
+    @endforeach
+  </div>
+  <div style="text-align:center;margin-top:28px;">
+    <a href="{{ $videosSection['youtube']['link_url'] ?? '#' }}" class="btn-outline">
+      <i class="ti ti-brand-youtube" style="font-size:15px;vertical-align:-2px;"></i>
+      {{ $videosSection['youtube']['text'] ?? 'View all tutorials' }}
+    </a>
+  </div>
+</section>
 
 @include('partials.footer')
 @endsection
