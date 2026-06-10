@@ -226,3 +226,21 @@ document.addEventListener("DOMContentLoaded", function () {
     */
 
 });
+function toggleRN(el) {
+    const currentItem = el.closest('.res-rn-item');
+    const allItems = document.querySelectorAll('.res-rn-item');
+
+    // If already open → close it
+    if (currentItem.classList.contains('open')) {
+        currentItem.classList.remove('open');
+        return;
+    }
+
+    // Close all
+    allItems.forEach(item => {
+        item.classList.remove('open');
+    });
+
+    // Open clicked
+    currentItem.classList.add('open');
+}
