@@ -106,20 +106,18 @@
 
         <div class="res-video-thumb">
 
-          @if(!empty($video['thumbnail']))
-            <img 
-              src="{{ asset('images/' . $video['thumbnail']) }}" 
-              alt="{{ $video['title'] ?? '' }}">
-          @else
-            <div class="ph">
-              <i class="ti ti-player-play"></i>
-            </div>
-          @endif
-
-          <div class="res-play-btn">
-            <i class="ti ti-player-play-filled"></i>
-          </div>
-
+               @if(!empty($video['image_url']))
+                @if(Str::contains($video['image_url'], '<iframe'))
+                    {!! $video['image_url'] !!}
+                @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $video['image_url']))
+                    <video playsinline controls>
+                        <source src="{{ $video['image_url'] }}">
+                        Your browser does not support the video tag.
+                    </video>
+                @else
+                    <img src="{{ $video['image_url'] }}" alt="section image">
+                @endif
+                @endif
         </div>
 
         <div class="res-video-body">
