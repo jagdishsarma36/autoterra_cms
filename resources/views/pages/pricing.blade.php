@@ -19,7 +19,7 @@
 
 <!-- Pricing cards Section -->
 @php
-$pricing = pageContentJson('pricing', 'pricing');
+$pricing = pageContentJson('pricing', 'pricing.cards');
 @endphp
 
 <div class="pr-cards-wrap">
