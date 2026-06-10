@@ -53,14 +53,14 @@ $pricing = pageContentJson('pricing', 'pricing.cards');
 <div class="pr-cards-wrap">
     {{-- Floating Note --}}
     @if(!empty($pricing['floating_note']))
-    <div id="floatingNote">
+    <div id="floatingNote" class="pr-floating-note">
         <i class="ti ti-info-circle"></i>
         <strong>{{ $pricing['floating_note']['title'] }}</strong>
         {{ $pricing['floating_note']['text'] }}
     </div>
     @endif
     @foreach($pricing['tracks'] as $track)
-    <div class="{{ $track['class'] }}" id="{{ $track['id'] }}">
+    <div class="pr-cards-line {{ $track['class'] }}" id="{{ $track['id'] }}">
         @if(!empty($track['description']))
         <p>
             {{ $track['description'] }}
@@ -114,7 +114,7 @@ $pricing = pageContentJson('pricing', 'pricing.cards');
                 </div>
                 {{-- Coming Soon --}}
                 @if(!empty($card['coming_soon']))
-                <div>
+                <div class="pr-coming-soon">
                     <span class="ti {{ $card['coming_soon']['icon'] }}"></span>
                     <span style="font-size:11px;color:#9A5F10;font-weight:600;line-height:1.5;">
                         <strong>{{ $card['coming_soon']['title'] }}</strong>
