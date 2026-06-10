@@ -17,34 +17,33 @@
 @endforeach
 
 <!-- Pricing toggle Section -->
-@php
-$trackToggle = pageContentJson('pricing', 'pricing.toggle');
-@endphp
+@foreach(pageContentJson('pricing', 'pricing.toggle') as $toggle)
 <div class="pr-toggle-wrap">
-  <span class="pr-toggle-label">{{ $trackToggle['label'] }}</span>
+  <span class="pr-toggle-label">{{ $toggle['label'] }}</span>
   <div class="pr-track-tabs">
-    @foreach($trackToggle['tracks'] as $track)
+    @foreach($toggle['tracks'] as $track)
         <button
             class="pr-track-tab {{ !empty($track['active']) ? 'active' : '' }}"
             id="{{ $track['button_id'] }}"
-            onclick="setTrack('{{ $track['id'] }}')">
-
-            <i class="ti {{ $track['icon'] }}" style="font-size:14px;vertical-align:-2px;"></i>
-            {{ $track['title'] }}
+            onclick="setTrack('{{ $track['id'] }}')"
+        >
+            <i class="ti {{ $track['icon'] }}" ></i>
+            {{ $track['text'] }}
         </button>
     @endforeach
   </div>
   <div class="pr-license-toggle">
-    <label>
+     <label>
         <input
             type="checkbox"
-            id="{{ $trackToggle['license_note']['id'] }}"
-            onchange="toggleLicenseNote()">
-
-        {{ $trackToggle['license_note']['label'] }}
+            id="{{ $toggle['license_toggle']['id'] }}"
+            onchange="toggleLicenseNote()"
+        >
+        {{ $toggle['license_toggle']['label'] }}
     </label>
   </div>
 </div>
+@endforeach
 
 <section style="background:var(--off);padding:56px 60px;">
   <div class="sec-eye">Questions</div>
