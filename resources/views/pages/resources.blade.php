@@ -322,17 +322,14 @@
 
           <div class="res-webinar-date"
                @if(($item['cta_style'] ?? '') === 'highlight')
-                 style="color:var(--green);"
                @endif>
-            <i class="ti {{ $item['cta_icon'] ?? 'ti-player-play' }}"
-               style="font-size:12px;vertical-align:-2px;"></i>
+            <i class="ti {{ $item['cta_icon'] ?? 'ti-player-play' }}"></i>
             {{ $item['cta_text'] ?? '' }}
           </div>
         </div>
 
       </a>
     @endforeach
-
   </div>
 </section>
 @endif
