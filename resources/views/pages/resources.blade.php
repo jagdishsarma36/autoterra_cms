@@ -290,5 +290,68 @@
 
 </section>
 @endforeach
+@php
+  $webinars = pageContentJson('resources', 'resources.webinars');
+
+  if (!is_array($webinars)) {
+      $webinars = [];
+  }
+@endphp
+
+@foreach($webinars as $section)
+<section class="res-section section-white" id="{{ $section['id'] ?? 'webinars' }}">
+  
+  <div class="sec-eye">
+    {{ $section['sec_eye'] ?? '' }}
+  </div>
+
+  <h2 class="sec-h2">
+    {{ $section['head'] ?? '' }}
+  </h2>
+
+  <p class="sec-sub">
+    {{ $section['description'] ?? '' }}
+  </p>
+
+  <div class="res-webinar-grid">
+
+    @foreach($section['list'] ?? [] as $item)
+      <a href="#" class="res-webinar-card">
+
+        {{-- ICON --}}
+        <div class="res-webinar-icon">
+          <i class="ti {{ $item['icon'] ?? 'ti-video' }}"
+             @if(($item['type'] ?? '') === 'upcoming')
+               style="color:var(--green);"
+             @endif
+          ></i>
+        </div>
+
+        <div>
+          {{-- TITLE --}}
+          <h4>{{ $item['title'] ?? '' }}</h4>
+
+          {{-- DESCRIPTION --}}
+          <p>{{ $item['description'] ?? '' }}</p>
+
+          {{-- CTA --}}
+          <div class="res-webinar-date"
+               @if(($item['cta_style'] ?? '') === 'highlight')
+                 style="color:var(--green);"
+               @endif
+          >
+            <i class="ti {{ $item['cta_icon'] ?? 'ti-player-play' }}"
+               style="font-size:12px;vertical-align:-2px;">
+            </i>
+            {{ $item['cta_text'] ?? '' }}
+          </div>
+        </div>
+
+      </a>
+    @endforeach
+
+  </div>
+</section>
+@endforeach
 @include('partials.footer')
 @endsection
