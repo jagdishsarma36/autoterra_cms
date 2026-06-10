@@ -75,69 +75,6 @@
   </div>
 </section>
 @endforeach
-@php
-  $videosSection = pageContentJson('resources', 'resources.videos');
-
-  if (!is_array($videosSection)) {
-      $videosSection = [];
-  }
-
-  $videos = $videosSection['videos'] ?? [];
-@endphp
-<section class="res-section section-light" id="videos">
-
-  <div class="sec-eye">
-    {{ $videosSection['sec_eye'] ?? '' }}
-  </div>
-
-  <h2 class="sec-h2">
-    {{ $videosSection['head'] ?? '' }}
-  </h2>
-
-  <p class="sec-sub">
-    {{ $videosSection['description'] ?? '' }}
-  </p>
-  <div class="res-video-grid">
-    @foreach($videos as $video)
-      <a href="{{ $video['link_url'] ?? '#' }}" class="res-video-card">
-        <div class="res-video-thumb">
-          @if(!empty($video['thumbnail']))
-            <img 
-              src="{{ asset('images/' . $video['thumbnail']) }}" 
-              alt="{{ $video['title'] ?? '' }}">
-          @else
-            <div class="ph">
-              <i class="ti ti-player-play"></i>
-            </div>
-          @endif
-          <div class="res-play-btn">
-            <i class="ti ti-player-play-filled"></i>
-          </div>
-        </div>
-        <div class="res-video-body">
-          <div class="tag">
-            {{ $video['tag'] ?? '' }}
-          </div>
-          <h4>
-            {{ $video['title'] ?? '' }}
-          </h4>
-          <div class="meta">
-            <i class="{{ $video['icon'] ?? 'ti ti-clock' }}"></i>
-            {{ $video['duration'] ?? '' }}
-            @if(!empty($video['quality'])) · {{ $video['quality'] }} @endif
-            @if(!empty($video['year'])) · {{ $video['year'] }} @endif
-          </div>
-        </div>
-      </a>
-    @endforeach
-  </div>
-  <div class="res-video-footer">
-    <a href="{{ $videosSection['youtube']['link_url'] ?? '#' }}" class="btn-outline">
-      <i class="{{ $videosSection['youtube']['icon'] ?? 'ti ti-brand-youtube' }}"></i>
-      {{ $videosSection['youtube']['text'] ?? '' }}
-    </a>
-  </div>
-</section>
 
 @include('partials.footer')
 @endsection
