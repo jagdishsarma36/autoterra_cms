@@ -336,6 +336,6 @@
   </div>
 </section>
 @endif
-@endforeach
+
 @include('partials.footer')
 @endsection
