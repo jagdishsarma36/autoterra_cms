@@ -16,6 +16,153 @@
 </section>
 @endforeach
 
+
+<!-- Pricing cards Section -->
+@php
+$pricing = pageContentJson('pricing', 'pricing');
+@endphp
+
+<div class="pr-cards-wrap">
+
+    {{-- Floating Note --}}
+    @if(!empty($pricing['floating_note']))
+    <div id="floatingNote">
+        <i class="ti ti-info-circle"></i>
+        <strong>{{ $pricing['floating_note']['title'] }}</strong>
+        {{ $pricing['floating_note']['text'] }}
+    </div>
+    @endif
+
+    @foreach($pricing['tracks'] as $track)
+
+    <div class="{{ $track['class'] }}" id="{{ $track['id'] }}">
+
+        @if(!empty($track['description']))
+        <p>
+            {{ $track['description'] }}
+        </p>
+        @endif
+
+        <div class="pr-cards-grid {{ $track['id'] == 'lidarTrack' ? 'track-lidar' : '' }}">
+
+            @foreach($track['cards'] as $card)
+
+            <div class="pr-card {{ !empty($card['popular']) ? 'popular' : '' }}">
+
+                @if(!empty($card['popular']))
+                <div class="pr-popular-flag">
+                    {{ $card['popular_text'] }}
+                </div>
+                @endif
+
+                <div class="pr-card-head">
+                    <div class="pr-card-icon {{ $card['icon_color'] }}">
+                        <i class="ti {{ $card['icon'] }}"></i>
+                    </div>
+
+                    <div class="pr-card-name">
+                        {{ $card['name'] }}
+                    </div>
+
+                    <div class="pr-card-tagline">
+                        {{ $card['tagline'] }}
+                    </div>
+                </div>
+
+                <div class="pr-price-row {{ !empty($card['popular']) ? 'popular-price' : '' }}">
+                    <div class="pr-price-text">
+                        {{ $card['price'] }}
+                    </div>
+
+                    <div class="pr-price-note">
+                        {{ $card['price_note'] }}
+                    </div>
+                </div>
+
+                <div class="pr-features">
+
+                    {{-- Included --}}
+                    @foreach($card['included'] ?? [] as $feature)
+                    <div class="pr-feat-item">
+                        <i class="ti ti-check yes"></i>
+                        {{ $feature }}
+                    </div>
+                    @endforeach
+
+                    {{-- Excluded --}}
+                    @if(!empty($card['excluded']))
+                    <div class="pr-feat-sep">Not included</div>
+
+                    @foreach($card['excluded'] as $feature)
+                    <div class="pr-feat-item">
+                        <i class="ti ti-minus no"></i>
+                        {{ $feature }}
+                    </div>
+                    @endforeach
+                    @endif
+
+                </div>
+
+                {{-- Coming Soon --}}
+                @if(!empty($card['coming_soon']))
+                <div>
+                    <span class="ti {{ $card['coming_soon']['icon'] }}"></span>
+
+                    <span style="font-size:11px;color:#9A5F10;font-weight:600;line-height:1.5;">
+                        <strong>{{ $card['coming_soon']['title'] }}</strong>
+                        — {{ $card['coming_soon']['text'] }}
+
+                        <a href="{{ $card['coming_soon']['link_url'] }}">
+                            {{ $card['coming_soon']['link_text'] }}
+                        </a>
+                    </span>
+                </div>
+                @endif
+
+                <div class="pr-card-cta">
+
+                    <a href="{{ $card['button']['url'] }}"
+                       class="pr-cta-btn {{ $card['button']['class'] }}">
+                        @if(!empty($card['button']['icon']))
+                            <i class="ti {{ $card['button']['icon'] }}"></i>
+                        @endif
+
+                        {{ $card['button']['text'] }}
+                    </a>
+
+                    @if(!empty($card['details_link']))
+                    <a href="{{ $card['details_link']['url'] }}" >
+                        {{ $card['details_link']['text'] }}
+                    </a>
+                    @endif
+
+                </div>
+
+            </div>
+
+            @endforeach
+
+        </div>
+
+        @if(!empty($track['footer_note']))
+        <p>
+            {{ $track['footer_note'] }}
+
+            @if(!empty($track['footer_link']))
+            <a href="{{ $track['footer_link']['url'] }}"
+               style="color:var(--cyan);">
+                {{ $track['footer_link']['text'] }}
+            </a>
+            @endif
+        </p>
+        @endif
+
+    </div>
+
+    @endforeach
+
+</div>
+
 <!-- Pricing toggle Section -->
 @foreach(pageContentJson('pricing', 'pricing.toggle') as $toggle)
 <div class="pr-toggle-wrap">
