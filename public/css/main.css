@@ -1993,6 +1993,11 @@ padding: 5px 12px;
     font-size: 13px;
     color: var(--muted);
 }
+.pr-track-tab.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+}
 /****resources page ***/
 .res-hero {
     background: var(--navy);
