@@ -310,8 +310,6 @@
 
         <div class="res-webinar-icon">
           <i class="ti {{ $item['icon'] ?? 'ti-video' }}"
-             @if(($item['type'] ?? '') === 'upcoming')
-             @endif
           ></i>
         </div>
 
@@ -319,9 +317,7 @@
           <h4>{{ $item['title'] ?? '' }}</h4>
           <p>{{ $item['description'] ?? '' }}</p>
 
-          <div class="res-webinar-date"
-               @if(($item['cta_style'] ?? '') === 'highlight')
-               @endif>
+          <div class="res-webinar-date">
             <i class="ti {{ $item['cta_icon'] ?? 'ti-player-play' }}"></i>
             {{ $item['cta_text'] ?? '' }}
           </div>
