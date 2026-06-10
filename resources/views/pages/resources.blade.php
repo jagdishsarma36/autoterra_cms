@@ -212,7 +212,7 @@
   </div>
 
   {{-- FOOTER --}}
-  <p class="res-download-footer">
+ <p class="res-download-footer cus_{{ str_replace(' ', '_', $section['sec_eye'] ?? 'default') }}">
     <i class="ti ti-info-circle"></i>
     {{ $section['footer_note'] ?? '' }}
     <a href="{{ $section['footer_link_url'] ?? '#' }}">
