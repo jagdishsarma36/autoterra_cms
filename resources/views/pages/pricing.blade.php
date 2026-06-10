@@ -62,7 +62,7 @@ $pricing = pageContentJson('pricing', 'pricing.cards');
     @foreach($pricing['tracks'] as $track)
     <div class="pr-cards-line {{ $track['class'] }}" id="{{ $track['id'] }}">
         @if(!empty($track['description']))
-        <p>
+        <p class="pr-track-description">
             {{ $track['description'] }}
         </p>
         @endif
