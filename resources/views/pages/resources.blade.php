@@ -328,6 +328,36 @@
   </div>
 </section>
 @endif
+@php
+  $cta = pageContentJson('resources', 'resources.cta_band');
 
+  if (!is_array($cta)) {
+      $cta = [];
+  }
+@endphp
+
+<section class="cta-band">
+  <div class="cta-band-inner">
+
+    <h2>
+      {{ $cta['heading'] ?? '' }}
+    </h2>
+
+    <p>
+      {{ $cta['description'] ?? '' }}
+    </p>
+
+    @if(!empty($cta['buttons']) && is_array($cta['buttons']))
+      <div class="cta-row">
+        @foreach($cta['buttons'] as $btn)
+          <a href="{{ $btn['link'] ?? '#' }}" class="{{ $btn['class'] ?? '' }}">
+            {{ $btn['text'] ?? '' }}
+          </a>
+        @endforeach
+      </div>
+    @endif
+
+  </div>
+</section>
 @include('partials.footer')
 @endsection
