@@ -2145,7 +2145,31 @@ padding: 5px 12px;
     background: var(--green-lt);
     color: #0B6A48;
 }
-
+.pr-track-description {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+.pr-coming-soon {
+    background: #FEF3E2;
+    border: 1px solid rgba(200, 122, 32, 0.22);
+    border-radius: 7px;
+    padding: 9px 12px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.pr-floating-note {
+    display: block;
+    background: var(--cyan-lt);
+    border: 1px solid rgba(0, 168, 248, 0.3);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--blue);
+}
 /****resources page ***/
 .res-hero {
     background: var(--navy);
