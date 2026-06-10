@@ -167,7 +167,7 @@
         <div class="res-dl-row {{ !empty($item['locked']) ? 'is-locked' : '' }}">
 
           {{-- ICON --}}
-          <div class="res-dl-icon icon-{{ $item['icon'] ?? 'default' }}">
+          <div class="res-dl-row {{ !empty($item['locked']) ? 'is-locked' : '' }} cus_{{ str_replace(' ', '_', $item['icon'] ?? 'default') }}">
             <i class="ti {{ $item['icon'] ?? 'ti-point' }}"></i>
           </div>
 
