@@ -19,29 +19,21 @@
 <!-- Pricing toggle Section -->
 @foreach(pageContentJson('pricing', 'pricing.toggle') as $toggle)
 <div class="pr-toggle-wrap">
-  <span class="pr-toggle-label">{{ $toggle['label'] }}</span>
-  <div class="pr-track-tabs">
-    @foreach($toggle['tracks'] as $track)
-        <button
-            class="pr-track-tab {{ !empty($track['active']) ? 'active' : '' }}"
-            id="{{ $track['button_id'] }}"
-            onclick="setTrack('{{ $track['id'] }}')"
-        >
-            <i class="ti {{ $track['icon'] }}" ></i>
-            {{ $track['text'] }}
-        </button>
-    @endforeach
-  </div>
-  <div class="pr-license-toggle">
-     <label>
-        <input
-            type="checkbox"
-            id="{{ $toggle['license_toggle']['id'] }}"
-            onchange="toggleLicenseNote()"
-        >
-        {{ $toggle['license_toggle']['label'] }}
-    </label>
-  </div>
+    <span class="pr-toggle-label">{{ $toggle['label'] }}</span>
+
+    <div class="pr-track-tabs">
+        @foreach($toggle['tracks'] as $track)
+            <button
+                type="button"
+                class="pr-track-tab {{ !empty($track['active']) ? 'active' : '' }}"
+                id="{{ $track['button_id'] }}"
+                data-track="{{ $track['id'] }}"
+            >
+                <i class="ti {{ $track['icon'] }}"></i>
+                {{ $track['text'] }}
+            </button>
+        @endforeach
+    </div>
 </div>
 @endforeach
 
