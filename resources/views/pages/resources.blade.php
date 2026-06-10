@@ -311,7 +311,6 @@
         <div class="res-webinar-icon">
           <i class="ti {{ $item['icon'] ?? 'ti-video' }}"
              @if(($item['type'] ?? '') === 'upcoming')
-               style="color:var(--green);"
              @endif
           ></i>
         </div>
