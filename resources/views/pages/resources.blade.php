@@ -317,7 +317,7 @@
           <h4>{{ $item['title'] ?? '' }}</h4>
           <p>{{ $item['description'] ?? '' }}</p>
 
-          <div class="res-webinar-date">
+          <div class="res-webinar-date web_{{ str_replace(' ', '_', $section['sec_eye'] ?? 'default') }}">
             <i class="ti {{ $item['cta_icon'] ?? 'ti-player-play' }}"></i>
             {{ $item['cta_text'] ?? '' }}
           </div>
