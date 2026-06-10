@@ -86,71 +86,55 @@
 @endphp
 
 <section class="res-section section-light" id="videos">
-
   <div class="sec-eye">
     {{ $videosSection['sec_eye'] ?? '' }}
   </div>
-
   <h2 class="sec-h2">
     {{ $videosSection['head'] ?? '' }}
   </h2>
-
   <p class="sec-sub">
     {{ $videosSection['description'] ?? '' }}
   </p>
-
   <div class="res-video-grid">
-
     @foreach($videos as $video)
       <a href="{{ $video['link_url'] ?? '#' }}" class="res-video-card">
-
         <div class="res-video-thumb">
-
-               @if(!empty($video['image_url']))
-                @if(Str::contains($video['image_url'], '<iframe'))
-                    {!! $video['image_url'] !!}
-                @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $video['image_url']))
-                    <video playsinline controls>
-                        <source src="{{ $video['image_url'] }}">
-                        Your browser does not support the video tag.
-                    </video>
-                @else
-                    <img src="{{ $video['image_url'] }}" alt="section image">
-                @endif
-                @endif
+          {{-- Thumbnail --}}
+            @if(!empty($video['image_url']))
+            @if(Str::contains($video['image_url'], '<iframe'))
+            {!! $video['image_url'] !!}
+            @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $video['image_url']))
+           <video playsinline controls>
+            <source src="{{ $video['image_url'] }}">
+            Your browser does not support the video tag.
+          </video>
+            @else
+              <img src="{{ $video['image_url'] }}" alt="section image">
+            @endif
+            @endif
         </div>
-
         <div class="res-video-body">
-
           <div class="tag">
             {{ $video['tag'] ?? '' }}
           </div>
-
           <h4>
             {{ $video['title'] ?? '' }}
           </h4>
-
           <div class="meta">
-            <i class="{{ $video['icon'] ?? 'ti ti-clock' }}"></i>
-            {{ $video['duration'] ?? '' }}
-            @if(!empty($video['quality'])) · {{ $video['quality'] }} @endif
-            @if(!empty($video['year'])) · {{ $video['year'] }} @endif
+            <i class="ti ti-clock"></i>
+            {{ $video['duration'] ?? '' }} · {{ $video['quality'] ?? '' }} · {{ $video['year'] ?? '' }}
           </div>
-
         </div>
-
       </a>
     @endforeach
-
   </div>
-
-  <div class="res-video-footer">
+  <div style="text-align:center;margin-top:28px;">
     <a href="{{ $videosSection['youtube']['link_url'] ?? '#' }}" class="btn-outline">
-      <i class="{{ $videosSection['youtube']['icon'] ?? 'ti ti-brand-youtube' }}"></i>
-      {{ $videosSection['youtube']['text'] ?? '' }}
+      <i class="ti ti-brand-youtube" style="font-size:15px;vertical-align:-2px;"></i>
+      {{ $videosSection['youtube']['text'] ?? 'View all tutorials' }}
     </a>
   </div>
-
 </section>
+
 @include('partials.footer')
 @endsection
