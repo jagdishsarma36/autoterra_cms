@@ -136,5 +136,91 @@
   </div>
 </section>
 
+{{-- DOWNLOADS SECTION --}}
+@php
+  $downloads = pageContentJson('resources', 'resources.downloads');
+  if (!is_array($downloads)) {
+      $downloads = [];
+  }
+@endphp
+
+@foreach($downloads as $section)
+<section class="res-section section-white" id="downloads">
+  
+  <div class="sec-eye">
+    {{ $section['sec_eye'] ?? '' }}
+  </div>
+
+  <h2 class="sec-h2">
+    {{ $section['head'] ?? '' }}
+  </h2>
+
+  <p class="sec-sub">
+    {{ $section['description'] ?? '' }}
+  </p>
+
+  <div class="res-download-list">
+
+    @if(!empty($section['list']) && is_array($section['list']))
+      @foreach($section['list'] as $item)
+
+        <div class="res-dl-row {{ !empty($item['locked']) ? 'is-locked' : '' }}">
+
+          {{-- ICON --}}
+          <div class="res-dl-icon icon-{{ $item['icon'] ?? 'default' }}">
+            <i class="ti {{ $item['icon'] ?? 'ti-point' }}"></i>
+          </div>
+
+          {{-- INFO --}}
+          <div class="res-dl-info">
+            <h4>
+              {{ $item['title'] ?? '' }}
+
+              @if(!empty($item['locked']))
+                <i class="ti ti-lock icon-lock"></i>
+              @endif
+            </h4>
+
+            <p>
+              {{ $item['description'] ?? '' }}
+            </p>
+          </div>
+
+          {{-- META --}}
+          <div class="res-dl-meta">
+            {{ $item['meta'] ?? '' }}
+          </div>
+
+          {{-- BUTTON / LOCKED --}}
+          @if(!empty($item['locked']))
+            <span class="res-locked">
+              <i class="ti ti-lock"></i>
+              {{ $item['locked_text'] ?? 'Locked' }}
+            </span>
+          @else
+            <a href="{{ $item['link_url'] ?? '#' }}" class="res-dl-btn">
+              <i class="ti ti-download"></i>
+              {{ $item['link_text'] ?? 'Download' }}
+            </a>
+          @endif
+
+        </div>
+
+      @endforeach
+    @endif
+
+  </div>
+
+  {{-- FOOTER --}}
+  <p class="res-download-footer">
+    <i class="ti ti-info-circle"></i>
+    {{ $section['footer_note'] ?? '' }}
+    <a href="{{ $section['footer_link_url'] ?? '#' }}">
+      {{ $section['footer_link_text'] ?? '' }}
+    </a>
+  </p>
+
+</section>
+@endforeach
 @include('partials.footer')
 @endsection
