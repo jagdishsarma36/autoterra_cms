@@ -219,6 +219,74 @@
       {{ $section['footer_link_text'] ?? '' }}
     </a>
   </p>
+</section>
+@endforeach
+@php
+  $releaseNotes = pageContentJson('resources', 'resources.releasenotes');
+
+  if (!is_array($releaseNotes)) {
+      $releaseNotes = [];
+  }
+@endphp
+
+@foreach($releaseNotes as $section)
+<section class="res-section section-light" id="{{ $section['id'] ?? 'releasenotes' }}">
+  
+  <div class="sec-eye">
+    {{ $section['sec_eye'] ?? '' }}
+  </div>
+
+  <h2 class="sec-h2">
+    {{ $section['head'] ?? '' }}
+  </h2>
+
+  <p class="sec-sub">
+    {{ $section['description'] ?? '' }}
+  </p>
+
+  <div class="res-rn-list">
+    
+    @if(!empty($section['list']))
+      @foreach($section['list'] as $item)
+        <div class="res-rn-item {{ !empty($item['open']) ? 'open' : '' }}">
+          
+          <div class="res-rn-head" onclick="toggleRN(this)">
+            <div class="res-rn-head-left">
+              <span class="res-rn-version">
+                {{ $item['version'] ?? '' }}
+              </span>
+
+              <span class="res-rn-date">
+                {{ $item['date'] ?? '' }}
+              </span>
+
+              <span class="res-rn-title">
+                {{ $item['title'] ?? '' }}
+              </span>
+            </div>
+
+            <i class="ti ti-chevron-down res-rn-toggle"></i>
+          </div>
+
+          <div class="res-rn-body">
+            <ul>
+              @if(!empty($item['items']))
+                @foreach($item['items'] as $li)
+                  <li>{!! $li !!}</li>
+                @endforeach
+              @endif
+            </ul>
+          </div>
+
+        </div>
+      @endforeach
+    @endif
+  </div>
+  <div style="margin-top:20px;">
+    <a href="{{ $section['button']['link'] ?? '#' }}" class="btn-outline">
+      {{ $section['button']['text'] ?? 'View full release history' }}
+    </a>
+  </div>
 
 </section>
 @endforeach
