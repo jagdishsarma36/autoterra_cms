@@ -164,10 +164,10 @@
     @if(!empty($section['list']) && is_array($section['list']))
       @foreach($section['list'] as $item)
 
-        <div class="res-dl-row {{ !empty($item['locked']) ? 'is-locked' : '' }}">
+        <div class="res-dl-row {{ !empty($item['locked']) ? 'is-locked' : '' }} cus_{{ str_replace(' ', '_', $item['icon'] ?? 'default') }}">
 
           {{-- ICON --}}
-          <div class="res-dl-row {{ !empty($item['locked']) ? 'is-locked' : '' }} cus_{{ str_replace(' ', '_', $item['icon'] ?? 'default') }}">
+          <div class="res-dl-icon icon-{{ $item['icon'] ?? 'default' }}">
             <i class="ti {{ $item['icon'] ?? 'ti-point' }}"></i>
           </div>
 
