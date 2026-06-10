@@ -32,7 +32,7 @@
   @if(!empty($buttons) && is_array($buttons))
     @foreach($buttons as $index => $btn)
       <a 
-        href="#{{ trim($btn['link_url'] ?? '') }}"
+        href="{{ trim($btn['link_url'] ?? '') }}"
         class="res-tab {{ $index === 0 ? 'active' : '' }}"
       >
         <i class="ti {{ $btn['icon'] ?? '' }}"></i>
