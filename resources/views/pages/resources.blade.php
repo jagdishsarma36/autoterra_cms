@@ -97,7 +97,7 @@
   </p>
   <div class="res-video-grid">
     @foreach($videos as $video)
-      <a href="{{ $video['link_url'] ?? '#' }}" class="res-video-card">
+      <a href="{{ $video['media_url'] ?? '#' }}" class="res-video-card">
         <div class="res-video-thumb">
           {{-- Thumbnail --}}
             @if(!empty($video['image_url']))
@@ -121,7 +121,7 @@
             {{ $video['title'] ?? '' }}
           </h4>
           <div class="meta">
-            <i class="ti ti-clock"></i>
+            <i class="{{ $video['icon'] ?? 'ti ti-clock' }}"></i>
             {{ $video['duration'] ?? '' }} · {{ $video['quality'] ?? '' }} · {{ $video['year'] ?? '' }}
           </div>
         </div>
