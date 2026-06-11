@@ -94,8 +94,8 @@
         
         <!-- STEP 2: Term preference -->
         <div class="qt-sec-head">
-          <div class="qt-sec-num">{{ $quote['subscription_term']['step_number'] }}</div>
-          <div class="qt-sec-label">{{ $quote['subscription_term']['title'] }}</div>
+          <div class="qt-sec-num">2</div>
+          <div class="qt-sec-label">Preferred subscription term</div>
         </div>
         <p class="qt-sec-des">
           {{ $quote['subscription_term']['description'] }}
