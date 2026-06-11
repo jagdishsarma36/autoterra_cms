@@ -11,7 +11,7 @@
       <span class="ti {{ $hero['icon'] }}"></span>
       {{ $hero['text'] }}
     </div>
-    <h1>{{ $hero['title'] }}</h1>
+    <h1>{!! $hero['title'] !!}</h1>
     <p>{{ $hero['description'] }}</p>
     <div class="qt-trust">
       @foreach($hero['trust_items'] as $item)
