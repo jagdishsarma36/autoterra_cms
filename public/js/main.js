@@ -37,22 +37,6 @@ function initSlider() {
 
     return false;
 }
-
-// Try immediately
-// if (!initSlider()) {
-
-//     // Watch for dynamically added slides
-//     const observer = new MutationObserver(function() {
-//         if (initSlider()) {
-//             observer.disconnect();
-//         }
-//     });
-
-//     observer.observe(document.getElementById('carousel-slides'), {
-//         childList: true,
-//         subtree: true
-//     });
-// }
 if (!initSlider()) {
 
     const carouselSlides = document.getElementById('carousel-slides');
@@ -244,3 +228,46 @@ function toggleRN(el) {
     // Open clicked
     currentItem.classList.add('open');
 }
+
+// toggle pricing page
+function setTrack(trackId) {
+    trackId = trackId.replace('#', '');
+    document.querySelectorAll('.pr-cards-line').forEach(track => {
+        track.style.display = 'none';
+    });
+    document.querySelectorAll('.pr-track-tab').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const selectedTrack = document.getElementById(trackId);
+    if (selectedTrack) {
+        selectedTrack.style.display = 'block';
+    }
+    const activeBtn = document.querySelector(
+        `[onclick="setTrack('#${trackId}')"],
+         [onclick="setTrack('${trackId}')"]`
+    );
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+}
+
+function toggleLicenseNote() {
+    const checkbox = document.getElementById('floatingToggle');
+    const note = document.getElementById('floatingNote');
+    if (!checkbox || !note) return;
+    note.style.display = checkbox.checked ? 'block' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.pr-cards-line').forEach(track => {
+        track.style.display = 'none';
+    });
+    const defaultBtn = document.querySelector('.pr-track-tab.active');
+    if (defaultBtn) {
+        defaultBtn.click();
+    }
+    const note = document.getElementById('floatingNote');
+    if (note) {
+        note.style.display = 'none';
+    }
+});
