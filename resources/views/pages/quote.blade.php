@@ -33,34 +33,35 @@
       <div class="qt-sec-label">Which edition are you interested in?</div>
     </div>
     @php
-    $quote = pageContentJson('quote', 'quote.from_sec1');
+    $quoteData = pageContentJson('quote', 'quote.from_sec1');
+    $quote = $quoteData[0] ?? [];
     @endphp
     <div class="product-grid" id="productGrid">
-          @foreach($quote['products'] as $product)
-        <label
-            class="prod-card {{ !empty($product['selected']) ? 'selected' : '' }}"
-            data-product="{{ $product['id'] }}"
-            onclick="selectProduct(this)">
-            <input
-                type="radio"
-                name="product"
-                value="{{ $product['id'] }}"
-                {{ !empty($product['selected']) ? 'checked' : '' }}
-            >
-            <div class="prod-card-check"></div>
-            <div class="prod-card-name">
-                {{ $product['name'] }}
-            </div>
-            <div class="prod-card-track">
-                {{ $product['track'] }}
-            </div>
-            @if(!empty($product['badge']))
-                <div class="prod-card-badge">
-                    {{ $product['badge'] }}
-                </div>
-            @endif
-        </label>
-        @endforeach
+          @foreach($quote['products'] ?? [] as $product)
+              <label
+                  class="prod-card {{ !empty($product['selected']) ? 'selected' : '' }}"
+                  data-product="{{ $product['id'] }}"
+                  onclick="selectProduct(this)">
+                  <input
+                      type="radio"
+                      name="product"
+                      value="{{ $product['id'] }}"
+                      {{ !empty($product['selected']) ? 'checked' : '' }}
+                  >
+                  <div class="prod-card-check"></div>
+                  <div class="prod-card-name">
+                      {{ $product['name'] }}
+                  </div>
+                  <div class="prod-card-track">
+                      {{ $product['track'] }}
+                  </div>
+                  @if(!empty($product['badge']))
+                      <div class="prod-card-badge">
+                          {{ $product['badge'] }}
+                      </div>
+                  @endif
+              </label>
+          @endforeach
         </div>
 
         <!-- Feature preview (updates by JS) -->
