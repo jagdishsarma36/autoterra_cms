@@ -301,9 +301,5 @@
 
 </div>
 
-<section style="padding:56px 60px;max-width:800px;">
-  <h2 style="font-size:18px;font-weight:800;margin-bottom:20px;">Quote request form</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:24px;">Form placeholder — integrate with POST /api/quote endpoint.</p>
-</section>
 @include('partials.footer')
 @endsection
