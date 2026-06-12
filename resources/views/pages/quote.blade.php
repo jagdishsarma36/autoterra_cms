@@ -208,10 +208,8 @@
       <div class="qt-sec-num">4</div>
       <div class="qt-sec-label">Your organisation</div>
     </div>
-
     <div class="qoute_form_wrap">
-
-      <div class="form-row" id="quoteform">
+      <div class="form-row-q" id="quoteform">
         <p class="ct-form-title">{{ $form->name }}</p>
         @if($form->description)
           <p class="ct-form-sub"> {{ $form->description }} </p>
@@ -304,41 +302,23 @@
           </div>
           @endforeach
         </div>
-        <div style="margin-top:24px;">
+        <div class="qt-submit-row" style="margin-top:24px;">
           <button type="submit"
             style="width:100%;padding:13px 0;background:var(--cyan);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;">
             {{ $form->submit_button_text }}
           </button>
+          <p class="qt-submit-note">Our sales team responds within <strong>1 business day</strong>.<br>No spam, no pressure.</p>   
         </div>
       </form>     
     </div>
 
     </div>
-
     <hr class="qt-sec-divider">
-
     <!-- STEP 5: Requirements & notes -->
-    <div class="qt-sec-head">
+    <!-- <div class="qt-sec-head">
       <div class="qt-sec-num">5</div>
       <div class="qt-sec-label">Additional requirements</div>
-    </div>
-
-    <div class="form-row full" style="margin-bottom:16px;">
-      <div class="form-group">
-        
-      </div>
-    </div>
-
-    <!-- Privacy + submit -->
-
-    <div class="qt-submit-row">
-      <button type="button" class="qt-submit-btn" onclick="handleSubmit()">
-        <span class="ti ti-send"></span>
-        Submit Quote Request
-      </button>
-      <p class="qt-submit-note">Our sales team responds within <strong>1 business day</strong>.<br>No spam, no pressure.</p>
-    </div>
-    <!-- Success state -->
+    </div> -->
   </div><!-- /qt-form-col -->
 
   <!-- ── Sidebar ── -->
