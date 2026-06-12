@@ -32,9 +32,8 @@
       <div class="qt-sec-num">1</div>
       <div class="qt-sec-label">Which edition are you interested in?</div>
     </div>
-    
+    @foreach(pageContentJson('quote', 'quote.from_sec1') as $quote)
     <div class="product-grid" id="productGrid">
-      @foreach(pageContentJson('quote', 'quote.from_sec1') as $quote)
           @foreach($quote['products'] as $product)
         <label
             class="prod-card {{ !empty($product['selected']) ? 'selected' : '' }}"
@@ -121,9 +120,9 @@
             @endif
         </label>
         @endforeach
-        @endforeach
         </div>
-    
+    @endforeach
+
     <hr class="qt-sec-divider">
 
     <!-- STEP 3: Licence type & seats -->
@@ -239,7 +238,7 @@
   </div><!-- /qt-form-col -->
 
   <!-- ── Sidebar ── -->
-  @foreach(pageContentJson('quote', 'qoute.sidebar') as $sidebar)
+  @foreach(pageContentJson('quote', 'quote.sidebar') as $sidebar)
   <aside class="qt-sidebar">
       <div class="whats-next">
           <h3>{{ $sidebar['whats_next']['title'] }}</h3>
