@@ -2639,6 +2639,32 @@ span.field-hint {
     flex-shrink: 0;
     margin-top: 1px;
 }
+.qt-submit-btn {
+    background: var(--cyan);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 40px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.qt-submit-btn:before {
+    content: "\eb1e";
+    font-family: "tabler-icons" !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 /* Quote page end */
 /****resources page ***/
 .res-hero {
