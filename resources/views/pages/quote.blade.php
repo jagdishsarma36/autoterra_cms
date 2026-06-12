@@ -115,6 +115,24 @@
           <div class="qt-sec-num">2</div>
           <div class="qt-sec-label">Preferred subscription term</div>
         </div>
+
+        @php $first = true; @endphp
+        <div class="term-pills" id="termPills">
+            @foreach($terms as $value => $enabled)
+                @if($enabled)
+                    <label class="term-pill {{ $first ? 'selected' : '' }}" onclick="selectTerm(this)">
+                        <input
+                            type="radio"
+                            name="term"
+                            value="{{ $value }}"
+                            {{ $first ? 'checked' : '' }}
+                        >
+                        {{ $labels[$value] ?? strtoupper($value) }}
+                    </label>
+                    @php $first = false; @endphp
+                @endif
+            @endforeach
+        </div>
         {{-- <p class="qt-sec-des">
           {{ $quote['subscription_term']['description'] }}
         </p>
