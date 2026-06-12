@@ -115,7 +115,7 @@
           <div class="qt-sec-num">2</div>
           <div class="qt-sec-label">Preferred subscription term</div>
         </div>
-
+        $products = pageContentJson('quote', 'quote.term_avail');
         @php $first = true; @endphp
         <div class="term-pills" id="termPills">
             @foreach($terms as $value => $enabled)
@@ -133,6 +133,7 @@
                 @endif
             @endforeach
         </div>
+        @endforeach
         {{-- <p class="qt-sec-des">
           {{ $quote['subscription_term']['description'] }}
         </p>
