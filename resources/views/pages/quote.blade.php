@@ -303,7 +303,7 @@
           @endforeach
         </div>
         <div class="qt-submit-row" style="margin-top:24px;">
-          <button type="submit"
+          <button class="qt-submit-btn" type="submit"
             style="width:100%;padding:13px 0;background:var(--cyan);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s;">
             {{ $form->submit_button_text }}
           </button>
