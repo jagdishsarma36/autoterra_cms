@@ -32,7 +32,9 @@
       <div class="qt-sec-num">1</div>
       <div class="qt-sec-label">Which edition are you interested in?</div>
     </div>
-    @foreach(pageContentJson('quote', 'quote.from_sec1') as $quote)
+    @php
+    $quote = pageContentJson('quote', 'quote.from_sec1');
+    @endphp
     <div class="product-grid" id="productGrid">
           @foreach($quote['products'] as $product)
         <label
@@ -121,7 +123,6 @@
         </label>
         @endforeach
         </div>
-    @endforeach
 
     <hr class="qt-sec-divider">
 
