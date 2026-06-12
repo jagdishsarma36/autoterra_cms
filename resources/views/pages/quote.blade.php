@@ -122,7 +122,7 @@
             @endif
         </label>
         @endforeach
-        </div>
+      </div>
 
     <hr class="qt-sec-divider">
 
