@@ -37,67 +37,77 @@
       <div class="qt-sec-num">1</div>
       <div class="qt-sec-label">Which edition are you interested in?</div>
     </div>
-    @php
-    $quoteData = pageContentJson('quote', 'quote.from_sec1');
-    $quote = $quoteData[0] ?? [];
+      @php
+    $products = pageContentJson('quote', 'quote.products');
+    $firstProduct = reset($products);
     @endphp
+
     <div class="product-grid" id="productGrid">
-          @foreach($quote['products'] ?? [] as $product)
-              <label
-                  class="prod-card {{ !empty($product['selected']) ? 'selected' : '' }}"
-                  data-product="{{ $product['id'] }}"
-                  onclick="selectProduct(this)">
-                  <input
-                      type="radio"
-                      name="product"
-                      value="{{ $product['id'] }}"
-                      {{ !empty($product['selected']) ? 'checked' : '' }}
-                  >
-                  <div class="prod-card-check"></div>
-                  <div class="prod-card-name">
-                      {{ $product['name'] }}
-                  </div>
-                  <div class="prod-card-track">
-                      {{ $product['track'] }}
-                  </div>
-                  @if(!empty($product['badge']))
-                      <div class="prod-card-badge">
-                          {{ $product['badge'] }}
-                      </div>
-                  @endif
-              </label>
-          @endforeach
+        @foreach($products as $id => $product)
+            <label
+                class="prod-card"
+                data-product="{{ $id }}"
+                onclick="selectProduct(this)">
+                <input
+                    type="radio"
+                    name="product"
+                    value="{{ $id }}"
+                    {{ $loop->first ? 'checked' : '' }}
+                >
+                <div class="prod-card-check"></div>
+
+                <div class="prod-card-name">
+                    {{ $product['name'] ?? '' }}
+                </div>
+
+                <div class="prod-card-track">
+                    {{ $product['track'] ?? '' }}
+                </div>
+
+                <input type="hidden" name="product_name" value="{{ $product['name'] ?? '' }}">
+            </label>
+        @endforeach
+    </div>
+
+    <!-- Feature preview -->
+    <div class="feature-compare" id="featureCompare">
+        <div class="fc-header">
+            <span class="ti ti-table"></span>
+            <span class="fc-header-title" id="fcTitle">
+                {{ $firstProduct['name'] ?? '' }} Features
+            </span>
         </div>
 
-        <!-- Feature preview (updates by JS) -->
-        <div class="feature-compare" id="featureCompare">
-          <div class="fc-header">
-            <span class="ti ti-table"></span>
-            <span class="fc-header-title" id="fcTitle">{{ $quote['feature_compare']['title'] }}</span>
-          </div>
-          <div class="fc-row">
+        <div class="fc-row">
             <div class="fc-feature">Feature</div>
             <div class="fc-col-head">Included</div>
-          </div>
-          <div id="fcRows">
-            @foreach($quote['feature_compare']['features'] as $feature)
-            <div class="fc-row">
-                <div class="fc-feature">
-                    {{ $feature['feature'] }}
-                </div>
-                @if($feature['included'])
-                    <div class="fc-val yes">
-                        <span class="ti ti-circle-check"></span> Yes
-                    </div>
-                @else
-                    <div class="fc-val">
-                        <span class="ti ti-circle-x" style="color:var(--border)"></span>
-                    </div>
-                @endif
-            </div>
-            @endforeach
-          </div>
         </div>
+
+        <div id="fcRows">
+            @foreach($firstProduct['features'] ?? [] as $feature)
+                <div class="fc-row">
+                    <div class="fc-feature">
+                        {{ $feature['name'] }}
+                    </div>
+
+                    @if(($feature['val'] ?? '') === 'yes')
+                        <div class="fc-val yes">
+                            <span class="ti ti-circle-check"></span> Yes
+                        </div>
+                    @elseif(($feature['val'] ?? '') === 'partial')
+                        <div class="fc-val">
+                            <span class="ti ti-clock"></span>
+                            {{ $feature['note'] ?? 'Partial' }}
+                        </div>
+                    @else
+                        <div class="fc-val">
+                            <span class="ti ti-circle-x" style="color:var(--border)"></span>
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    </div>
         <hr class="qt-sec-divider">
         
         <!-- STEP 2: Term preference -->
