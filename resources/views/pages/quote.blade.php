@@ -156,10 +156,12 @@
 
     <div class="form-row">
       <div class="form-group">
+        <label>
         {{ $license['seat']['label'] }}
             @if(!empty($license['seat']['required']))
                 <span class="req">*</span>
             @endif
+        </label>
         <div class="seat-counter">
           <button type="button" class="seat-btn" onclick="changeSeat(-1)">−</button>
             <input 
