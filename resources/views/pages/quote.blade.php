@@ -118,7 +118,7 @@
         $products = pageContentJson('quote', 'quote.term_avail');
         @php $first = true; @endphp
         <div class="term-pills" id="termPills">
-            @foreach($terms as $value => $enabled)
+            @foreach($view as $value => $enabled)
                 @if($enabled)
                     <label class="term-pill {{ $first ? 'selected' : '' }}" onclick="selectTerm(this)">
                         <input
