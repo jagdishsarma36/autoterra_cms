@@ -115,7 +115,7 @@
           <div class="qt-sec-num">2</div>
           <div class="qt-sec-label">Preferred subscription term</div>
         </div>
-        <!-- <p class="qt-sec-des">
+        {{-- <p class="qt-sec-des">
           {{ $quote['subscription_term']['description'] }}
         </p>
         <div class="term-pills" id="termPills">
@@ -137,8 +137,8 @@
                 </span>
             @endif
         </label>
-        @endforeach -->
-      </div>
+        @endforeach
+      </div>  --}}
 
     <hr class="qt-sec-divider">
 
