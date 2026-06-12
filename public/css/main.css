@@ -2323,11 +2323,6 @@ padding: 5px 12px;
     font-size: 13px;
     color: var(--body);
     font-weight: 500;
-    font-size:10px;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    color:var(--muted);
 }
 .fc-col-head {
     font-size: 10px;
