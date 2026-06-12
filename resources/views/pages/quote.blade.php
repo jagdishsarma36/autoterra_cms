@@ -115,10 +115,28 @@
           <div class="qt-sec-num">2</div>
           <div class="qt-sec-label">Preferred subscription term</div>
         </div>
+        @php
         $products = pageContentJson('quote', 'quote.term_avail');
-        @php $first = true; @endphp
+
+        // Current selected product
+        $product = 'view'; // replace with dynamic product value
+
+        $terms = $products[$product] ?? [];
+
+        $labels = [
+            '3mo'    => '3 Months',
+            '6mo'    => '6 Months',
+            '1yr'    => '1 Year',
+            '3yr'    => '3 Years',
+            '5yr'    => '5 Years',
+            'unsure' => 'Not Sure',
+        ];
+
+        $first = true;
+        @endphp
+
         <div class="term-pills" id="termPills">
-            @foreach($view as $value => $enabled)
+            @foreach($terms as $value => $enabled)
                 @if($enabled)
                     <label class="term-pill {{ $first ? 'selected' : '' }}" onclick="selectTerm(this)">
                         <input
