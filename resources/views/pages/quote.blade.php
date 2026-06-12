@@ -133,7 +133,6 @@
                 @endif
             @endforeach
         </div>
-        @endforeach
         {{-- <p class="qt-sec-des">
           {{ $quote['subscription_term']['description'] }}
         </p>
