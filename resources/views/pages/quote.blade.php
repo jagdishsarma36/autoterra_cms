@@ -37,7 +37,7 @@
       <div class="qt-sec-num">1</div>
       <div class="qt-sec-label">Which edition are you interested in?</div>
     </div>
-      @php
+    @php
     $products = pageContentJson('quote', 'quote.products');
     $firstProduct = reset($products);
     @endphp
