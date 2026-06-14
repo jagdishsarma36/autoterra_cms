@@ -155,6 +155,18 @@
       </table>
     </div>
 
+    @if($subscription->licenseKeys->count())
+    <div style="background:#F0FAFF;border:1.5px solid #B3E0FF;border-radius:12px;padding:24px;margin-top:24px;">
+      <h3 style="font-size:14px;font-weight:800;margin-bottom:12px;color:#0860B0;">License Keys</h3>
+      @foreach($subscription->licenseKeys as $license)
+      <div style="background:#fff;border:1px solid #D2DCE6;border-radius:8px;padding:14px 18px;margin-bottom:10px;">
+        <div style="font-family:monospace;font-size:14px;font-weight:700;letter-spacing:1px;color:var(--body);">{{ $license->license_key }}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">Valid until {{ $license->expires_at?->format('M j, Y') ?? 'N/A' }}</div>
+      </div>
+      @endforeach
+    </div>
+    @endif
+
     <div class="payment-info">
       <h4>Subscription Information</h4>
       <table>
