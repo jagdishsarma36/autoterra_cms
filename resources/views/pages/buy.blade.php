@@ -211,6 +211,7 @@ let selectedTerm = '1yr';
 let billingMode = 'upfront';
 let currency = 'INR';
 let pendingSubscriptionId = null;
+let pendingOrderId = null;
 const ALL_TERMS = ['daily','weekly','3mo','6mo','1yr','3yr','5yr'];
 const TERM_DAYS = {'daily':1,'weekly':7,'3mo':90,'6mo':180,'1yr':365,'3yr':1095,'5yr':1825};
 const TERM_LABELS = {'daily':'Daily','weekly':'Weekly','3mo':'3-Month','6mo':'6-Month','1yr':'1-Year','3yr':'3-Year','5yr':'5-Year'};
@@ -421,6 +422,8 @@ async function handleOneTimeCheckout(price) {
     const order = await res.json();
     if (order.error) { alert('Error: ' + order.error); resetBtn(); return; }
 
+    pendingOrderId = order.db_order_id;
+
     const rzp = new Razorpay({
       key: RZP_KEY,
       amount: order.amount,
@@ -429,6 +432,7 @@ async function handleOneTimeCheckout(price) {
       description: PRICING[selectedProduct].name + ' — ' + TERM_LABELS[selectedTerm],
       order_id: order.id,
       handler: async function(response) {
+        pendingOrderId = null;
         const vRes = await fetch('/api/razorpay/verify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
@@ -512,6 +516,14 @@ function resetBtn() {
       body: JSON.stringify({ subscription_id: pendingSubscriptionId })
     }).catch(function() {});
     pendingSubscriptionId = null;
+  }
+  if (pendingOrderId) {
+    fetch('/api/razorpay/cancel-pending-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+      body: JSON.stringify({ order_id: pendingOrderId })
+    }).catch(function() {});
+    pendingOrderId = null;
   }
   const btn = document.getElementById('checkoutBtn');
   if (billingMode === 'monthly') {
