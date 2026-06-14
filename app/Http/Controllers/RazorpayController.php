@@ -229,6 +229,27 @@ class RazorpayController extends Controller
     }
 
     /**
+     * Cancel a pending order that was never paid.
+     */
+    public function cancelPendingOrder(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|integer',
+        ]);
+
+        $order = Order::where('id', $request->order_id)
+            ->where('user_id', Auth::id())
+            ->where('status', 'pending')
+            ->first();
+
+        if ($order) {
+            $order->delete();
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
      * Verify subscription payment.
      */
     public function verifySubscription(Request $request)
