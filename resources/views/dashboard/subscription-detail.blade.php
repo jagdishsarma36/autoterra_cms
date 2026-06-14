@@ -69,7 +69,8 @@
 </div>
 </div>
 
-{{@dump($subscription)}}
+@dump($subscription)
+
 
 @include('partials.footer')
 @endsection
