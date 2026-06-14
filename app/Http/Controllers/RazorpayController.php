@@ -130,7 +130,7 @@ class RazorpayController extends Controller
             'term' => $request->term,
             'razorpay_subscription_id' => $subscription['id'],
             'razorpay_plan_id' => $request->plan_id,
-            'status' => 'active',
+            'status' => 'pending',
         ]);
 
         return response()->json([
@@ -194,7 +194,7 @@ class RazorpayController extends Controller
             'term' => $request->term,
             'razorpay_subscription_id' => $subResult['id'],
             'razorpay_plan_id' => $planResult['id'],
-            'status' => 'active',
+            'status' => 'pending',
             'amount' => $request->amount,
             'currency' => $request->currency,
         ]);
@@ -295,6 +295,31 @@ class RazorpayController extends Controller
         }
 
         return response('OK', 200);
+    }
+
+    /**
+     * Cancel a pending subscription that was never paid.
+     * Called when user dismisses the Razorpay checkout modal.
+     */
+    public function cancelPendingSubscription(Request $request)
+    {
+        $request->validate([
+            'subscription_id' => 'required|string',
+        ]);
+
+        $sub = Subscription::where('razorpay_subscription_id', $request->subscription_id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($sub) {
+            // Cancel on Razorpay if it was created
+            if ($sub->razorpay_subscription_id) {
+                $this->razorpay->cancelSubscription($sub->razorpay_subscription_id);
+            }
+            $sub->delete();
+        }
+
+        return response()->json(['success' => true]);
     }
 
     /**
