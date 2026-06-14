@@ -133,8 +133,26 @@ class MediaResource extends Resource
             ->schema([
                 Section::make('Upload')
                     ->schema([
-                        \Filament\Forms\Components\View::make('filament.components.direct-upload')
-                            ->columnSpanFull(),
+                        FileUpload::make('path')
+                            ->label('File')
+                            ->disk('public')
+                            ->directory('media')
+                            ->visibility('public')
+                            ->acceptedFileTypes(function () {
+                                $types = array_filter(explode(',', \App\Models\Setting::get('media_allowed_types', '')));
+                                return !empty($types) ? $types : null;
+                            })
+                            ->maxSize(fn () => ((int) \App\Models\Setting::get('media_max_size', 50)) * 1024)
+                            ->required()
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function ($state, $set, $get) {
+                                if (!$state) return;
+                                $name = $get('name');
+                                if (empty($name)) {
+                                    $fileName = is_array($state) ? ($state[0]['name'] ?? '') : basename($state);
+                                    $set('name', pathinfo($fileName, PATHINFO_FILENAME));
+                                }
+                            }),
                     ]),
 
                 Section::make('Preview')

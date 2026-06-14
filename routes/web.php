@@ -9,7 +9,6 @@ use App\Http\Controllers\PricingController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\FormController;
-use App\Http\Controllers\MediaUploadController;
 use Illuminate\Support\Facades\Route;
 
 // Public pages
@@ -48,9 +47,6 @@ Route::get('/auth/{provider}/callback', [SocialController::class, 'callback']);
 // API
 Route::get('/api/pricing', [PricingController::class, 'index'])->name('api.pricing');
 Route::post('/api/quote', [QuoteController::class, 'store'])->name('api.quote');
-
-// Direct media upload (bypasses Livewire/Cloudflare limits)
-Route::middleware('auth')->post('/api/admin/media/upload', [MediaUploadController::class, 'upload'])->name('api.media.upload');
 
 // Dashboard (authenticated)
 Route::middleware('auth')->prefix('dashboard')->group(function () {
