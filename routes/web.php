@@ -71,7 +71,6 @@ Route::middleware('auth')->prefix('api/razorpay')->group(function () {
     Route::post('/create-subscription', [RazorpayController::class, 'createSubscription'])->name('razorpay.create-subscription');
     Route::post('/create-plan', [RazorpayController::class, 'createPlanAndSubscription'])->name('razorpay.create-plan');
     Route::post('/verify-subscription', [RazorpayController::class, 'verifySubscription'])->name('razorpay.verify-subscription');
-    Route::post('/cancel-pending-subscription', [RazorpayController::class, 'cancelPendingSubscription'])->name('razorpay.cancel-pending-subscription');
 });
 
 // Razorpay webhook (no auth, no CSRF)
