@@ -29,7 +29,7 @@ class RazorpayService
             ->withHeaders(['Content-Type' => 'application/json']);
 
         if ($queryParams) {
-            $http->withQueryParams($queryParams);
+            $http->withQueryParameters($queryParams);
         }
 
         $response = $http->send(strtoupper($method), $url, $body ? ['json' => $body] : []);
