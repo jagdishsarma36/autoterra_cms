@@ -72,7 +72,7 @@ class DashboardController extends Controller
 
     public function subscriptionPrint(Subscription $subscription)
     {
-        if ($subscription->user_id !== Auth::id()) {
+        if ($subscription->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
         }
         $subscription->load(['product', 'user']);

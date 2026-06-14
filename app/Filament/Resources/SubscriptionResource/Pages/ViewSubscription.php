@@ -89,6 +89,12 @@ class ViewSubscription extends ViewRecord
     {
         return [
             Actions\EditAction::make(),
+            Actions\Action::make('print')
+                ->label('Print')
+                ->icon('heroicon-o-printer')
+                ->color('info')
+                ->url(fn () => "/dashboard/subscriptions/{$this->record->id}/print")
+                ->openUrlInNewTab(),
         ];
     }
 }
