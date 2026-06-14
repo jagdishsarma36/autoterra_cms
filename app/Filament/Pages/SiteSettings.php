@@ -31,6 +31,7 @@ class SiteSettings extends Page implements HasForms
             'site_email' => Setting::get('site_email', 'support@autoterra.net'),
             'company_address' => Setting::get('company_address', ''),
             'user_can_print' => Setting::get('user_can_print', true),
+            'license_key_mode' => Setting::get('license_key_mode', 'auto'),
             'header_logo_a' => Setting::get('header_logo_a', 'AUTO'),
             'header_logo_t' => Setting::get('header_logo_t', 'TERRA'),
             'header_logo_image' => Setting::get('header_logo_image', ''),
@@ -69,6 +70,14 @@ class SiteSettings extends Page implements HasForms
                             ->label('Allow users to print invoices')
                             ->helperText('When enabled, users can print order and subscription invoices from their dashboard.')
                             ->default(true),
+                        Forms\Components\Select::make('license_key_mode')
+                            ->label('License Key Generation')
+                            ->options([
+                                'auto' => 'Auto — generate keys automatically on payment',
+                                'manual' => 'Manual — enter keys manually after payment',
+                            ])
+                            ->default('auto')
+                            ->helperText('In manual mode, license keys must be entered manually on the order/subscription detail page.'),
                     ]),
 
                 Section::make('Header')
@@ -231,6 +240,7 @@ class SiteSettings extends Page implements HasForms
         Setting::set('site_email', $data['site_email'], 'text');
         Setting::set('company_address', $data['company_address'], 'text');
         Setting::set('user_can_print', $data['user_can_print'] ? '1' : '0', 'boolean');
+        Setting::set('license_key_mode', $data['license_key_mode'] ?? 'auto', 'text');
 
         // Header
         Setting::set('header_logo_a', $data['header_logo_a'] ?? 'AUTO', 'text');

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Subscription;
 use App\Models\LicenseKey;
 use App\Models\Product;
+use App\Models\Setting;
 use App\Services\RazorpayService;
 use App\Mail\OrderConfirmation;
 use App\Mail\SubscriptionConfirmation;
@@ -346,6 +347,10 @@ class RazorpayController extends Controller
      */
     protected function issueLicenseKey(Order $order): void
     {
+        if (Setting::get('license_key_mode', 'auto') === 'manual') {
+            return;
+        }
+
         LicenseKey::create([
             'user_id' => $order->user_id,
             'product_id' => $order->product_id,
