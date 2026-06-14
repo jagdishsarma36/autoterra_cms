@@ -3,12 +3,17 @@
 namespace App\Filament\Resources\SubscriptionResource\Pages;
 
 use App\Filament\Resources\SubscriptionResource;
+use App\Models\LicenseKey;
+use App\Models\Setting;
 use App\Services\RazorpayService;
 use Filament\Actions;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Grid;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewSubscription extends ViewRecord
@@ -95,6 +100,71 @@ class ViewSubscription extends ViewRecord
                 ->color('info')
                 ->url(fn () => "/dashboard/subscriptions/{$this->record->id}/print")
                 ->openUrlInNewTab(),
+            $this->getLicenseKeyAction(),
         ];
+    }
+
+    protected function getLicenseKeyAction(): Actions\Action
+    {
+        $record = $this->record;
+        $license = LicenseKey::where('user_id', $record->user_id)
+            ->where('product_id', $record->product_id)
+            ->where('order_id', null)
+            ->first();
+
+        return Actions\Action::make('manageLicenseKey')
+            ->label($license ? 'Edit License Key' : 'Add License Key')
+            ->icon($license ? 'heroicon-o-key' : 'heroicon-o-plus-circle')
+            ->color($license ? 'warning' : 'success')
+            ->modalHeading($license ? 'Edit License Key' : 'Add License Key')
+            ->modalSubmitActionLabel($license ? 'Update' : 'Save')
+            ->form([
+                Section::make('License Key Details')
+                    ->schema([
+                        Grid::make(2)->schema([
+                            TextInput::make('license_key')
+                                ->label('License Key')
+                                ->required()
+                                ->maxLength(255)
+                                ->default($license?->license_key),
+                            DatePicker::make('expires_at')
+                                ->label('Expiry Date')
+                                ->required()
+                                ->default($license?->expires_at),
+                        ]),
+                    ]),
+            ])
+            ->action(function (array $data) use ($record, $license): void {
+                if (Setting::get('license_key_mode', 'auto') !== 'manual') {
+                    Notification::make()
+                        ->title('License key generation is set to automatic')
+                        ->warning()
+                        ->send();
+                    return;
+                }
+
+                if ($license) {
+                    $license->update([
+                        'license_key' => $data['license_key'],
+                        'expires_at' => $data['expires_at'],
+                    ]);
+                } else {
+                    LicenseKey::create([
+                        'user_id' => $record->user_id,
+                        'product_id' => $record->product_id,
+                        'order_id' => null,
+                        'license_key' => $data['license_key'],
+                        'activated_at' => now(),
+                        'expires_at' => $data['expires_at'],
+                        'is_active' => true,
+                        'max_activations' => 1,
+                    ]);
+                }
+
+                Notification::make()
+                    ->title('License key saved')
+                    ->success()
+                    ->send();
+            });
     }
 }

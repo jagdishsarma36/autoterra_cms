@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Subscription;
-use App\Models\LicenseKey;
 use App\Models\Product;
 use App\Services\RazorpayService;
 use Illuminate\Http\Request;
@@ -34,7 +33,7 @@ class DashboardController extends Controller
         if ($subscription->user_id !== Auth::id()) {
             abort(403);
         }
-        $subscription->load('product');
+        $subscription->load('product', 'licenseKeys');
 
         $invoices = [];
         $autoCancelled = false;
