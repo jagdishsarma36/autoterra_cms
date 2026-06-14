@@ -5,7 +5,7 @@
 
 @if(!empty($invoices))
 <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-white/10">
-    <table class="w-full text-sm">
+    <table class="w-full text-sm" style="text-align: left;width:100%;">
         <thead>
             <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5">
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Invoice</th>
