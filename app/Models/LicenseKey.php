@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class LicenseKey extends Model
 {
     protected $fillable = [
-        'user_id', 'product_id', 'order_id', 'license_key',
+        'user_id', 'product_id', 'order_id', 'subscription_id', 'license_key',
         'activated_at', 'expires_at', 'is_active',
         'activations_count', 'max_activations',
     ];
@@ -46,6 +46,11 @@ class LicenseKey extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class);
     }
 
     public function isExpired(): bool

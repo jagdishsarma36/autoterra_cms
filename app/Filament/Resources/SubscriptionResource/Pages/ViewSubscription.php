@@ -107,10 +107,7 @@ class ViewSubscription extends ViewRecord
     protected function getLicenseKeyAction(): Actions\Action
     {
         $record = $this->record;
-        $license = LicenseKey::where('user_id', $record->user_id)
-            ->where('product_id', $record->product_id)
-            ->where('order_id', null)
-            ->first();
+        $license = LicenseKey::where('subscription_id', $record->id)->first();
 
         return Actions\Action::make('manageLicenseKey')
             ->label($license ? 'Edit License Key' : 'Add License Key')
@@ -152,6 +149,7 @@ class ViewSubscription extends ViewRecord
                     LicenseKey::create([
                         'user_id' => $record->user_id,
                         'product_id' => $record->product_id,
+                        'subscription_id' => $record->id,
                         'order_id' => null,
                         'license_key' => $data['license_key'],
                         'activated_at' => now(),
