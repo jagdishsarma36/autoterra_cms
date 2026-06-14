@@ -35,6 +35,7 @@ class ViewSubscription extends ViewRecord
     {
         return $schema
             ->record($this->record)
+            ->columns(1)
             ->schema([
                 Section::make('Subscription Details')
                     ->schema([
@@ -75,9 +76,11 @@ class ViewSubscription extends ViewRecord
                     ]),
 
                 Section::make('Invoice History')
+                    ->columnSpanFull()
                     ->schema([
                         \Filament\Infolists\Components\ViewEntry::make('invoices')
-                            ->view('filament.infolists.components.invoice-table'),
+                            ->view('filament.infolists.components.invoice-table')
+                            ->columnSpanFull(),
                     ]),
             ]);
     }
