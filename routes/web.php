@@ -55,6 +55,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/subscriptions/{subscription}', [DashboardController::class, 'subscriptionDetail'])->name('dashboard.subscription.detail');
     Route::get('/subscriptions/{subscription}/print', [DashboardController::class, 'subscriptionPrint'])->name('dashboard.subscription.print');
     Route::post('/subscriptions/{subscription}/cancel', [DashboardController::class, 'cancelSubscription'])->name('dashboard.subscription.cancel');
+    Route::post('/subscriptions/{subscription}/retry-invoice', [DashboardController::class, 'retryInvoicePayment'])->name('dashboard.subscription.retry-invoice');
     Route::get('/licenses', [DashboardController::class, 'licenses'])->name('dashboard.licenses');
     Route::get('/orders', [DashboardController::class, 'orders'])->name('dashboard.orders');
     Route::get('/orders/{order}', [DashboardController::class, 'orderDetail'])->name('dashboard.order.detail');

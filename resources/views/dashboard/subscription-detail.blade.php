@@ -51,6 +51,96 @@
     </div>
   </div>
 
+  @if($autoCancelled)
+  <div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:12px;padding:24px;margin-top:24px;">
+    <div style="display:flex;align-items:flex-start;gap:14px;">
+      <i class="ti ti-alert-circle" style="font-size:22px;color:#DC2626;flex-shrink:0;margin-top:2px;"></i>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;margin-bottom:6px;color:#991B1B;">Subscription Auto-Cancelled</h4>
+        <p style="font-size:13px;color:#7F1D1D;line-height:1.6;">This subscription was automatically cancelled because a payment remained pending for more than 7 days.</p>
+      </div>
+    </div>
+  </div>
+  @endif
+
+  @if(!empty($invoices))
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;margin-top:24px;">
+    <h3 style="font-size:14px;font-weight:800;margin-bottom:16px;">Payment History</h3>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--border);">
+            <th style="text-align:left;padding:10px 12px;font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Invoice</th>
+            <th style="text-align:left;padding:10px 12px;font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Date</th>
+            <th style="text-align:left;padding:10px 12px;font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Amount</th>
+            <th style="text-align:left;padding:10px 12px;font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Status</th>
+            <th style="text-align:left;padding:10px 12px;font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($invoices as $inv)
+          @php
+            $invStatus = $inv['status'] ?? 'unknown';
+            $invAmount = $inv['amount'] ?? 0;
+            $invCurrency = $inv['currency'] ?? 'INR';
+            $invCreated = isset($inv['created_at']) ? \Carbon\Carbon::createFromTimestamp($inv['created_at'])->format('M j, Y') : 'N/A';
+            $invId = $inv['id'] ?? '';
+            $invShortId = substr($invId, -8);
+            $paidAt = isset($inv['paid_at']) ? \Carbon\Carbon::createFromTimestamp($inv['paid_at'])->format('M j, Y g:i A') : null;
+            $periodStart = $inv['line_items'][0]['item']['name'] ?? null;
+          @endphp
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px;font-weight:600;">
+              <span style="font-family:monospace;font-size:12px;">INV-{{ strtoupper($invShortId) }}</span>
+            </td>
+            <td style="padding:12px;">{{ $invCreated }}</td>
+            <td style="padding:12px;font-weight:700;">
+              {{ $invCurrency === 'INR' ? '₹' . number_format($invAmount / 100, 0) : '$' . number_format($invAmount / 100, 2) }}
+            </td>
+            <td style="padding:12px;">
+              @if($invStatus === 'paid')
+                <span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:#D1FAE5;color:#065F46;">Paid</span>
+              @elseif($invStatus === 'failed')
+                <span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:#FEE2E2;color:#991B1B;">Failed</span>
+              @elseif($invStatus === 'created')
+                <span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:#FEF3E2;color:#92400E;">Pending</span>
+              @elseif($invStatus === 'cancelled')
+                <span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:#F3F4F6;color:#374151;">Cancelled</span>
+              @elseif($invStatus === 'expired')
+                <span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:#F3F4F6;color:#374151;">Expired</span>
+              @else
+                <span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;background:#F3F4F6;color:#374151;">{{ ucfirst($invStatus) }}</span>
+              @endif
+            </td>
+            <td style="padding:12px;">
+              @if($invStatus === 'failed' && $subscription->status === 'active')
+                <div style="display:flex;gap:8px;">
+                  <button onclick="retryPayment('{{ $invId }}', {{ $invAmount }}, '{{ $invCurrency }}')" style="background:var(--cyan);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                    <i class="ti ti-refresh"></i> Retry
+                  </button>
+                  <form method="POST" action="{{ route('dashboard.subscription.cancel', $subscription) }}" onsubmit="return confirm('Cancel this subscription?');" style="display:inline;">
+                    @csrf
+                    <button type="submit" style="background:#EF4444;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                      <i class="ti ti-x"></i> Cancel
+                    </button>
+                  </form>
+                </div>
+              @elseif($invStatus === 'paid' && $paidAt)
+                <span style="font-size:11px;color:var(--muted);">Paid {{ $paidAt }}</span>
+              @elseif($invStatus === 'created')
+                <span style="font-size:11px;color:var(--muted);">Awaiting payment</span>
+              @else
+                <span style="font-size:11px;color:var(--muted);">—</span>
+              @endif
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+  </div>
+  @endif
+
   @if($subscription->status === 'active')
   <div style="background:#FEF3E2;border:1px solid #F0C97A;border-radius:12px;padding:24px;margin-top:24px;">
     <div style="display:flex;align-items:flex-start;gap:14px;">
@@ -69,8 +159,76 @@
 </div>
 </div>
 
-@dump($subscription)
-
-
 @include('partials.footer')
+@endsection
+
+@section('scripts')
+<script>
+function retryPayment(invoiceId, amount, currency) {
+  if (!confirm('Retry this payment?')) return;
+
+  fetch('{{ route("dashboard.subscription.retry-invoice", $subscription) }}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({ invoice_id: invoiceId })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.error) {
+      alert('Error: ' + data.error);
+      return;
+    }
+
+    var rzp = new Razorpay({
+      key: data.key_id,
+      amount: data.amount,
+      currency: data.currency,
+      name: 'AutoTerra',
+      description: data.product_name + ' — Retry Payment',
+      order_id: data.order_id,
+      handler: function(response) {
+        fetch('/api/razorpay/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            db_order_id: data.db_order_id
+          })
+        })
+        .then(r => r.json())
+        .then(vData => {
+          if (vData.success) {
+            window.location.reload();
+          } else {
+            alert('Payment verification failed.');
+          }
+        });
+      },
+      modal: {
+        ondismiss: function() {
+          alert('Payment was cancelled.');
+        }
+      },
+      prefill: {
+        name: data.user_name,
+        email: data.user_email
+      },
+      theme: { color: '#00A8F8' }
+    });
+    rzp.open();
+  })
+  .catch(function() {
+    alert('Something went wrong. Please try again.');
+  });
+}
+</script>
 @endsection

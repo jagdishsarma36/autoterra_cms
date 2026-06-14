@@ -21,13 +21,18 @@ class RazorpayService
     /**
      * Make an authenticated request to Razorpay API.
      */
-    protected function request(string $method, string $path, array $body = []): array
+    protected function request(string $method, string $path, array $body = [], array $queryParams = []): array
     {
         $url = $this->apiBase . $path;
 
-        $response = Http::withBasicAuth($this->keyId, $this->keySecret)
-            ->withHeaders(['Content-Type' => 'application/json'])
-            ->send(strtoupper($method), $url, $body ? ['json' => $body] : []);
+        $http = Http::withBasicAuth($this->keyId, $this->keySecret)
+            ->withHeaders(['Content-Type' => 'application/json']);
+
+        if ($queryParams) {
+            $http->withQueryParams($queryParams);
+        }
+
+        $response = $http->send(strtoupper($method), $url, $body ? ['json' => $body] : []);
 
         $data = $response->json();
 
@@ -129,6 +134,25 @@ class RazorpayService
         return $this->request('POST', "/subscriptions/{$subscriptionId}/cancel", [
             'cancel_at_cycle_end' => 1,
         ]);
+    }
+
+    /**
+     * Fetch invoices for a subscription.
+     */
+    public function fetchInvoices(string $subscriptionId): array
+    {
+        return $this->request('GET', '/invoices', [], [
+            'subscription_id' => $subscriptionId,
+            'count' => 100,
+        ]);
+    }
+
+    /**
+     * Fetch a single invoice.
+     */
+    public function fetchInvoice(string $invoiceId): array
+    {
+        return $this->request('GET', "/invoices/{$invoiceId}");
     }
 
     /**
