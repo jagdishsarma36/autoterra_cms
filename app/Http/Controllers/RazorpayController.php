@@ -203,11 +203,29 @@ class RazorpayController extends Controller
             'subscription_id' => $subResult['id'],
             'plan_id' => $planResult['id'],
         ]);
+    }
 
-        return response()->json([
-            'subscription_id' => $subResult['id'],
-            'plan_id' => $planResult['id'],
+    /**
+     * Cancel a pending subscription that was never paid.
+     */
+    public function cancelPendingSubscription(Request $request)
+    {
+        $request->validate([
+            'subscription_id' => 'required|string',
         ]);
+
+        $sub = Subscription::where('razorpay_subscription_id', $request->subscription_id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($sub) {
+            if ($sub->razorpay_subscription_id) {
+                $this->razorpay->cancelSubscription($sub->razorpay_subscription_id);
+            }
+            $sub->delete();
+        }
+
+        return response()->json(['success' => true]);
     }
 
     /**
