@@ -22,11 +22,10 @@
                     $invCurrency = $inv['currency'] ?? 'INR';
                     $invCreated = isset($inv['created_at']) ? \Carbon\Carbon::createFromTimestamp($inv['created_at'])->format('M j, Y') : 'N/A';
                     $invShortId = substr($inv['id'] ?? '', -8);
-                    $short_url = $inv['short_url'] ? '';
                     $paidAt = isset($inv['paid_at']) ? \Carbon\Carbon::createFromTimestamp($inv['paid_at'])->format('M j, Y g:i A') : null;
                 @endphp
                 <tr class="border-b border-gray-100 dark:border-white/5 last:border-0">
-                    <td class="px-4 py-3 font-mono text-xs font-semibold" data-url="{{ $short_url }}">INV-{{ strtoupper($invShortId) }}</td>
+                    <td class="px-4 py-3 font-mono text-xs font-semibold" data-url="{{ $inv['short_url'] }}">INV-{{ strtoupper($invShortId) }}</td>
                     <td class="px-4 py-3 text-gray-600 dark:text-gray-400">{{ $invCreated }}</td>
                     <td class="px-4 py-3 font-semibold">
                         {{ $invCurrency === 'INR' ? '₹' . number_format($invAmount / 100, 0) : '$' . number_format($invAmount / 100, 2) }}
