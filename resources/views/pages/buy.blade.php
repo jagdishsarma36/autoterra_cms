@@ -490,16 +490,7 @@ async function handleSubscriptionCheckout(price) {
           alert('Subscription verification failed.'); resetBtn();
         }
       },
-      modal: {
-        ondismiss: function() {
-          fetch('/api/razorpay/cancel-pending-subscription', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
-            body: JSON.stringify({ subscription_id: data.subscription_id })
-          }).catch(function() {});
-          resetBtn();
-        }
-      },
+      modal: { ondismiss: () => { resetBtn(); } },
       prefill: { name: '{{ Auth::user()->name ?? "" }}', email: '{{ Auth::user()->email ?? "" }}' },
       theme: { color: '#00A8F8' }
     });
