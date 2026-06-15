@@ -130,35 +130,45 @@
               '5yr'    => '5 Years',
               'unsure' => 'Unsure',
           ];
+          $tags = [
+              '1yr' => 'SAVE',
+              '3yr' => 'SAVE MORE',
+              '5yr' => 'BEST VALUE',
+              ];
 
           $first = true;
         @endphp
 
       <div class="term-pills" id="termPills">
-            @foreach($terms as $value => $enabled)
-                @if($enabled)
-                    <label
-                      class="term-pill ${
-                          (!enabled && (term === '3mo' || term === '6mo'))
-                              ? 'term-pill-disabled'
-                              : ''
-                          } ${selected ? 'selected' : ''}"
-                          ${enabled ? 'onclick="selectTerm(this)"' : ''}
-                      >
-                        <input
-                            type="radio"
-                          name="term"
-                          value="${term}"
-                          ${selected ? 'checked' : ''}
-                          ${!enabled ? 'disabled' : ''}
-                        >
-                        ${TERM_LABELS[term] || term}
-                        ${enabled && tag ? `<span class="save-tag">${tag}</span>` : ''}
-                    </label>
+      @foreach($terms as $term => $enabled)
+          @php
+              $selected = $first;
+              $tag = $tags[$term] ?? null;
+          @endphp
 
-                    @php $first = false; @endphp
-                @endif
-            @endforeach
+          <label
+              class="term-pill
+                  {{ (!$enabled && in_array($term, ['3mo', '6mo'])) ? 'term-pill-disabled' : '' }}
+                  {{ $selected ? 'selected' : '' }}"
+              {{ $enabled ? 'onclick=selectTerm(this)' : '' }}
+          >
+              <input
+                  type="radio"
+                  name="term"
+                  value="{{ $term }}"
+                  {{ $selected ? 'checked' : '' }}
+                  {{ !$enabled ? 'disabled' : '' }}
+              >
+
+              {{ $labels[$term] ?? $term }}
+
+              @if($enabled && $tag)
+                  <span class="save-tag">{{ $tag }}</span>
+              @endif
+          </label>
+
+          @php $first = false; @endphp
+          @endforeach
         </div>
         
         {{--<div class="term-pills" id="termPills">
@@ -449,11 +459,26 @@
     '5yr': '5 Years',
     'unsure': 'Not Sure'
     };
-    const tag = {
+    const TERM_TAGS = {
     '1yr': 'SAVE',
     '3yr': 'SAVE MORE',
     '5yr': 'BEST VALUE'
-};
+    };
+    const tag = TERM_TAGS[term];
+
+  html += `
+  <label class="term-pill ${!enabled ? 'term-pill-disabled' : ''} ${selected ? 'selected' : ''}">
+      <input
+          type="radio"
+          name="term"
+          value="${term}"
+          ${selected ? 'checked' : ''}
+          ${!enabled ? 'disabled' : ''}
+      >
+      ${TERM_LABELS[term] || term}
+      ${enabled && tag ? `<span class="save-tag">${tag}</span>` : ''}
+  </label>
+  `;
 
 let selectedProduct = 'prospatial';
 let selectedTerm    = '1yr';
