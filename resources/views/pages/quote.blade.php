@@ -464,7 +464,7 @@
     '3yr': 'SAVE MORE',
     '5yr': 'BEST VALUE'
     };
-    const tag = TERM_TAGS[term];
+    // const tag = TERM_TAGS[term];
 
 let selectedProduct = 'prospatial';
 let selectedTerm    = '1yr';
