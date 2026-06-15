@@ -355,3 +355,22 @@ document.addEventListener('DOMContentLoaded', function () {
         updateTermPills(selectedProduct);
     }
 });
+// licence selection
+
+function selectLicense(el) {
+    document.querySelectorAll('.license-opt')
+        .forEach(opt => opt.classList.remove('selected'));
+
+    el.classList.add('selected');
+    el.querySelector('input').checked = true;
+}
+//seat selection
+function changeSeat(delta) {
+    const input = document.getElementById('seatInput');
+
+    let value = parseInt(input.value) || 1;
+    const min = parseInt(input.min) || 1;
+    const max = parseInt(input.max) || 999;
+
+    input.value = Math.max(min, Math.min(max, value + delta));
+}

@@ -2665,6 +2665,24 @@ span.field-hint {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+.prod-card.selected .prod-card-check {
+    background: var(--cyan);
+    border-color: var(--cyan);
+}
+.prod-card.selected .prod-card-check::after {
+    content: '';
+    width: 5px;
+    height: 8px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+    display: block;
+}
+.prod-card.selected {
+    border-color: var(--cyan);
+    background: var(--cyan-lt);
+}
 /* Quote page end */
 /****resources page ***/
 .res-hero {
