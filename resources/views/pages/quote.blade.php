@@ -449,6 +449,11 @@
     '5yr': '5 Years',
     'unsure': 'Not Sure'
     };
+    const tag = {
+    '1yr': 'SAVE',
+    '3yr': 'SAVE MORE',
+    '5yr': 'BEST VALUE'
+};
 
 let selectedProduct = 'prospatial';
 let selectedTerm    = '1yr';
