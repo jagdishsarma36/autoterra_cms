@@ -109,7 +109,19 @@
         </div>
     </div>
         <hr class="qt-sec-divider">
-        
+       <script>
+        const PRODUCTS = @json(pageContentJson('quote', 'quote.products'));
+        const TERM_AVAIL = @json(pageContentJson('quote', 'quote.term_avail'));
+
+            const TERM_LABELS = {
+            '3mo': '3 Months',
+            '6mo': '6 Months',
+            '1yr': '1 Year',
+            '3yr': '3 Years',
+            '5yr': '5 Years',
+            'unsure': 'Not Sure'
+            };
+        </script> 
         <!-- STEP 2: Term preference -->
         <div class="qt-sec-head">
           <div class="qt-sec-num">2</div>
