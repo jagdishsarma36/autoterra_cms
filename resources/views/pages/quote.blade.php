@@ -525,9 +525,13 @@ function selectProduct(el) {
   selectedProduct = el.dataset.product;
   el.querySelector('input').checked = true;
   const productName = el.querySelector('[name="field_edition_type"]')?.value || '';
-    const editionField = document.querySelector(
-        '.field_wrap_edition_type input[type="hidden"][name="field_edition_type"]'
-    );
+  const editionField = document.querySelector(
+      '.field_wrap_edition_type input[type="hidden"][name="field_edition_type"]'
+  );
+  if (editionField) {
+        editionField.value = productName;
+        editionField.dispatchEvent(new Event('change', { bubbles: true }));
+    }
   renderFeatures(selectedProduct);
   updateTermPills(selectedProduct);
 }
