@@ -466,20 +466,6 @@
     };
     const tag = TERM_TAGS[term];
 
-  html += `
-  <label class="term-pill ${!enabled ? 'term-pill-disabled' : ''} ${selected ? 'selected' : ''}">
-      <input
-          type="radio"
-          name="term"
-          value="${term}"
-          ${selected ? 'checked' : ''}
-          ${!enabled ? 'disabled' : ''}
-      >
-      ${TERM_LABELS[term] || term}
-      ${enabled && tag ? `<span class="save-tag">${tag}</span>` : ''}
-  </label>
-  `;
-
 let selectedProduct = 'prospatial';
 let selectedTerm    = '1yr';
 let selectedLicense = 'node';
