@@ -310,7 +310,6 @@ function updateTermPills(key) {
     let first = true;
 
     Object.entries(terms).forEach(([term, enabled]) => {
-        if (!enabled) return;
 
         html += `
             <label class="term-pill ${first ? 'selected' : ''}"
