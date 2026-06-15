@@ -64,6 +64,10 @@
                     {{ $product['track'] ?? '' }}
                 </div>
 
+                <div class="prod-card-badge">
+                  Most Popular
+                </div>
+
                 <input type="hidden" name="product_name" value="{{ $product['name'] ?? '' }}">
             </label>
         @endforeach
