@@ -63,7 +63,7 @@
                 <div class="prod-card-track">
                     {{ $product['track'] ?? '' }}
                 </div>
-                @if($product['badge'] != '')
+                @if(!empty($product['badge']))
                 <div class="prod-card-badge">
                   {{ $product['badge'] ?? '' }}
                 </div>
