@@ -2689,6 +2689,19 @@ span.field-hint {
     pointer-events: none;
     text-decoration: line-through;
 }
+.fc-val.yes {
+    color: var(--green);
+}
+.fc-val {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    min-width: 60px;
+    text-align: center;
+}
+.fc-val.partial {
+    color: var(--amber);
+}
 /* Quote page end */
 /****resources page ***/
 .res-hero {
