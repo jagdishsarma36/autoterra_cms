@@ -2683,6 +2683,12 @@ span.field-hint {
     border-color: var(--cyan);
     background: var(--cyan-lt);
 }
+.term-pill.term-pill-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+    text-decoration: line-through;
+}
 /* Quote page end */
 /****resources page ***/
 .res-hero {
