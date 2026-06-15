@@ -109,19 +109,7 @@
         </div>
     </div>
         <hr class="qt-sec-divider">
-       <script>
-        const PRODUCTS = @json(pageContentJson('quote', 'quote.products'));
-        const TERM_AVAIL = @json(pageContentJson('quote', 'quote.term_avail'));
-
-            const TERM_LABELS = {
-            '3mo': '3 Months',
-            '6mo': '6 Months',
-            '1yr': '1 Year',
-            '3yr': '3 Years',
-            '5yr': '5 Years',
-            'unsure': 'Not Sure'
-            };
-        </script> 
+       
         <!-- STEP 2: Term preference -->
         <div class="qt-sec-head">
           <div class="qt-sec-num">2</div>
@@ -448,3 +436,97 @@
 
 @include('partials.footer')
 @endsection
+
+<script>
+  const PRODUCTS = @json(pageContentJson('quote', 'quote.products'));
+  const TERM_AVAIL = @json(pageContentJson('quote', 'quote.term_avail'));
+
+    const TERM_LABELS = {
+    '3mo': '3 Months',
+    '6mo': '6 Months',
+    '1yr': '1 Year',
+    '3yr': '3 Years',
+    '5yr': '5 Years',
+    'unsure': 'Not Sure'
+    };
+
+let selectedProduct = 'prospatial';
+let selectedTerm    = '1yr';
+let selectedLicense = 'node';
+
+/* ── Render feature table ── */
+function renderFeatures(key) {
+  const p = PRODUCTS[key];
+  document.getElementById('fcTitle').textContent = p.name + ' — key capabilities';
+  const tbody = document.getElementById('fcRows');
+  tbody.innerHTML = p.features.map(f => {
+    let valHtml;
+    if (f.val === 'yes')    valHtml = '<div class="fc-val yes"><span class="ti ti-circle-check"></span> Yes</div>';
+    else if (f.val === 'no') valHtml = '<div class="fc-val"><span class="ti ti-circle-x" style="color:var(--border)"></span></div>';
+    else                     valHtml = `<div class="fc-val partial">${f.note || 'Partial'}</div>`;
+    return `<div class="fc-row"><div class="fc-feature">${f.name}</div>${valHtml}</div>`;
+  }).join('');
+}
+
+function updateTermPills(key) {
+  const avail = TERM_AVAIL[key];
+  let termSwitched = false;
+  document.querySelectorAll('.term-pill').forEach(pill => {
+    const t = pill.querySelector('input').value;
+    if (avail[t] === false) {
+      pill.classList.add('term-pill-disabled');
+      pill.title = 'Not available for this edition (minimum 1 year)';
+      if (pill.classList.contains('selected')) {
+        pill.classList.remove('selected');
+        termSwitched = true;
+      }
+    } else {
+      pill.classList.remove('term-pill-disabled');
+      pill.title = '';
+    }
+  });
+  // Default to 1yr if current term was disabled
+  if (termSwitched) {
+    const t1yr = document.querySelector('.term-pill input[value="1yr"]');
+    if (t1yr) {
+      selectedTerm = '1yr';
+      t1yr.closest('.term-pill').classList.add('selected');
+      t1yr.checked = true;
+    }
+  }
+}
+
+/* ── Product selection ── */
+function selectProduct(el) {
+  document.querySelectorAll('.prod-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedProduct = el.dataset.product;
+  el.querySelector('input').checked = true;
+  renderFeatures(selectedProduct);
+  updateTermPills(selectedProduct);
+}
+
+/* ── Term selection ── */
+function selectTerm(el) {
+  document.querySelectorAll('.term-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedTerm = el.querySelector('input').value;
+  el.querySelector('input').checked = true;
+}
+
+/* ── License selection ── */
+function selectLicense(el) {
+  document.querySelectorAll('.license-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedLicense = el.querySelector('input').value;
+  el.querySelector('input').checked = true;
+}
+
+/* ── Seat counter ── */
+function changeSeat(delta) {
+  const inp = document.getElementById('seatInput');
+  let v = parseInt(inp.value) || 1;
+  v = Math.max(1, Math.min(999, v + delta));
+  inp.value = v;
+}
+</script> 
