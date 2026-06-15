@@ -524,10 +524,11 @@ function selectProduct(el) {
   el.classList.add('selected');
   selectedProduct = el.dataset.product;
   el.querySelector('input').checked = true;
-  const productName = el.querySelector('[name="field_edition_type"]')?.value || '';
+  const productName = el.querySelector('[name="product_name"]')?.value || '';
   const editionField = document.querySelector(
       '.field_wrap_edition_type input[type="hidden"][name="field_edition_type"]'
   );
+
   if (editionField) {
         editionField.value = productName;
         editionField.dispatchEvent(new Event('change', { bubbles: true }));
