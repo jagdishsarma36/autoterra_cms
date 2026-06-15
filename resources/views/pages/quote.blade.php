@@ -63,6 +63,11 @@
                 <div class="prod-card-track">
                     {{ $product['track'] ?? '' }}
                 </div>
+                @if($product['badge'] != '')
+                <div class="prod-card-badge">
+                  {{ $product['badge'] ?? '' }}
+                </div>
+                @endif
 
                 <input type="hidden" name="product_name" value="{{ $product['name'] ?? '' }}">
             </label>
