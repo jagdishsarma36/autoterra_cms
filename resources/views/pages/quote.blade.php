@@ -150,7 +150,8 @@
               class="term-pill
                   {{ (!$enabled && in_array($term, ['3mo', '6mo'])) ? 'term-pill-disabled' : '' }}
                   {{ $selected ? 'selected' : '' }}"
-              {{ $enabled ? 'onclick=selectTerm(this)' : '' }}
+              {{ $enabled ? '' : '' }}
+              onclick=selectTerm(this)
           >
               <input
                   type="radio"
