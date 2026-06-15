@@ -131,37 +131,58 @@
           Longer terms attract significant savings. Let us know your preference and we'll highlight the best deal in your quote.
         </p>
         @php
-        $products = pageContentJson('quote', 'quote.term_avail');       
-        $product = 'view';
+        $products = pageContentJson('quote', 'quote.term_avail');
+
+        // Current selected product
+        $product = 'view'; // replace dynamically
+
         $terms = $products[$product] ?? [];
+
         $labels = [
             '3mo'    => '3 Months',
             '6mo'    => '6 Months',
             '1yr'    => '1 Year',
             '3yr'    => '3 Years',
             '5yr'    => '5 Years',
-            'unsure' => 'Unsure',
+            'unsure' => 'Not sure yet',
         ];
-        $first = true;
-        @endphp
-        <div class="term-pills" id="termPills">
-            @foreach($terms as $value => $enabled)
-                @if($enabled)
-                    <label
-                        class="term-pill {{ $first ? 'selected' : '' }}"
-                        onclick="selectTerm(this)"
-                    >
-                        <input
-                            type="radio"
-                            name="term"
-                            value="{{ $value }}"
-                            {{ $first ? 'checked' : '' }}
-                        >
-                        {{ $labels[$value] ?? $value }}
-                    </label>
 
-                    @php $first = false; @endphp
-                @endif
+        $tags = [
+            '1yr' => 'SAVE',
+            '3yr' => 'SAVE MORE',
+            '5yr' => 'BEST VALUE',
+        ];
+
+        $selected = '1yr'; // default selected term
+        @endphp
+
+        <div class="term-pills" id="termPills">
+            @foreach($labels as $value => $label)
+                @php
+                    $enabled = $terms[$value] ?? false;
+                @endphp
+
+                <label
+                    class="term-pill {{ !$enabled ? 'term-pill-disabled' : '' }} {{ $selected == $value ? 'selected' : '' }}"
+                    onclick="selectTerm(this)"
+                    title="{{ !$enabled ? 'Not available for this edition (minimum 1 year)' : '' }}"
+                >
+                    <input
+                        type="radio"
+                        name="term"
+                        value="{{ $value }}"
+                        {{ $selected == $value ? 'checked' : '' }}
+                        {{ !$enabled ? 'disabled' : '' }}
+                    >
+
+                    {{ $label }}
+
+                    @if(isset($tags[$value]))
+                        <span class="save-tag">
+                            {{ $tags[$value] }}
+                        </span>
+                    @endif
+                </label>
             @endforeach
         </div>
         
