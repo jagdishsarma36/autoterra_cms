@@ -127,47 +127,46 @@
           <div class="qt-sec-num">2</div>
           <div class="qt-sec-label">Preferred subscription term</div>
         </div>
+        <p class="qt-sec-des">
+          Longer terms attract significant savings. Let us know your preference and we'll highlight the best deal in your quote.
+        </p>
         @php
-        $products = pageContentJson('quote', 'quote.term_avail');
-
-        // Current selected product
-        $product = 'view'; // replace with dynamic product value
-
+        $products = pageContentJson('quote', 'quote.term_avail');       
+        $product = 'view';
         $terms = $products[$product] ?? [];
-
         $labels = [
             '3mo'    => '3 Months',
             '6mo'    => '6 Months',
             '1yr'    => '1 Year',
             '3yr'    => '3 Years',
             '5yr'    => '5 Years',
-            'unsure' => 'Not Sure',
+            'unsure' => 'Unsure',
         ];
-
         $first = true;
         @endphp
-
         <div class="term-pills" id="termPills">
             @foreach($terms as $value => $enabled)
                 @if($enabled)
-                    <label class="term-pill {{ $first ? 'selected' : '' }}" onclick="selectTerm(this)">
+                    <label
+                        class="term-pill {{ $first ? 'selected' : '' }}"
+                        onclick="selectTerm(this)"
+                    >
                         <input
                             type="radio"
                             name="term"
                             value="{{ $value }}"
                             {{ $first ? 'checked' : '' }}
                         >
-                        {{ $labels[$value] ?? strtoupper($value) }}
+                        {{ $labels[$value] ?? $value }}
                     </label>
+
                     @php $first = false; @endphp
                 @endif
             @endforeach
         </div>
-        {{-- <p class="qt-sec-des">
-          {{ $quote['subscription_term']['description'] }}
-        </p>
-        <div class="term-pills" id="termPills">
-          @foreach($quote['subscription_term']['terms'] as $term)
+        
+        {{--<div class="term-pills" id="termPills">
+          @foreach($quote['quote.term_avail']['terms'] as $term)
         <label
             class="term-pill {{ !empty($term['selected']) ? 'selected' : '' }}"
             onclick="selectTerm(this)"
@@ -186,7 +185,7 @@
             @endif
         </label>
         @endforeach
-      </div>  --}}
+      </div>--}}
 
     <hr class="qt-sec-divider">
 
