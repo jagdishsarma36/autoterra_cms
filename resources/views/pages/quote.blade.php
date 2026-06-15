@@ -132,10 +132,7 @@
         </p>
         @php
         $products = pageContentJson('quote', 'quote.term_avail');
-
-        // Current selected product
-        $product = 'view'; // replace dynamically
-
+        $product = 'view'; 
         $terms = $products[$product] ?? [];
 
         $labels = [
@@ -146,14 +143,12 @@
             '5yr'    => '5 Years',
             'unsure' => 'Not sure yet',
         ];
-
         $tags = [
             '1yr' => 'SAVE',
             '3yr' => 'SAVE MORE',
             '5yr' => 'BEST VALUE',
         ];
-
-        $selected = '1yr'; // default selected term
+        $selected = '1yr';
         @endphp
 
         <div class="term-pills" id="termPills">
