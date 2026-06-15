@@ -132,12 +132,8 @@
         </p>
         @php
           $products = pageContentJson('quote', 'quote.term_avail');
-
-          // Current selected product
-          $product = 'view'; // replace with your dynamic product value
-
+          $product = 'view'; 
           $terms = $products[$product] ?? [];
-
           $labels = [
               '3mo'    => '3 Months',
               '6mo'    => '6 Months',
@@ -150,20 +146,26 @@
           $first = true;
         @endphp
 
-        <div class="term-pills" id="termPills">
+      <div class="term-pills" id="termPills">
             @foreach($terms as $value => $enabled)
                 @if($enabled)
                     <label
-                        class="term-pill {{ $first ? 'selected' : '' }}"
-                        onclick="selectTerm(this)"
-                    >
+                      class="term-pill ${
+                          (!enabled && (term === '3mo' || term === '6mo'))
+                              ? 'term-pill-disabled'
+                              : ''
+                          } ${selected ? 'selected' : ''}"
+                          ${enabled ? 'onclick="selectTerm(this)"' : ''}
+                      >
                         <input
                             type="radio"
-                            name="term"
-                            value="{{ $value }}"
-                            {{ $first ? 'checked' : '' }}
+                          name="term"
+                          value="${term}"
+                          ${selected ? 'checked' : ''}
+                          ${!enabled ? 'disabled' : ''}
                         >
-                        {{ $labels[$value] ?? $value }}
+                        ${TERM_LABELS[term] || term}
+                        ${enabled && tag ? `<span class="save-tag">${tag}</span>` : ''}
                     </label>
 
                     @php $first = false; @endphp
