@@ -305,16 +305,12 @@ function renderFeatures(key) {
 function updateTermPills(key) {
     const terms = TERM_AVAIL[key];
     const container = document.getElementById('termPills');
-    const TERM_TAGS = {
-    '1yr': 'SAVE',
-    '3yr': 'SAVE MORE',
-    '5yr': 'BEST VALUE'
-    };
 
     let html = '';
     let first = true;
 
     Object.entries(terms).forEach(([term, enabled]) => {
+        if (!enabled) return;
 
         html += `
             <label class="term-pill ${first ? 'selected' : ''}"
