@@ -524,6 +524,10 @@ function selectProduct(el) {
   el.classList.add('selected');
   selectedProduct = el.dataset.product;
   el.querySelector('input').checked = true;
+  const productName = el.querySelector('.product_name')?.value || '';
+    const editionField = document.querySelector(
+        '.field_wrap_edition_type input[type="hidden"][name="field_edition_type"]'
+    );
   renderFeatures(selectedProduct);
   updateTermPills(selectedProduct);
 }
@@ -534,6 +538,14 @@ function selectTerm(el) {
   el.classList.add('selected');
   selectedTerm = el.querySelector('input').value;
   el.querySelector('input').checked = true;
+  const hiddenField = document.querySelector(
+        '.field_wrap_subscription_term input[type="hidden"][name="field_subscription_term"]'
+    );
+
+    if (hiddenField) {
+        hiddenField.value = selectedTerm;
+        hiddenField.dispatchEvent(new Event('change', { bubbles: true }));
+    }
 }
 
 /* ── License selection ── */
