@@ -118,8 +118,9 @@
     <h2 class="sec-h2">
         {{ $faq['faq_title'] }}
     </h2>
+    @endforeach
     <div class="faq-list">
-       
+       @foreach(pageContentJson('products', 'products.faq') as $faq)
             <div class="faq-item">
                 <button class="faq-q" onclick="toggleFaq(this)">
                     {{ $faq['question'] }}
@@ -139,8 +140,8 @@
                     @endif
                 </div>
             </div>
+          @endforeach  
     </div>
-    @endforeach
 </section>
 
 <!-- cta section -->
