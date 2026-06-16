@@ -2705,6 +2705,16 @@ span.field-hint {
 .field_wrap_privacy_check>label {
     display:none !important;
 }
+.field_wrap_privacy_check {
+    position: relative;
+}
+.help_text {
+    position: absolute;
+    left: 240px;
+    top: 1px;
+    opacity: 0;
+    cursor: unset;
+}
 /* Quote page end */
 /****resources page ***/
 .res-hero {

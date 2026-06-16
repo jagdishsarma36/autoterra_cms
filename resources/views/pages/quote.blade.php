@@ -592,4 +592,7 @@ document.addEventListener('change', function (e) {
         }
     }
 });
+$('.help_text').css('cursor', 'pointer').on('click', function () {
+    window.open('/privacy-policy', '_blank');
+});
 </script> 
