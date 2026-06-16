@@ -8,18 +8,21 @@
 <section class="ps-hero">
     <div class="ps-hero-bg">
         <div class="ph img_pro">
-            @if(!empty($section['image_url']))
-            @if(Str::contains($section['image_url'], '<iframe'))
-                {!! $section['image_url'] !!}
-            @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $section['image_url']))
+        @if(!empty($hero['image_url']))
+            @if(Str::contains($hero['image_url'], '<iframe'))
+                {!! $hero['image_url'] !!}
+            @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $hero['image_url']))
                 <video autoplay muted loop playsinline controls>
-                    <source src="{{ asset($hero['image']) }}">
+                    <source src="{{ asset($hero['image_url']) }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             @else
-                <img src="{{ asset($hero['image']) }}" alt="pro spatial">
+                <img src="{{ asset($hero['image_url']) }}" alt="{{ $hero['title'] }}">
             @endif
+            @elseif(!empty($hero['image']))
+                <img src="{{ asset($hero['image']) }}" alt="{{ $hero['title'] }}">
             @endif
+        </div>
         </div>
     </div>
     <div class="ps-hero-overlay"></div>
