@@ -366,7 +366,7 @@
                 style="width:100%;padding:8px;border:1px solid var(--border);border-radius:7px;font-size:13px;">
             @endif
             @if($field->help_text)
-            <p style="font-size:12px;color:var(--muted);margin-top:4px;">{{ $field->help_text }}</p>
+            <p class="help_text" style="font-size:12px;color:var(--muted);margin-top:4px;">{{ $field->help_text }}</p>
             @endif
           </div>
           @endforeach
