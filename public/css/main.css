@@ -2702,6 +2702,9 @@ span.field-hint {
 .fc-val.partial {
     color: var(--amber);
 }
+.field_wrap_privacy_check>label {
+    display:none !important;
+}
 /* Quote page end */
 /****resources page ***/
 .res-hero {
