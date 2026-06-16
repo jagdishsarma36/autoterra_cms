@@ -592,11 +592,13 @@ document.addEventListener('change', function (e) {
         }
     }
 });
-jQuery(document).ready(function () {
-    $('.help_text')
-        .css('cursor', 'pointer')
-        .on('click', function () {
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.help_text').forEach(function (el) {
+        el.style.cursor = 'pointer';
+
+        el.addEventListener('click', function () {
             window.open('/privacy', '_blank');
         });
+    });
 });
 </script> 
