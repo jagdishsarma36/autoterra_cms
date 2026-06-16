@@ -592,11 +592,11 @@ document.addEventListener('change', function (e) {
         }
     }
 });
-document.querySelectorAll('.help_text').forEach(function (el) {
-    el.style.cursor = 'pointer';
-
-    el.addEventListener('click', function () {
-        window.open('/privacy', '_blank');
-    });
+jQuery(document).ready(function () {
+    $('.help_text')
+        .css('cursor', 'pointer')
+        .on('click', function () {
+            window.open('/privacy', '_blank');
+        });
 });
 </script> 
