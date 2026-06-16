@@ -131,7 +131,7 @@
         </svg>
         Continue with Google
       </a>
-      <a href="{{ route('social.redirect', 'microsoft') }}" class="btn-social">
+      <a href="{{ route('social.redirect', 'microsoft') }}" class="btn-social" style="display:none;">
         <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <rect x="1" y="1" width="10" height="10" fill="#F25022"/>
           <rect x="13" y="1" width="10" height="10" fill="#7FBA00"/>
