@@ -2882,6 +2882,61 @@ span.field-hint {
     font-weight: 800;
     letter-spacing: 0.3px;
 }
+.faq-list {
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.faq-item {
+    border-bottom: 1px solid var(--border);
+}
+.faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 18px 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--body);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+.faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 18px 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--body);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+.faq-q i {
+    font-size: 18px;
+    color: var(--cyan);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+.faq-a {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.72;
+    padding: 0 0 18px;
+    max-height: 0px;
+    opacity: 0;
+}
+.faq-a a {
+    text-decoration: none;
+    color: var(--cyan);
+}
 /****resources page ***/
 .res-hero {
     background: var(--navy);
