@@ -559,6 +559,13 @@ function selectLicense(el) {
   el.classList.add('selected');
   selectedLicense = el.querySelector('input').value;
   el.querySelector('input').checked = true;
+  const hiddenField = document.querySelector(
+        '.field_wrap_licence_model_eam input[type="hidden"][name="field_licence_model_eam"]'
+    );
+    if (hiddenField) {
+        hiddenField.value = selectedLicense;
+        hiddenField.dispatchEvent(new Event('change', { bubbles: true }));
+    }
 }
 
 /* ── Seat counter ── */
@@ -567,5 +574,30 @@ function changeSeat(delta) {
   let v = parseInt(inp.value) || 1;
   v = Math.max(1, Math.min(999, v + delta));
   inp.value = v;
+   const seatValue = inp.value;
+
+    // Set the hidden field
+    const hiddenField = document.querySelector(
+        '.field_wrap_number_seat input[type="hidden"][name="field_number_seat"]'
+    );
+
+    if (hiddenField) {
+        hiddenField.value = seatValue;
+    }
 }
+
+/* ── Deployment ── */
+const deploySelect = document.getElementById('deploySelect');
+
+deploySelect.addEventListener('change', function () {
+    const deploymentValue = this.value; 
+    const hiddenField = document.querySelector(
+        '.field_wrap_deployment input[type="hidden"][name="field_deployment"]'
+    );
+
+    if (hiddenField) {
+        hiddenField.value = deploymentValue;
+        hiddenField.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+});
 </script> 
