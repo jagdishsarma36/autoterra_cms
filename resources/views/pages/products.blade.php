@@ -108,22 +108,24 @@
       <span style="font-size:11px;color:#9A5F10;font-weight:700;">Soon</span> = coming soon module
     </p>
   </section>
+
 <!-- faq section -->
  <section class="section section-white">
+    @foreach(pageContentJson('products', 'products.faq') as $faq)
     <div class="sec-eye">
-    {{ pageContentJson('products', 'products.eye') }}
+        {{ $faq['faq_eye'] }}
     </div>
     <h2 class="sec-h2">
-        {{ pageContentJson('products', 'products.title') }}
+        {{ $faq['faq_title'] }}
     </h2>
-    <div class="faq-list" style="max-width:720px;">
-        @foreach(pageContentJson('products', 'products.faq') as $faq)
+    <div class="faq-list">
+       
             <div class="faq-item">
                 <button class="faq-q" onclick="toggleFaq(this)">
                     {{ $faq['question'] }}
                     <i class="ti ti-plus"></i>
                 </button>
-                <div class="faq-a" style="max-height:0; opacity:0;">
+                <div class="faq-a">
                     @if(!empty($faq['answer']))
                         {{ $faq['answer'] }}
                     @else
@@ -137,8 +139,8 @@
                     @endif
                 </div>
             </div>
-        @endforeach
     </div>
+    @endforeach
 </section>
 
 <!-- cta section -->
