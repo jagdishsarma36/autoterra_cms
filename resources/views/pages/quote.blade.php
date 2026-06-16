@@ -380,14 +380,8 @@
         </div>
       </form>     
     </div>
-
     </div>
-    <hr class="qt-sec-divider">
-    <!-- STEP 5: Requirements & notes -->
-    <!-- <div class="qt-sec-head">
-      <div class="qt-sec-num">5</div>
-      <div class="qt-sec-label">Additional requirements</div>
-    </div> -->
+    
   </div><!-- /qt-form-col -->
 
   <!-- ── Sidebar ── -->
