@@ -575,8 +575,6 @@ function changeSeat(delta) {
   v = Math.max(1, Math.min(999, v + delta));
   inp.value = v;
    const seatValue = inp.value;
-
-    // Set the hidden field
     const hiddenField = document.querySelector(
         '.field_wrap_number_seat input[type="hidden"][name="field_number_seat"]'
     );
@@ -587,16 +585,14 @@ function changeSeat(delta) {
 }
 
 /* ── Deployment ── */
-const deploySelect = document.getElementById('deploySelect');
-
-deploySelect.addEventListener('change', function () {
-    const deploymentValue = this.value; 
+document.getElementById('deploySelect').addEventListener('change', function () {
+    const selectedValue = this.value;
     const hiddenField = document.querySelector(
-        '.field_wrap_deployment input[type="hidden"][name="field_deployment"]'
+        '.field_wrap_deployment input[name="field_deployment"]'
     );
 
     if (hiddenField) {
-        hiddenField.value = deploymentValue;
+        hiddenField.value = selectedValue;
         hiddenField.dispatchEvent(new Event('change', { bubbles: true }));
     }
 });
