@@ -3042,6 +3042,25 @@ span.field-hint {
     margin-top: 3px;
     white-space: nowrap;
 }
+/* signin login btn */
+.btn-login {
+    width: 100%;
+    background: var(--cyan);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 13px 0;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 22px;
+}
 /****resources page ***/
 .res-hero {
     background: var(--navy);
