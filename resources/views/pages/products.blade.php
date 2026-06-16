@@ -66,8 +66,7 @@
                             {{ $category['title'] }}
 
                             @if(!empty($category['badge']))
-                                <span
-                                    style="margin-left:8px;background:#FEF3E2;color:#9A5F10;border:1px solid rgba(200,122,32,0.28);border-radius:4px;padding:2px 8px;font-size:10px;font-weight:800;letter-spacing:0.3px;">
+                                <span class="pr_coming">
                                     {{ $category['badge'] }}
                                 </span>
                             @endif
@@ -85,7 +84,7 @@
                                     @elseif(strtolower($value) === 'no')
                                         <span class="dash">—</span>
                                     @elseif(strtolower($value) === 'soon')
-                                        <span style="font-size:11px;color:#9A5F10;font-weight:700;">
+                                        <span class="pr_soon">
                                             Soon
                                         </span>
                                     @else
@@ -109,9 +108,6 @@
       <span style="font-size:11px;color:#9A5F10;font-weight:700;">Soon</span> = coming soon module
     </p>
   </section>
-
-<section class="section section-light"><div class="sec-eye">{{ pageContent('products', 'tracks.eyebrow') }}</div><h2 class="sec-h2">{{ pageContent('products', 'tracks.heading') }}</h2><p class="sec-sub">{{ pageContent('products', 'tracks.description') }}</p></section>
-
 
 <section class="cta-band"><div class="cta-band-inner"><h2>{{ pageContent('products', 'cta.heading') }}</h2><p>{{ pageContent('products', 'cta.description') }}</p><div class="cta-row"><a href="/buy" class="btn-cyan">{{ pageContent('products', 'cta.button_primary_text') }}</a><a href="/contact" class="btn-ghost">{{ pageContent('products', 'cta.button_secondary_text') }}</a></div></div></section>
 @include('partials.footer')
