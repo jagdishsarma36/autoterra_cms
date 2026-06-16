@@ -585,16 +585,17 @@ function changeSeat(delta) {
 }
 
 /* ── Deployment ── */
-document.getElementById('deploySelect').addEventListener('change', function () {
-    const selectedValue = this.value;
+document.addEventListener('change', function (e) {
+    if (e.target && e.target.id === 'deploySelect') {
+        const selectedValue = e.target.value;
 
-    const hiddenField = document.querySelector(
-        '.field_wrap_deployment input[name="field_deployment"]'
-    );
+        const hiddenField = document.querySelector(
+            '.field_wrap_deployment input[name="field_deployment"]'
+        );
 
-    if (hiddenField) {
-        hiddenField.value = selectedValue;
-        hiddenField.dispatchEvent(new Event('change', { bubbles: true }));
+        if (hiddenField) {
+            hiddenField.value = selectedValue;
+        }
     }
 });
 </script> 
