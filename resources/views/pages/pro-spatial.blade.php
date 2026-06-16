@@ -18,8 +18,7 @@
             <span class="ps-badge-tier">{{ $hero['badge_tier'] }}</span>
         </div>
         <h1>
-            {{ $hero['title'] }}
-            <span>{{ $hero['highlight_title'] }}</span>
+            {!! $hero['title'] !!}
         </h1>
         <p>{{ $hero['description'] }}</p>
         <div class="ps-hero-btns">
