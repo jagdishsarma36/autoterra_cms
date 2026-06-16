@@ -7,17 +7,17 @@
 @foreach(pageContentJson('pro_spatial', 'spatial.hero') as $hero)
 <section class="ps-hero">
     <div class="ps-hero-bg">
-        <div class="ph img_pro">          
+        <div class="ph img_pro">
             @if(!empty($section['image_url']))
             @if(Str::contains($section['image_url'], '<iframe'))
                 {!! $section['image_url'] !!}
             @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $section['image_url']))
                 <video autoplay muted loop playsinline controls>
-                    <source src="{{ $section['image_url'] }}">
+                    <source src="{{ asset($hero['image']) }}">
                     Your browser does not support the video tag.
                 </video>
             @else
-                <img src="{{ asset($hero['image']) }}" alt="{{ $hero['title'] }}">
+                <img src="{{ asset($hero['image']) }}" alt="pro spatial">
             @endif
             @endif
         </div>
