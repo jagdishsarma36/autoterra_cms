@@ -108,7 +108,40 @@
       <span style="font-size:11px;color:#9A5F10;font-weight:700;">Soon</span> = coming soon module
     </p>
   </section>
+<!-- faq section -->
+ <section class="section section-white">
+    <div class="sec-eye">
+    {{ pageContentJson('products', 'products.eye') }}
+    </div>
+    <h2 class="sec-h2">
+        {{ pageContentJson('products', 'products.title') }}
+    </h2>
+    <div class="faq-list" style="max-width:720px;">
+        @foreach(pageContentJson('products', 'products.faq') as $faq)
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    {{ $faq['question'] }}
+                    <i class="ti ti-plus"></i>
+                </button>
+                <div class="faq-a" style="max-height:0; opacity:0;">
+                    @if(!empty($faq['answer']))
+                        {{ $faq['answer'] }}
+                    @else
+                        {{ $faq['answer_before_link'] ?? '' }}
+                        @if(!empty($faq['link_text']) && !empty($faq['link_url']))
+                            <a href="{{ $faq['link_url'] }}">
+                                {{ $faq['link_text'] }}
+                            </a>
+                        @endif
+                        {{ $faq['answer_after_link'] ?? '' }}
+                    @endif
+                </div>
+            </div>
+        @endforeach
+    </div>
+</section>
 
+<!-- cta section -->
 <section class="cta-band"><div class="cta-band-inner"><h2>{{ pageContent('products', 'cta.heading') }}</h2><p>{{ pageContent('products', 'cta.description') }}</p><div class="cta-row"><a href="/buy" class="btn-cyan">{{ pageContent('products', 'cta.button_primary_text') }}</a><a href="/contact" class="btn-ghost">{{ pageContent('products', 'cta.button_secondary_text') }}</a></div></div></section>
 @include('partials.footer')
 @endsection
