@@ -50,16 +50,18 @@
 @endforeach
 
 <!-- starts -->
-<section class="section section-stats">
-  <div class="stats">
+<div class="ps-stats">
     @foreach(pageContentJson('pro_spatial', 'spatial.stats') as $stat)
-    <div class="stat-item">
-      <div class="stat-num">{{ $stat['number'] }}</div>
-      <div class="stat-lbl">{{ $stat['label'] }}</div>
-    </div>
+        <div class="ps-stat">
+            <div class="ps-stat-num">
+                {{ $stat['number'] }}
+            </div>
+            <div class="ps-stat-lbl">
+                {{ $stat['label'] }}
+            </div>
+        </div>
     @endforeach
-  </div>
-</section>
+</div>
 
 @include('partials.footer')
 @endsection
