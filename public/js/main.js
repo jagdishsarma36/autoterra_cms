@@ -285,4 +285,31 @@ function toggleFaq(btn) {
       ans.style.opacity = '1';
       icon.className = 'ti ti-minus';
     }
-  }
+}
+
+// counter for home page 
+$('.stats .stat-item .stat-num').each(function () {
+    var $this = $(this);
+    var original = $this.text().trim();
+
+    // Extract number only
+    var target = parseInt(original.replace(/[^\d]/g, ''), 10);
+
+    // Keep everything before and after the number
+    var prefix = original.match(/^[^\d]*/) ? original.match(/^[^\d]*/)[0] : '';
+    var suffix = original.match(/[^\d]*$/) ? original.match(/[^\d]*$/)[0] : '';
+
+    $({ count: 0 }).animate(
+        { count: target },
+        {
+            duration: 2000,
+            easing: 'swing',
+            step: function () {
+                $this.text(prefix + Math.floor(this.count) + suffix);
+            },
+            complete: function () {
+                $this.text(prefix + target + suffix);
+            }
+        }
+    );
+});
