@@ -110,17 +110,22 @@
   </section>
 
 <!-- faq section -->
- <section class="section section-white">
-    @foreach(pageContentJson('products', 'products.faq') as $faq)
-    <div class="sec-eye">
-        {{ $faq['faq_eye'] }}
-    </div>
-    <h2 class="sec-h2">
-        {{ $faq['faq_title'] }}
-    </h2>
-    @endforeach
+@php
+    $faqs = pageContentJson('products', 'products.faq');
+@endphp
+<section class="section section-white">
+    @if(!empty($faqs[0]['faq_eye']))
+        <div class="sec-eye">
+            {{ $faqs[0]['faq_eye'] }}
+        </div>
+    @endif
+    @if(!empty($faqs[0]['faq_title']))
+        <h2 class="sec-h2">
+            {{ $faqs[0]['faq_title'] }}
+        </h2>
+    @endif
     <div class="faq-list">
-       @foreach(pageContentJson('products', 'products.faq') as $faq)
+        @foreach(array_slice($faqs, 1) as $faq)
             <div class="faq-item">
                 <button class="faq-q" onclick="toggleFaq(this)">
                     {{ $faq['question'] }}
@@ -129,18 +134,15 @@
                 <div class="faq-a">
                     @if(!empty($faq['answer']))
                         {{ $faq['answer'] }}
-                    @else
-                        {{ $faq['answer_before_link'] ?? '' }}
-                        @if(!empty($faq['link_text']) && !empty($faq['link_url']))
-                            <a href="{{ $faq['link_url'] }}">
-                                {{ $faq['link_text'] }}
-                            </a>
-                        @endif
-                        {{ $faq['answer_after_link'] ?? '' }}
+                    @endif
+                    @if(!empty($faq['link_text']) && !empty($faq['link_url']))
+                        <a href="{{ $faq['link_url'] }}">
+                            {{ $faq['link_text'] }}
+                        </a>
                     @endif
                 </div>
             </div>
-          @endforeach  
+        @endforeach
     </div>
 </section>
 
