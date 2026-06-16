@@ -272,4 +272,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Quote page
+// products page FAQ
+function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const ans  = item.querySelector('.faq-a');
+    const icon = btn.querySelector('i');
+    const isOpen = ans.style.maxHeight && ans.style.maxHeight !== '0px';
+    document.querySelectorAll('.faq-a').forEach(a => { a.style.maxHeight = '0px'; a.style.opacity='0'; });
+    document.querySelectorAll('.faq-q i').forEach(i => i.className='ti ti-plus');
+    if (!isOpen) {
+      ans.style.maxHeight = ans.scrollHeight + 'px';
+      ans.style.opacity = '1';
+      icon.className = 'ti ti-minus';
+    }
+  }
