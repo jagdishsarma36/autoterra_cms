@@ -587,6 +587,7 @@ function changeSeat(delta) {
 /* ── Deployment ── */
 document.getElementById('deploySelect').addEventListener('change', function () {
     const selectedValue = this.value;
+
     const hiddenField = document.querySelector(
         '.field_wrap_deployment input[name="field_deployment"]'
     );
