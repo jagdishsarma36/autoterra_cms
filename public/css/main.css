@@ -3017,6 +3017,31 @@ span.field-hint {
     border-radius: 0;
     border: none;
 }
+.ps-stats {
+    background: var(--navy);
+    border-top: 1px solid rgba(0, 168, 248, 0.12);
+    border-bottom: 1px solid rgba(0, 168, 248, 0.12);
+    padding: 24px 60px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.ps-stat {
+    text-align: center;
+}
+.ps-stat-num {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--cyan);
+    letter-spacing: -0.5px;
+}
+.ps-stat-lbl {
+    font-size: 12px;
+    color: rgba(210, 230, 248, 0.45);
+    margin-top: 3px;
+    white-space: nowrap;
+}
 /****resources page ***/
 .res-hero {
     background: var(--navy);
