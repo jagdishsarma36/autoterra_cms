@@ -66,7 +66,7 @@
 <!-- tabs -->
 <div class="ps-tabs-wrap">
   <div class="ps-tabs" id="moduleTabs">
-    @foreach(pageContentJson('products', 'products.tabs') as $tab)
+    @foreach(pageContentJson('pro_spatial', 'spatial.tabs') as $tab)
           <button
               class="ps-tab {{ !empty($tab['active']) ? 'active' : '' }}"
               onclick="scrollToModule('{{ $tab['target'] }}',this)"
