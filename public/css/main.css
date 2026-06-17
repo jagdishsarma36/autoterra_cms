@@ -3042,6 +3042,53 @@ span.field-hint {
     margin-top: 3px;
     white-space: nowrap;
 }
+.ps-tabs-wrap {
+    background: var(--off);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 56px;
+    z-index: 90;
+}
+.ps-tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    padding: 0 60px;
+    scrollbar-width: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.ps-tab.active {
+    color: var(--cyan);
+    border-bottom-color: var(--cyan);
+}
+.ps-tab {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 18px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+.spatial_tab {
+    position: absolute;
+    top: -6px;
+    right: -4px;
+    background: #9A5F10;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 800;
+    border-radius: 3px;
+    padding: 1px 5px;
+    letter-spacing: 0.3px;
+}
+.ps-tab:hover {
+    color: var(--body);
+}
 /* signin login btn */
 .btn-login {
     width: 100%;
