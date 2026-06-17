@@ -8,21 +8,21 @@
 <section class="ps-hero">
     <div class="ps-hero-bg">
         <div class="ph img_pro">
-        @if(!empty($hero['image_url']))
-            @if(Str::contains($hero['image_url'], '<iframe'))
-                {!! $hero['image_url'] !!}
-            @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $hero['image_url']))
-                <video autoplay muted loop playsinline controls>
-                    <source src="{{ ($hero['image_url']) }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            @else
-                <img src="{{ ($hero['image_url']) }}" alt="{{ $hero['title'] }}">
-            @endif
-            @elseif(!empty($hero['image']))
-                <img src="{{ ($hero['image']) }}" alt="{{ $hero['title'] }}">
-            @endif
-        </div>
+            @if(!empty($hero['image_url']))
+                @if(Str::contains($hero['image_url'], '<iframe'))
+                    {!! $hero['image_url'] !!}
+                @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $hero['image_url']))
+                    <video autoplay muted loop playsinline controls>
+                        <source src="{{ ($hero['image_url']) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                @else
+                    <img src="{{ ($hero['image_url']) }}" alt="{{ $hero['title'] }}">
+                @endif
+                @elseif(!empty($hero['image']))
+                    <img src="{{ ($hero['image']) }}" alt="{{ $hero['title'] }}">
+                @endif
+            </div>
         </div>
     </div>
     <div class="ps-hero-overlay"></div>
@@ -87,11 +87,23 @@
 @foreach(pageContentJson('pro_spatial', 'spatial.feat_sec') as $module)
 <section class="feat-section {{ $module['section_class'] }}" id="{{ $module['id'] }}">
     <div class="feat-grid-lr {{ !empty($module['reverse']) ? 'reverse' : '' }}">
-
         @if(!empty($module['reverse']))
             <div>
                 <div class="ph sec_spatial_img">
-                    <img src="{{ ($module['image']) }}" alt="{{ $module['title'] }}">
+                    @if(!empty($module['image_url']))
+                        @if(Str::contains($module['image_url'], '<iframe'))
+                            {!! $module['image_url'] !!}
+                        @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $module['image_url']))
+                            <video autoplay muted loop playsinline controls>
+                                <source src="{{ $module['image_url'] }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img src="{{ $module['image_url'] }}" alt="autoterra">
+                        @endif
+                    @elseif(!empty($module['image']))
+                        <img src="{{ $module['image'] }}" alt="autoterra">
+                    @endif
                 </div>
             </div>
         @endif
@@ -131,15 +143,26 @@
                 @endforeach
             </div>
         </div>
-
         @if(empty($module['reverse']))
             <div>
                 <div class="ph sec_spatial_img">
-                    <img src="{{ ($module['image']) }}" alt="{{ $module['title'] }}">
+                    @if(!empty($module['image_url']))
+                        @if(Str::contains($module['image_url'], '<iframe'))
+                            {!! $module['image_url'] !!}
+                        @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $module['image_url']))
+                            <video autoplay muted loop playsinline controls>
+                                <source src="{{ $module['image_url'] }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img src="{{ $module['image_url'] }}" alt="autoterra">
+                        @endif
+                    @elseif(!empty($module['image']))
+                        <img src="{{ $module['image'] }}" alt="autoterra">
+                    @endif
                 </div>
             </div>
         @endif
-
     </div>
 </section>
 @endforeach
