@@ -233,7 +233,7 @@
 </section>
 
 <!-- specks system -->
-@foreach(pageContentJson('pro_spatial', 'pro_spatial.specifications') as $spec)
+@foreach(pageContentJson('pro_spatial', 'spatial.technical_specs') as $spec)
 <section class="specs-wrap" id="mod-specs">
     <div class="sec-eye">{{ $spec['eye'] }}</div>
     <h2 class="sec-h2">{{ $spec['title'] }}</h2>
