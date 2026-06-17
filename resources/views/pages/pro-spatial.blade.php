@@ -63,5 +63,25 @@
     @endforeach
 </div>
 
+<!-- tabs -->
+<div class="ps-tabs-wrap">
+  <div class="ps-tabs" id="moduleTabs">
+    @foreach(pageContentJson('products', 'products.tabs') as $tab)
+          <button
+              class="ps-tab {{ !empty($tab['active']) ? 'active' : '' }}"
+              onclick="scrollToModule('{{ $tab['target'] }}',this)"
+              @if(!empty($tab['soon'])) style="position:relative;" @endif
+          >
+              {{ $tab['title'] }}
+              @if(!empty($tab['soon']))
+                  <span class=" spatial_tab ">
+                      {{ $tab['soon_text'] ?? 'SOON' }}
+                  </span>
+              @endif
+          </button>
+      @endforeach
+  </div>
+</div>
+
 @include('partials.footer')
 @endsection
