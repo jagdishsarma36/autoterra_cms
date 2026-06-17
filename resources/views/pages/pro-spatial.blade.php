@@ -285,7 +285,7 @@
 
 <!-- products update section -->
 @php
-    $upgrade = pageContentJson('pro_spatial', 'products.upgrade');
+    $upgrade = pageContentJson('pro_spatial', 'spatial.upgrade');
 @endphp
 <section class="upgrade-wrap">
     <div class="sec-eye">{{ $upgrade['eye'] }}</div>
