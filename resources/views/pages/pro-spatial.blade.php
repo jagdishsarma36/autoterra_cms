@@ -112,18 +112,14 @@
                 </div>
             </div>
         @endif
-
         <div>
             <div class="feat-eyebrow {{ $module['eyebrow_color'] }}">
                 {{ $module['eyebrow'] }}
             </div>
-
             <h3 class="feat-h3">{{ $module['title'] }}</h3>
-
             <p class="feat-desc">
                 {{ $module['description'] }}
             </p>
-
             @if(!empty($module['coming_soon']))
                 <div class="spatial_soon">
                     <span class="ti ti-drone icn_spcl"></span>
@@ -132,7 +128,6 @@
                     </span>
                 </div>
             @endif
-
             <div class="feat-chips">
                 @foreach($module['chips'] as $chip)
                     <span class="feat-chip">{{ $chip }}</span>
@@ -171,6 +166,71 @@
     </div>
 </section>
 @endforeach
+
+<!-- carousel section -->
+@php
+    $carousel = pageContentJson('pro_spatial', 'spatial.carousel');
+@endphp
+<section class="ps-carousel-wrap">
+    <div style="text-align:center;margin-bottom:36px;">
+        <div class="sec-eye" style="text-align:center;">
+            {{ $carousel['eye'] }}
+        </div>
+        <h2 class="sec-h2 sec-h2-light">
+            {{ $carousel['title'] }}
+        </h2>
+        <p class="sec-sub sec-sub-light">
+            {{ $carousel['subtitle'] }}
+        </p>
+    </div>
+    <div class="ps-carousel-tabs" id="psCtabs">
+        @foreach($carousel['slides'] as $index => $slide)
+            <button
+                class="ps-ctab {{ $index == 0 ? 'active' : '' }}"
+                onclick="setPsSlide({{ $index }},this)"
+            >
+                {{ $slide['tab_title'] }}
+            </button>
+        @endforeach
+    </div>
+    <div class="ps-screen-frame">
+        <div class="ps-screen-bar">
+            <div class="ps-dot r"></div>
+            <div class="ps-dot y"></div>
+            <div class="ps-dot g"></div>
+            <span class="ps-screen-title" id="psScreenTitle">
+                {{ $carousel['slides'][0]['screen_title'] }}
+            </span>
+        </div>
+        <div class="ps-screen-body">
+            @foreach($carousel['slides'] as $index => $slide)
+                <div
+                    class="ps-slide {{ $index == 0 ? 'active' : '' }}"
+                    id="psSlide{{ $index }}"
+                    data-title="{{ $slide['screen_title'] }}"
+                >
+                    <div class="ph caro-spatial">
+                        <img src="{{ $slide['image'] }}"
+                             alt="{{ $slide['tab_title'] }}">
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    <div class="ps-screen-nav">
+        <button class="ps-nav-btn" onclick="movePsSlide(-1)">
+            <i class="ti ti-chevron-left"></i>
+        </button>
+        <div class="ps-dots" id="psDots">
+            @foreach($carousel['slides'] as $index => $slide)
+                <div class="ps-dot-ind {{ $index == 0 ? 'active' : '' }}"></div>
+            @endforeach
+        </div>
+        <button class="ps-nav-btn" onclick="movePsSlide(1)">
+            <i class="ti ti-chevron-right"></i>
+        </button>
+    </div>
+</section>
 
 @include('partials.footer')
 @endsection
