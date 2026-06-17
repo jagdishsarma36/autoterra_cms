@@ -83,5 +83,66 @@
   </div>
 </div>
 
+<!-- FEAT SEC -->
+@foreach(pageContentJson('pro_spatial', 'spatial.feat_sec') as $module)
+<section class="feat-section {{ $module['section_class'] }}" id="{{ $module['id'] }}">
+    <div class="feat-grid-lr {{ !empty($module['reverse']) ? 'reverse' : '' }}">
+
+        @if(!empty($module['reverse']))
+            <div>
+                <div class="ph sec_spatial_img">
+                    <img src="{{ asset($module['image']) }}" alt="{{ $module['title'] }}">
+                </div>
+            </div>
+        @endif
+
+        <div>
+            <div class="feat-eyebrow {{ $module['eyebrow_color'] }}">
+                {{ $module['eyebrow'] }}
+            </div>
+
+            <h3 class="feat-h3">{{ $module['title'] }}</h3>
+
+            <p class="feat-desc">
+                {{ $module['description'] }}
+            </p>
+
+            @if(!empty($module['coming_soon']))
+                <div class="spatial_soon">
+                    <span class="ti ti-drone"></span>
+                    <span class="spatial_cming">
+                        {{ $module['coming_soon_text'] }}
+                    </span>
+                </div>
+            @endif
+
+            <div class="feat-chips">
+                @foreach($module['chips'] as $chip)
+                    <span class="feat-chip">{{ $chip }}</span>
+                @endforeach
+            </div>
+
+            <div class="check-list">
+                @foreach($module['features'] as $feature)
+                    <div class="check-item">
+                        <i class="ti ti-circle-check-filled"></i>
+                        {{ $feature }}
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        @if(empty($module['reverse']))
+            <div>
+                <div class="ph sec_spatial_img">
+                    <img src="{{ asset($module['image']) }}" alt="{{ $module['title'] }}">
+                </div>
+            </div>
+        @endif
+
+    </div>
+</section>
+@endforeach
+
 @include('partials.footer')
 @endsection
