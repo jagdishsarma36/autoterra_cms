@@ -172,7 +172,7 @@
     $carousel = pageContentJson('pro_spatial', 'spatial.carousel');
 @endphp
 <section class="ps-carousel-wrap">
-    <div style="text-align:center;margin-bottom:36px;">
+    <div class="ps_caro_sp">
         <div class="sec-eye" style="text-align:center;">
             {{ $carousel['eye'] }}
         </div>
