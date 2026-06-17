@@ -3089,6 +3089,85 @@ span.field-hint {
 .ps-tab:hover {
     color: var(--body);
 }
+.feat-section {
+    padding: 72px 60px;
+}
+.feat-grid-lr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+}
+.feat-eyebrow.cyan {
+    color: var(--cyan);
+}
+.feat-h3 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--body);
+    letter-spacing: -0.4px;
+    line-height: 1.2;
+    margin-bottom: 14px;
+}
+.feat-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 24px;
+}
+.feat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+.feat-chip {
+    background: var(--off);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--body);
+}
+.feat-eyebrow.amber {
+    color: var(--amber);
+}
+.feat-eyebrow.green {
+    color: var(--green);
+}
+.feat-eyebrow.blue {
+    color: var(--blue);
+}
+.sec_spatial_img {
+    height:480px;
+}
+.spatial_cming {
+    font-size: 13px;
+    font-weight: 700;
+    color: #7A4800;
+}
+.spatial_soon .icn_spcl{
+    font-size: 18px;
+    color: var(--amber);
+}
+.spatial_soon {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #FEF3E2;
+    border: 1px solid rgba(200, 122, 32, 0.28);
+    border-radius: 8px;
+    padding: 8px 16px;
+    margin-bottom: 20px;
+}
+.feat-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
 /* signin login btn */
 .btn-login {
     width: 100%;
