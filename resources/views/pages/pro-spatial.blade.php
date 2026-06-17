@@ -283,5 +283,43 @@
 </section>
 @endforeach
 
+<!-- products update section -->
+@php
+    $upgrade = pageContentJson('pro_spatial', 'products.upgrade');
+@endphp
+<section class="upgrade-wrap">
+    <div class="sec-eye">{{ $upgrade['eye'] }}</div>
+    <h2 class="sec-h2">{{ $upgrade['title'] }}</h2>
+    <p class="sec-sub">{{ $upgrade['subtitle'] }}</p>
+    <div class="upgrade-cards">
+        @foreach($upgrade['cards'] as $card)
+            <div class="upgrade-card {{ $card['hot'] ? 'hot' : '' }}">
+                <div class="upgrade-card-head">
+                    <h3>
+                        {{ $card['title'] }}
+                        @if($card['badge'])
+                            <span class="badge badge-hot">{{ $card['badge'] }}</span>
+                        @endif
+                    </h3>
+                    <p>{{ $card['description'] }}</p>
+                </div>
+                <div class="upgrade-card-body">
+                    @foreach($card['features'] as $feature)
+                        <div class="upgrade-item">
+                            <i class="ti {{ $feature['available'] ? 'ti-check' : 'ti-x' }}"></i>
+                            {{ $feature['text'] }}
+                        </div>
+                    @endforeach
+                </div>
+                <div class="upgrade-card-foot">
+                    <a href="{{ $card['button_link'] }}" class="{{ $card['button_class'] }}">
+                        {{ $card['button_text'] }}
+                    </a>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</section>
+
 @include('partials.footer')
 @endsection
