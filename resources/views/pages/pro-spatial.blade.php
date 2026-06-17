@@ -232,5 +232,56 @@
     </div>
 </section>
 
+<!-- specks system -->
+@foreach(pageContentJson('pro_spatial', 'pro_spatial.specifications') as $spec)
+<section class="specs-wrap" id="mod-specs">
+    <div class="sec-eye">{{ $spec['eye'] }}</div>
+    <h2 class="sec-h2">{{ $spec['title'] }}</h2>
+    <p class="sec-sub">
+        {{ $spec['subtitle'] }}
+        <a class="specs_ural" href="{{ $spec['comparison_url'] }}">
+            {{ $spec['comparison_text'] }}
+        </a>
+    </p>
+    <table class="specs-table">
+        <thead>
+            <tr>
+                <th class="sys_th">Category</th>
+                <th>Specification</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($spec['specifications'] as $item)
+            <tr>
+                <td class="specs-cat">{{ $item['category'] }}</td>
+                <td class="specs-val">{{ $item['value'] }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+    <h3 class="sys_spactial">
+        {{ $spec['system_requirements']['title'] }}
+    </h3>
+    <div class="sysreq-grid">
+        @foreach(['minimum', 'recommended'] as $type)
+        <div class="sysreq-card">
+            <h4>
+                <i class="ti {{ $type == 'minimum' ? 'ti-device-desktop' : 'ti-device-desktop-analytics' }}"></i>
+                {{ $spec['system_requirements'][$type]['title'] }}
+            </h4>
+            @foreach($spec['system_requirements'][$type] as $key => $value)
+                @if($key != 'title')
+                <div class="sysreq-row">
+                    <span class="lbl">{{ strtoupper($key) }}</span>
+                    <span class="val">{{ $value }}</span>
+                </div>
+                @endif
+            @endforeach
+        </div>
+        @endforeach
+    </div>
+</section>
+@endforeach
+
 @include('partials.footer')
 @endsection
