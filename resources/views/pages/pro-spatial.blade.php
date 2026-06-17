@@ -109,7 +109,7 @@
 
             @if(!empty($module['coming_soon']))
                 <div class="spatial_soon">
-                    <span class="ti ti-drone"></span>
+                    <span class="ti ti-drone icn_spcl"></span>
                     <span class="spatial_cming">
                         {{ $module['coming_soon_text'] }}
                     </span>
