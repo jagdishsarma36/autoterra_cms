@@ -3248,7 +3248,7 @@ span.field-hint {
     display: block;
 }
 .caro-spatial {
-        height: 520px;
+    /* height: 520px; */
     border-radius: 0;
     border: none;
     border-top: 1px solid rgba(0, 168, 248, 0.12);
