@@ -313,3 +313,14 @@ $('.stats .stat-item .stat-num').each(function () {
         }
     );
 });
+
+//tabs for pro spatial
+function scrollToModule(id, btn) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const navH  = document.querySelector('.nav').offsetHeight;
+    const tabsH = document.querySelector('.ps-tabs') ? document.querySelector('.ps-tabs').offsetHeight : 0;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navH - tabsH - 8, behavior: 'smooth' });
+    document.querySelectorAll('.ps-tab').forEach(t => t.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+}
