@@ -298,7 +298,7 @@
                     <h3>
                         {{ $card['title'] }}
                         @if($card['badge'])
-                            <span class="badge badge-hot">{{ $card['badge'] }}</span>
+                            <span class="badge badge-hot badge_sys">{{ $card['badge'] }}</span>
                         @endif
                     </h3>
                     <p>{{ $card['description'] }}</p>
