@@ -13,14 +13,14 @@
                 {!! $hero['image_url'] !!}
             @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $hero['image_url']))
                 <video autoplay muted loop playsinline controls>
-                    <source src="{{ asset($hero['image_url']) }}" type="video/mp4">
+                    <source src="{{ ($hero['image_url']) }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             @else
-                <img src="{{ asset($hero['image_url']) }}" alt="{{ $hero['title'] }}">
+                <img src="{{ ($hero['image_url']) }}" alt="{{ $hero['title'] }}">
             @endif
             @elseif(!empty($hero['image']))
-                <img src="{{ asset($hero['image']) }}" alt="{{ $hero['title'] }}">
+                <img src="{{ ($hero['image']) }}" alt="{{ $hero['title'] }}">
             @endif
         </div>
         </div>
@@ -91,7 +91,7 @@
         @if(!empty($module['reverse']))
             <div>
                 <div class="ph sec_spatial_img">
-                    <img src="{{ asset($module['image']) }}" alt="{{ $module['title'] }}">
+                    <img src="{{ ($module['image']) }}" alt="{{ $module['title'] }}">
                 </div>
             </div>
         @endif
@@ -135,7 +135,7 @@
         @if(empty($module['reverse']))
             <div>
                 <div class="ph sec_spatial_img">
-                    <img src="{{ asset($module['image']) }}" alt="{{ $module['title'] }}">
+                    <img src="{{ ($module['image']) }}" alt="{{ $module['title'] }}">
                 </div>
             </div>
         @endif
