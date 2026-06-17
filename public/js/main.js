@@ -324,3 +324,43 @@ function scrollToModule(id, btn) {
     document.querySelectorAll('.ps-tab').forEach(t => t.classList.remove('active'));
     if (btn) btn.classList.add('active');
 }
+
+// carousel pro spatial
+let currentPsSlide = 0;
+function setPsSlide(index, btn = null) {
+    const slides = document.querySelectorAll('.ps-slide');
+    const tabs = document.querySelectorAll('.ps-ctab');
+    const dots = document.querySelectorAll('.ps-dot-ind');
+    const title = document.getElementById('psScreenTitle');
+    if (!slides.length) return;
+
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+
+    currentPsSlide = index;
+    slides.forEach(slide => slide.classList.remove('active'));
+    tabs.forEach(tab => tab.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    slides[index].classList.add('active');
+    if (tabs[index]) {
+        tabs[index].classList.add('active');
+    }
+    if (dots[index]) {
+        dots[index].classList.add('active');
+    }
+    if (title) {
+        title.textContent = slides[index].dataset.title || '';
+    }
+}
+
+function movePsSlide(direction) {
+    setPsSlide(currentPsSlide + direction);
+}
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.ps-dot-ind').forEach((dot, index) => {
+        dot.addEventListener('click', function () {
+            setPsSlide(index);
+        });
+    });
+});
