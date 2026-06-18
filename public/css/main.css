@@ -3958,7 +3958,7 @@ i.ti-calendar-event.web-highlight {
   .cta-band { padding: 56px 24px; }
 }
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-    
+
 }
 
 /* ================================================================
@@ -4033,7 +4033,9 @@ i.ti-calendar-event.web-highlight {
     }
     .testi-grid {
         display: inline-flex;
-        padding: 20px 10px;
+    }
+    .testi-card {
+        padding: 28px 10px;
     }
 }
 
