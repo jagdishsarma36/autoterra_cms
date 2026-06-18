@@ -3470,6 +3470,33 @@ span.field-hint {
     font-size: 9px;
     vertical-align: 2px;
 }
+.wait_list_frm {
+    margin-top:24px;
+}
+.wait_list_frm .field_wrap_email>label {
+    font-size: 13px!important;
+    color: var(--muted)!important;
+    margin-bottom: 12px!important;
+}
+.wait_list_frm .qt-submit-btn {
+    background: #C87A20;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 11px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+}
+.wait_list_frm form {
+    display:flex;
+    gap:8px!important;
+}
+.qt-submit-row {
+    margin-top: auto!important;
+}
 /* signin login btn */
 .btn-login {
     width: 100%;
