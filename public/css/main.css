@@ -4042,6 +4042,10 @@ i.ti-calendar-event.web-highlight {
     .testi-card {
         padding: 28px 10px;
     }
+    .tracks {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
