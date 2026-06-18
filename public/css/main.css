@@ -266,7 +266,7 @@ footer { background: var(--dark); padding: 56px 60px 28px; }
 /* ================================================================
    CTA BAND
 ================================================================ */
-.cta-band { background: var(--navy); padding: 72px 60px; text-align: center; }
+.cta-band { background: var(--navy); text-align: center; }
 .cta-band h2 {
   color: #fff; font-size: 32px; font-weight: 800;
   letter-spacing: -0.5px; margin-bottom: 14px;
@@ -625,7 +625,6 @@ section.hero-wrap.hero-bg.ph {
 }
 /*****about page******/
 .abt-story {
-    padding: 72px 60px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
@@ -697,7 +696,6 @@ section.hero-wrap.hero-bg.ph {
 }
 .abt-values {
     background: var(--off);
-    padding: 72px 60px;
 }
 .abt-values-grid {
     display: grid;
@@ -733,9 +731,6 @@ section.hero-wrap.hero-bg.ph {
     font-size: 13px;
     color: var(--muted);
     line-height: 1.65;
-}
-.abt-team {
-    padding: 72px 60px;
 }
 .abt-team-grid {
     display: grid;
@@ -1534,7 +1529,6 @@ nav.sol-nav {
 .pro-hero-content {
     position: relative;
     z-index: 2;
-    padding: 72px 60px;
     max-width: 660px;
 }
 .pro-badge-row {
@@ -3089,7 +3083,7 @@ span.field-hint {
 .ps-tab:hover {
     color: var(--body);
 }
-.feat-section {
+.feat-section, .abt-values, .pro-hero-content, .ps-carousel-wrap, .specs-wrap, .upgrade-wrap, .cta-band, .abt-story, .abt-team {
     padding: 72px 60px;
 }
 .feat-grid-lr {
@@ -3170,7 +3164,6 @@ span.field-hint {
 }
 .ps-carousel-wrap {
     background: var(--navy);
-    padding: 72px 60px;
 }
 .sec-sub-light {
     max-width: 520px;
@@ -3298,7 +3291,6 @@ span.field-hint {
     transition: background 0.2s;
 }
 .specs-wrap {
-    padding: 72px 60px;
     background: var(--off);
 }
 .specs_ural {
@@ -3391,7 +3383,6 @@ span.field-hint {
     max-width: 60%;
 }
 .upgrade-wrap {
-    padding: 72px 60px;
     background: var(--white);
 }
 .upgrade-cards {
