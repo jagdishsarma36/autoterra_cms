@@ -4006,6 +4006,32 @@ i.ti-calendar-event.web-highlight {
         height:100%;
         width:100%;
     }
+    .stats {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .feat-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .prod-grid {
+        display: inline;
+    }
+    .prod-card.wrap-default-prod {
+        text-align: center;
+    }
+    .prod-link {
+        display: flex;
+        justify-content: center;
+    }
+    .wrap-pb-lidar, .wrap-pb-hot, .wrap-pb-hot, .wrap-pb-soon {
+        text-align: center;
+    }
+    .testi-grid {
+        display: inline-flex;
+        padding: 20px 10px;
+    }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
