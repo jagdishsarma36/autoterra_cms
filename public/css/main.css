@@ -3999,7 +3999,12 @@ i.ti-calendar-event.web-highlight {
         width: 100%;
     }
     .feat-section, .abt-values, .pro-hero-content, .ps-carousel-wrap, .specs-wrap, .upgrade-wrap, .cta-band, .abt-story, .abt-team {
-    padding: 15px 15px;
+        padding: 15px 15px;
+    }
+    .img_pro img {
+        object-fit:cover;
+        height:100%;
+        width:100%;
     }
 }
 
