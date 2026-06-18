@@ -3980,4 +3980,32 @@ i.ti-calendar-event.web-highlight {
   .stat-number { font-size: 28px; }
 }
 
+@media screen and (max-width: 767px) {
+    .ps-hero-btns {
+    justify-content: center;
+    }
+    .feat-grid-lr {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .sec_spatial_img {
+        max-height: 180px;
+    }
+    .ps-tabs {
+        padding: 0;
+        padding-top: 10px;
+    }
+    .wait_list_frm form {
+        flex-wrap: wrap;
+    }
+    .sysreq-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .upgrade-cards {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+
 @keyframes spin { to { transform: rotate(360deg); } }
