@@ -139,3 +139,22 @@ if (!function_exists('cmsBlockJson')) {
         return pageContentJson('cms:' . $slug, $key, $default);
     }
 }
+
+if (!function_exists('renderForm')) {
+    /**
+     * Render a form by slug. Returns HTML string.
+     * Usage: {!! renderForm('contact-form') !!}
+     */
+    function renderForm(string $slug, array $options = []): string
+    {
+        $form = \App\Models\FormCms::where('slug', $slug)->where('is_active', true)->first();
+        if (!$form) return '';
+
+        $fields = $form->fields()->orderBy('sort_order')->get();
+        if ($fields->isEmpty()) return '';
+
+        $action = $options['action'] ?? route('form.submit', $form->slug);
+
+        return view('partials.form-render', compact('form', 'fields', 'action'))->render();
+    }
+}
