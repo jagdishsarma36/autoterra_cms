@@ -138,9 +138,11 @@
                 @endforeach
             </div>
 
+            @if($loop->last)
             <div class="wait_list_frm">
                 {!! renderForm('waitlist-form') !!}
             </div>
+            @endif
         </div>
         @if(empty($module['reverse']))
             <div>
