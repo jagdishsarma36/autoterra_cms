@@ -3,11 +3,6 @@
 @section('body')
 @include('partials.nav')
 
-@php
-  $form = App\Models\FormCms::where('slug', 'waitlist-form')->where('is_active', true)->first();
-  $fields = $form ? $form->fields()->orderBy('sort_order')->get() : collect();
-@endphp
-
 <!-- hero section -->
 @foreach(pageContentJson('pro_spatial', 'spatial.hero') as $hero)
 <section class="ps-hero">
@@ -141,6 +136,10 @@
                         {{ $feature }}
                     </div>
                 @endforeach
+            </div>
+
+            <div class="wait_list_frm">
+                {!! renderForm('waitlist-form') !!}
             </div>
         </div>
         @if(empty($module['reverse']))
