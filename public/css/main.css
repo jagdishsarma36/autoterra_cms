@@ -4023,6 +4023,7 @@ i.ti-calendar-event.web-highlight {
     }
     .prod-card.wrap-default-prod {
         text-align: center;
+        margin: 15px;
     }
     .prod-link {
         display: flex;
@@ -4030,6 +4031,7 @@ i.ti-calendar-event.web-highlight {
     }
     .wrap-pb-lidar, .wrap-pb-hot, .wrap-pb-hot, .wrap-pb-soon {
         text-align: center;
+        margin: 15px;
     }
     .testi-grid {
         display: inline-flex;
