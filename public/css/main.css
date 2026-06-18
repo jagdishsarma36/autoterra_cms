@@ -3996,6 +3996,10 @@ i.ti-calendar-event.web-highlight {
     .upgrade-cards {
         display: flex;
         flex-wrap: wrap;
+        width: 100%;
+    }
+    .feat-section, .abt-values, .pro-hero-content, .ps-carousel-wrap, .specs-wrap, .upgrade-wrap, .cta-band, .abt-story, .abt-team {
+    padding: 15px 15px;
     }
 }
 
