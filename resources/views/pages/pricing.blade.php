@@ -162,7 +162,7 @@ $pricing = pageContentJson('pricing', 'pricing.cards');
 <section style="background:var(--off);padding:56px 60px;">
   <div class="sec-eye">Questions</div>
   <h2 class="sec-h2" style="margin-bottom:24px;">Common pricing questions</h2>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+  <div class="pric_sec">
     @foreach(pageContentJson('pricing', 'faq') as $faq)
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:22px;">
       <h4 style="font-size:14px;font-weight:700;color:var(--body);margin-bottom:8px;display:flex;align-items:center;gap:8px;">

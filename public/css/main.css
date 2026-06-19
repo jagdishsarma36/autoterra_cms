@@ -2170,6 +2170,11 @@ padding: 5px 12px;
     margin-top: 20px;
     text-align: center;
 }
+.pric_sec {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
 /* pricing page end  */
 /* Quote page */
 .qt-hero {
@@ -4045,6 +4050,17 @@ i.ti-calendar-event.web-highlight {
     .tracks {
         display: flex;
         flex-wrap: wrap;
+    }
+    .pr-hero h1 {
+        font-size: 30px;
+    }
+    .pr-cards-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .pric_sec {
+        flex-wrap: wrap;
+        display: flex;
     }
 }
 
