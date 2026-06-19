@@ -3567,10 +3567,6 @@ span.field-hint {
     line-height: 1.7;
     margin-bottom: 36px;
 }
-.res-section {
-    padding: 56px 60px;
-    border-bottom: 1px solid var(--border);
-}
 .res-doc-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -3647,10 +3643,6 @@ i.ti-terminal-2.res-highlight {
 }
 .cus_ti-terminal-2_res-highlight .res-link {
 color:#c87a20;
-}
-.res-section {
-    padding: 56px 60px;
-    border-bottom: 1px solid var(--border);
 }
 .section-light {
     background: var(--off);
@@ -3980,7 +3972,7 @@ i.ti-calendar-event.web-highlight {
     .ps-hero-btns {
     justify-content: center;
     }
-    .feat-grid-lr, .sysreq-grid, .feat-grid, .tracks, .pr-cards-grid, .pro-grid, .pro-caps-grid, .pro-who-grid, .qt-body, .form-row {
+    .feat-grid-lr, .sysreq-grid, .feat-grid, .tracks, .pr-cards-grid, .pro-grid, .pro-caps-grid, .pro-who-grid, .qt-body, .form-row, .res-doc-grid, .res-webinar-grid, .res-video-grid {
         display: flex;
         flex-wrap: wrap;
     }
@@ -4057,6 +4049,19 @@ i.ti-calendar-event.web-highlight {
     }
     .qt-submit-row {
         flex-wrap: wrap;
+    }
+    .res-dl-row {
+        display: inline-grid;
+    }
+    .res-dl-meta {
+        display: flex;
+        justify-content: center;
+    }
+    .res-dl-btn {
+        justify-content: center;
+    }
+    .res-section {
+        padding: 40px 20px;
     }
 }
 
