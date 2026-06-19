@@ -3970,6 +3970,9 @@ i.ti-calendar-event.web-highlight {
         grid-template-columns: 1fr;
         gap: 36px;
     }
+    .legal-content {
+        overflow-y: auto;
+    }
 }
 
 /* ================================================================
@@ -4124,6 +4127,9 @@ i.ti-calendar-event.web-highlight {
         grid-template-columns: unset!important;
         display: flex!important;
         flex-wrap:wrap!important; 
+    }
+    .legal-content {
+        overflow-y: auto;
     }
 }
 
