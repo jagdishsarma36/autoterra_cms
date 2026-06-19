@@ -3980,7 +3980,7 @@ i.ti-calendar-event.web-highlight {
     .ps-hero-btns {
     justify-content: center;
     }
-    .feat-grid-lr {
+    .feat-grid-lr, .sysreq-grid, .feat-grid, .tracks, .pr-cards-grid, .pro-grid, .pro-caps-grid, .pro-who-grid, .qt-body, .form-row {
         display: flex;
         flex-wrap: wrap;
     }
@@ -3992,10 +3992,6 @@ i.ti-calendar-event.web-highlight {
         padding-top: 10px;
     }
     .wait_list_frm form {
-        flex-wrap: wrap;
-    }
-    .sysreq-grid {
-        display: flex;
         flex-wrap: wrap;
     }
     .upgrade-cards {
@@ -4015,10 +4011,6 @@ i.ti-calendar-event.web-highlight {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-    }
-    .feat-grid {
-        display: flex;
-        flex-wrap: wrap;
     }
     .prod-grid {
         display: inline;
@@ -4041,16 +4033,8 @@ i.ti-calendar-event.web-highlight {
     .testi-card {
         padding: 28px 10px;
     }
-    .tracks {
-        display: flex;
-        flex-wrap: wrap;
-    }
     .pr-hero h1 {
         font-size: 30px;
-    }
-    .pr-cards-grid {
-        display: flex;
-        flex-wrap: wrap;
     }
     .pric_sec {
         flex-wrap: wrap;
@@ -4062,18 +4046,6 @@ i.ti-calendar-event.web-highlight {
     .legal-wrap {
         grid-template-columns: unset;
     }
-    .pro-grid {
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .pro-caps-grid {
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .pro-who-grid {
-        display: flex;
-        flex-wrap: wrap;
-    }
     .pro-ladder {
         display: inline;
     }
@@ -4082,6 +4054,9 @@ i.ti-calendar-event.web-highlight {
     }
     .pro-section, .pro-caps, .pro-who, .pro-position, .pro-specs {
         padding: 40px 20px;
+    }
+    .qt-submit-row {
+        flex-wrap: wrap;
     }
 }
 
