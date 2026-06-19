@@ -1301,6 +1301,9 @@ nav.sol-nav {
     background: rgba(124, 77, 188, 0.10);
     color: #7C4DBC;
 }
+.sol_img_sec {
+    height:420px;
+}
 /****QUOTE*******/
 .qt-trust {
     display: flex;
@@ -3972,7 +3975,7 @@ i.ti-calendar-event.web-highlight {
     .ps-hero-btns {
     justify-content: center;
     }
-    .feat-grid-lr, .sysreq-grid, .feat-grid, .tracks, .pr-cards-grid, .pro-grid, .pro-caps-grid, .pro-who-grid, .qt-body, .form-row, .res-doc-grid, .res-webinar-grid, .res-video-grid {
+    .feat-grid-lr, .sysreq-grid, .feat-grid, .tracks, .pr-cards-grid, .pro-grid, .pro-caps-grid, .pro-who-grid, .qt-body, .form-row, .res-doc-grid, .res-webinar-grid, .res-video-grid, .sol-section-inner {
         display: flex;
         flex-wrap: wrap;
     }
@@ -4061,6 +4064,19 @@ i.ti-calendar-event.web-highlight {
         justify-content: center;
     }
     .res-section {
+        padding: 40px 20px;
+    }
+    .sol-sidebar {
+        display: none;
+    }
+    .sol-layout {
+        flex-wrap: wrap;
+        grid-template-columns:  unset;
+    }
+    .sol_img_sec {
+        max-height:180px;
+    }
+    .sol-section {
         padding: 40px 20px;
     }
 }
