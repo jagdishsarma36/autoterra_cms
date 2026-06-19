@@ -1585,7 +1585,7 @@ span.pro-badge {
     transition: border-color 0.2s;
     display: inline-block;
 }
-.pro-section {
+.pro-section, .pro-caps, .pro-who, .pro-position, .pro-specs {
     padding: 68px 60px;
 }
 .sec-h2-light {
@@ -1648,7 +1648,6 @@ p.pro-desc {
 }
 .pro-caps {
     background: var(--navy);
-    padding: 68px 60px;
 }
 .pro-caps-grid {
     display: grid;
@@ -1711,7 +1710,6 @@ p.pro-desc {
 }
 .pro-who {
     background: var(--off);
-    padding: 68px 60px;
 }
 .pro-who-grid {
     display: grid;
@@ -1741,9 +1739,6 @@ p.pro-desc {
     font-size: 13px;
     color: var(--muted);
     line-height: 1.65;
-}
-.pro-position {
-    padding: 68px 60px;
 }
 .pro-ladder {
     display: flex;
@@ -1813,7 +1808,6 @@ p.pro-desc {
 }
 .pro-specs {
     background: var(--off);
-    padding: 68px 60px;
 }
 .pro-specs-table {
     width: 100%;
@@ -4067,6 +4061,27 @@ i.ti-calendar-event.web-highlight {
     }
     .legal-wrap {
         grid-template-columns: unset;
+    }
+    .pro-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .pro-caps-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .pro-who-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .pro-ladder {
+        display: inline;
+    }
+    .pro-ladder-step {
+        margin: 20px;
+    }
+    .pro-section, .pro-caps, .pro-who, .pro-position, .pro-specs {
+        padding: 40px 20px;
     }
 }
 
