@@ -66,7 +66,7 @@
             {{-- Right Content --}}
             <div>
                 @if(!empty($survey['image_url']))
-                    <div class="ph" style="height:360px;">
+                    <div class="ph sol_img_sec">
                         <img src="{{ ($survey['image_url']) }}"
                         alt="{{ $survey['title'] }}"
                         class="img-fluid">
@@ -118,7 +118,7 @@
             {{-- Left Side --}}
             <div>
                 @if(!empty($road['image_url']))
-                    <div class="ph" style="height:360px;">
+                    <div class="ph sol_img_sec">
                         <img src="{{ ($road['image_url']) }}"
                         alt="{{ $road['title'] }}"
                         style="width:100%;border-radius:12px;">
@@ -300,7 +300,7 @@
             <!-- Left Side -->
             <div>
                 @if(!empty($mining['image_url']) && $mining['image_url'] != '#')
-                    <div class="ph" style="height:360px;">
+                    <div class="ph sol_img_sec">
                         <img src="{{ $mining['image_url'] }}"
                         alt="{{ $mining['title'] }}"
                         class="img-fluid">
@@ -461,7 +461,7 @@
             <div>
 
                 @if(!empty($uav['image_url']))
-                    <div class="ph" style="height:360px;">
+                    <div class="ph sol_img_sec">
                         <img src="{{ $uav['image_url'] }}"
                             alt="{{ $uav['title'] ?? '' }}"
                             class="img-fluid">
