@@ -406,7 +406,7 @@
             <div>
                 {{-- Image --}}
                 @if(!empty($govt['image_url']))
-                    <div class="ph" style="height:420px;">
+                    <div class="ph sol_img_sec">
                         <img src="{{ ($govt['image_url']) }}"
                         alt="{{ $govt['title'] }}"
                         class="img-fluid">
