@@ -4119,6 +4119,12 @@ i.ti-calendar-event.web-highlight {
         grid-template-columns: 1fr;
         gap: 36px;
     }
+    .form-row-q div {
+        width: 100%!important;
+        grid-template-columns: unset!important;
+        display: flex!important;
+        flex-wrap:wrap!important; 
+    }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
