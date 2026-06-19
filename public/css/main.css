@@ -4062,6 +4062,12 @@ i.ti-calendar-event.web-highlight {
         flex-wrap: wrap;
         display: flex;
     }
+    .legal-toc {
+        display: none;
+    }
+    .legal-wrap {
+        grid-template-columns: unset;
+    }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
