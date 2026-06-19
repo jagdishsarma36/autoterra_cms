@@ -255,7 +255,7 @@
             <!-- Right Content -->
             <div>
                 @if(!empty($lidar['image_url']))
-                    <div class="ph" style="height:420px;">
+                    <div class="ph sol_img_sec">
                         <img src="{{ ($lidar['image_url']) }}"
                         alt="{{ $lidar['title'] }}"
                         class="img-fluid">
