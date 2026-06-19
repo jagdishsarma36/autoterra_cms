@@ -3960,6 +3960,16 @@ i.ti-calendar-event.web-highlight {
         width: 100%!important;
         grid-template-columns: unset!important;
     }
+    .abt-story {
+        padding: 48px 24px;
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+    .abt-infycons {
+        padding: 48px 24px;
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
 }
 
 /* ================================================================
@@ -4086,6 +4096,28 @@ i.ti-calendar-event.web-highlight {
     .form_tell-us-what-you-need {
         width: 100%!important;
         grid-template-columns: unset!important;
+    }
+    .abt-story {
+        padding: 48px 24px;
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+    .abt-values-grid {
+        grid-template-columns: 1fr;
+    }
+    .abt-clients {
+        padding: 48px 24px;
+    }
+    .abt-team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .abt-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .abt-infycons {
+        padding: 48px 24px;
+        grid-template-columns: 1fr;
+        gap: 36px;
     }
 }
 
