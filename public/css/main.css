@@ -3952,10 +3952,11 @@ i.ti-calendar-event.web-highlight {
   .cta-band { padding: 56px 24px; }
 }
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-    .feat-grid-lr, .qt-body {
+    .feat-grid-lr, .qt-body, .sol-section-inner {
         display: flex;
         flex-wrap: wrap;
     }
+
 }
 
 /* ================================================================
