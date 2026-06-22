@@ -66,10 +66,35 @@ class PageController extends Controller
         return view('pages.quote');
     }
 
-    public function blog()
+    public function blog(Request $request)
     {
-        $posts = Post::published()->latest('published_at')->paginate(12);
-        return view('pages.blog', compact('posts'));
+        $query = Post::published();
+
+        $searchTerm = $request->input('q');
+        $currentTag = $request->input('tag');
+
+        if ($searchTerm) {
+            $query->search($searchTerm);
+        }
+
+        if ($currentTag) {
+            $query->withTag($currentTag);
+        }
+
+        $posts = $query->latest('published_at')->paginate(12)->withQueryString();
+
+        $tags = Post::published()
+            ->pluck('tags')
+            ->flatten()
+            ->filter()
+            ->unique()
+            ->values()
+            ->sort()
+            ->toArray();
+
+        $popularPosts = Post::popular(5)->get();
+
+        return view('pages.blog', compact('posts', 'tags', 'currentTag', 'searchTerm', 'popularPosts'));
     }
 
     public function blogPost(Post $post)
@@ -77,6 +102,7 @@ class PageController extends Controller
         if (!$post->is_published || ($post->published_at && $post->published_at->isFuture())) {
             abort(404);
         }
+        $post->increment('views_count');
         return view('pages.blog-post', compact('post'));
     }
 
