@@ -14,6 +14,24 @@
 @endforeach
 </section>
 
+
+<!-- blog filteers -->
+@php
+    $filters = pageContentJson('blog', 'blog.filters');
+@endphp
+<div class="bl-filter">
+    <span class="bl-filter-label">Filter:</span>
+    @foreach($filters as $filter)
+        <button
+            class="bl-cat {{ !empty($filter['active']) ? 'active' : '' }}"
+            onclick="filterCat(this,'{{ $filter['category'] }}')">
+            {{ $filter['label'] }}
+        </button>
+    @endforeach
+</div>
+
+
+
 <section style="padding:48px 60px;max-width:1200px;margin:0 auto;">
   @if($posts->count())
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
