@@ -2704,7 +2704,7 @@ span.field-hint {
 .field_wrap_privacy_check {
     position: relative;
 }
-.help_text {
+.form_quote-form .help_text {
     position: absolute;
     left: 240px;
     top: 1px;
