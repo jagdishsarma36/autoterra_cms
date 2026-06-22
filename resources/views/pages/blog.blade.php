@@ -51,32 +51,35 @@
       </div>
       @endif
 
-      @if($posts->count())
-      <div class="blog-grid">
-        @foreach($posts as $post)
-        <a href="/blog/{{ $post->slug }}" class="blog-card">
-          @if($post->featured_image)
-          <div class="blog-card-img" style="background:url({{ $post->featured_image }}) center/cover;"></div>
-          @else
-          <div class="blog-card-img blog-card-img-placeholder">
-            <i class="ti ti-pencil" style="font-size:32px;color:var(--cyan);opacity:0.4;"></i>
-          </div>
-          @endif
-          <div class="blog-card-body">
-            @if($post->category)
-            <span class="blog-card-cat">{{ $post->category }}</span>
-            @endif
-            <h3 class="blog-card-title">{{ $post->title }}</h3>
-            <p class="blog-card-excerpt">{{ Str::limit($post->excerpt ?? strip_tags($post->content), 120) }}</p>
-            <div class="blog-card-footer">
-              <span>{{ $post->author_name ?? 'AutoTerra Team' }}</span>
-              <span><i class="ti ti-eye" style="margin-right:2px;"></i>{{ $post->views_count }}</span>
-              <span>{{ $post->published_at?->format('M j, Y') ?? '' }}</span>
+      <div class="bl-articles">
+        @if($posts->count())
+        <div class="blog-grid">
+          @foreach($posts as $post)
+          <a href="/blog/{{ $post->slug }}" class="blog-card">
+            @if($post->featured_image)
+            <div class="blog-card-img" style="background:url({{ $post->featured_image }}) center/cover;"></div>
+            @else
+            <div class="blog-card-img blog-card-img-placeholder">
+              <i class="ti ti-pencil" style="font-size:32px;color:var(--cyan);opacity:0.4;"></i>
             </div>
-          </div>
-        </a>
-        @endforeach
+            @endif
+            <div class="blog-card-body">
+              @if($post->category)
+              <span class="blog-card-cat">{{ $post->category }}</span>
+              @endif
+              <h3 class="blog-card-title">{{ $post->title }}</h3>
+              <p class="blog-card-excerpt">{{ Str::limit($post->excerpt ?? strip_tags($post->content), 120) }}</p>
+              <div class="blog-card-footer">
+                <span>{{ $post->author_name ?? 'AutoTerra Team' }}</span>
+                <span><i class="ti ti-eye" style="margin-right:2px;"></i>{{ $post->views_count }}</span>
+                <span>{{ $post->published_at?->format('M j, Y') ?? '' }}</span>
+              </div>
+            </div>
+          </a>
+          @endforeach
+        </div>
       </div>
+
       <div class="blog-pagination">
         {{ $posts->links() }}
       </div>
@@ -97,7 +100,7 @@
     </div>
 
     <!-- Sidebar -->
-    <aside class="blog-sidebar">
+    <aside class="bl-sidebar">
 
       <!-- Search -->
       <div class="sidebar-card">
