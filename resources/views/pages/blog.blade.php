@@ -17,6 +17,10 @@
 @if(count($tags))
 <div class="bl-filter">
     <span class="bl-filter-label">Filter:</span>
+    <a href="/blog{{ $searchTerm ? '?q='.urlencode($searchTerm) : '' }}"
+       class="bl-cat {{ !$currentTag ? 'active' : '' }}">
+        All posts
+    </a>
     @foreach(array_slice($tags, 0, 6) as $tag)
         <a href="/blog?tag={{ urlencode($tag) }}{{ $searchTerm ? '&q='.urlencode($searchTerm) : '' }}"
            class="bl-cat {{ $currentTag === $tag ? 'active' : '' }}">
@@ -107,6 +111,11 @@
         </form>
       </div>
 
+      <!--newaletter -->
+      <div class="bl-newsletter">
+        {!! renderForm('blog-newsletter') !!}
+      </div>
+
       <!-- Popular Posts -->
       @if($popularPosts->count())
       <div class="sidebar-card">
@@ -144,9 +153,11 @@
       </div>
       @endif
 
+      <!--newaletter -->
+      <div class="bl-side-section">
+        {!! renderForm('blog-newsletter') !!}
+      </div>
     </aside>
-
-    
 
   </div>
 </section>
