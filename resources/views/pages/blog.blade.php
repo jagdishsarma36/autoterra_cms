@@ -50,7 +50,7 @@
         <a href="/blog" class="filter-clear"><i class="ti ti-x"></i> Clear</a>
       </div>
       @endif
-
+      
       <div class="bl-articles">
         @if($posts->count())
         <div class="blog-grid">

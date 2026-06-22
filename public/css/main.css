@@ -4031,15 +4031,17 @@ i.ti-calendar-event.web-highlight {
 }
 
 /* ── Blog Sidebar Layout ── */
-.blog-wrap {
+/* .blog-wrap {
   padding: 48px 60px;
   max-width: 1200px;
   margin: 0 auto;
-}
+} */
 .blog-layout {
-  display: flex;
-  gap: 40px;
-  align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 0;
+    align-items: start;
+    padding: 0;
 }
 .blog-sidebar {
   width: 280px;
@@ -4047,9 +4049,12 @@ i.ti-calendar-event.web-highlight {
   position: sticky;
   top: 100px;
 }
-.blog-main {
-  flex: 1;
-  min-width: 0;
+.bl-articles {
+    padding: 48px 60px;
+    border-right: 1px solid var(--border);
+}
+.bl-sidebar {
+    padding: 40px 28px;
 }
 
 /* Sidebar cards */
