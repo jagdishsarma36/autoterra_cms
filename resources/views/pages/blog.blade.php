@@ -3,10 +3,15 @@
 @section('body')
 @include('partials.nav')
 
-<section style="background:var(--navy);padding:60px;">
-  <div class="sec-eye">{{ pageContent('blog', 'hero.eyebrow') }}</div>
-  <h1 style="font-size:38px;font-weight:800;color:#fff;margin-bottom:14px;">{{ pageContent('blog', 'hero.heading') }}</h1>
-  <p style="font-size:15px;color:rgba(210,230,248,0.5);max-width:600px;">{{ pageContent('blog', 'hero.description') }}</p>
+<!-- hero section --> 
+<section class="bl-hero">
+@foreach(pageContentJson('blog', 'blog.hero') as $blogs) 
+  <div class="bl-hero-inner">
+    <div class="sec-eye">{{ $blog['sec_eye'] ?? '' }}</div>
+    <h1>{!! $blog['heading'] ?? '' !!}</h1>
+    <p>{{ $blog['description'] ?? '' }}</p>
+  </div>
+@endforeach
 </section>
 
 <section style="padding:48px 60px;max-width:1200px;margin:0 auto;">
