@@ -54,13 +54,43 @@
       <div class="bl-articles">
         @if($posts->count())
         
-        {{-- Featured First Post --}}
-        @php $firstPost = $posts->first(); @endphp
-        <div class="bl-featured">
-            <a href="/blog/{{ $firstPost->slug }}" class="blog-card">
-                {{-- Same card markup --}}
-            </a>
-        </div>
+         @php
+        $featuredPost = $posts->first();
+        @endphp
+
+        {{-- Featured Post --}}
+          <a href="/blog/{{ $featuredPost->slug }}" class="blog-featured-card">
+              @if($featuredPost->featured_image)
+                  <div class="blog-featured-img"
+                      style="background:url({{ $featuredPost->featured_image }}) center/cover;">
+                  </div>
+              @else
+                  <div class="blog-featured-img blog-card-img-placeholder">
+                      <i class="ti ti-pencil" style="font-size:32px;color:var(--cyan);opacity:0.4;"></i>
+                  </div>
+              @endif
+
+              <div class="blog-featured-content">
+                  @if($featuredPost->category)
+                      <span class="blog-card-cat">{{ $featuredPost->category }}</span>
+                  @endif
+
+                  <h2 class="blog-card-title">{{ $featuredPost->title }}</h2>
+
+                  <p class="blog-card-excerpt">
+                      {{ Str::limit($featuredPost->excerpt ?? strip_tags($featuredPost->content), 200) }}
+                  </p>
+
+                  <div class="blog-card-footer">
+                      <span>{{ $featuredPost->author_name ?? 'AutoTerra Team' }}</span>
+                      <span>
+                          <i class="ti ti-eye" style="margin-right:2px;"></i>
+                          {{ $featuredPost->views_count }}
+                      </span>
+                      <span>{{ $featuredPost->published_at?->format('M j, Y') }}</span>
+                  </div>
+              </div>
+          </a>
 
 
         <div class="blog-grid">
