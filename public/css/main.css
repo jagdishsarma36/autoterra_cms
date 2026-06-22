@@ -3933,7 +3933,62 @@ i.ti-calendar-event.web-highlight {
 .res-webinar-date.web_ti-calendar-event_web-highlight {
     color: var(--green);
 }
-
+/* blogs page */
+.bl-hero {
+    background: var(--navy);
+    padding: 56px 60px 48px;
+    border-bottom: 1px solid rgba(0,168,248,0.10);
+}
+.bl-hero-inner { 
+    max-width: 600px; 
+}
+.bl-hero h1 {
+    font-size: 34px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.6px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+}
+.bl-hero h1 span { 
+    color: var(--cyan); 
+}
+.bl-hero p {
+    font-size: 14px;
+    color: rgba(210,230,248,0.45);
+    line-height: 1.75;
+}
+.bl-filter {
+    background: var(--off);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 60px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.bl-filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-right: 4px;
+}
+.bl-cat.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+}
+.bl-cat {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
