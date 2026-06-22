@@ -17,10 +17,6 @@
 @if(count($tags))
 <div class="bl-filter">
     <span class="bl-filter-label">Filter:</span>
-    <a href="/blog{{ $searchTerm ? '?q='.urlencode($searchTerm) : '' }}"
-       class="bl-cat {{ !$currentTag ? 'active' : '' }}">
-        All posts
-    </a>
     @foreach(array_slice($tags, 0, 6) as $tag)
         <a href="/blog?tag={{ urlencode($tag) }}{{ $searchTerm ? '&q='.urlencode($searchTerm) : '' }}"
            class="bl-cat {{ $currentTag === $tag ? 'active' : '' }}">
@@ -32,60 +28,6 @@
 
 <section class="blog-wrap">
   <div class="blog-layout">
-
-    <!-- Sidebar -->
-    <aside class="blog-sidebar">
-
-      <!-- Search -->
-      <div class="sidebar-card">
-        <h4 class="sidebar-title"><i class="ti ti-search"></i> Search</h4>
-        <form action="/blog" method="GET" class="blog-search-form">
-          @if($currentTag)
-          <input type="hidden" name="tag" value="{{ $currentTag }}">
-          @endif
-          <input type="text" name="q" value="{{ $searchTerm ?? '' }}" placeholder="Search posts..." class="blog-search-input">
-          <button type="submit" class="blog-search-btn">Search</button>
-        </form>
-      </div>
-
-      <!-- Popular Posts -->
-      @if($popularPosts->count())
-      <div class="sidebar-card">
-        <h4 class="sidebar-title"><i class="ti ti-flame"></i> Popular Posts</h4>
-        <div class="popular-list">
-          @foreach($popularPosts as $pop)
-          <a href="/blog/{{ $pop->slug }}" class="popular-item">
-            <div class="popular-img">
-              @if($pop->featured_image)
-              <img src="{{ $pop->featured_image }}" alt="{{ $pop->title }}">
-              @else
-              <div class="popular-img-placeholder"><i class="ti ti-pencil"></i></div>
-              @endif
-            </div>
-            <div class="popular-info">
-              <h5>{{ $pop->title }}</h5>
-              <span class="popular-meta"><i class="ti ti-eye"></i> {{ number_format($pop->views_count) }} · {{ $pop->published_at?->format('M j, Y') }}</span>
-            </div>
-          </a>
-          @endforeach
-        </div>
-      </div>
-      @endif
-
-      <!-- Tags -->
-      @if(count($tags))
-      <div class="sidebar-card">
-        <h4 class="sidebar-title"><i class="ti ti-tags"></i> Tags</h4>
-        <div class="tag-cloud">
-          <a href="/blog" class="tag-pill {{ !$currentTag ? 'active' : '' }}">All</a>
-          @foreach($tags as $tag)
-          <a href="/blog?tag={{ urlencode($tag) }}{{ $searchTerm ? '&q='.urlencode($searchTerm) : '' }}" class="tag-pill {{ $currentTag === $tag ? 'active' : '' }}">{{ $tag }}</a>
-          @endforeach
-        </div>
-      </div>
-      @endif
-
-    </aside>
 
     <!-- Main Content -->
     <div class="blog-main">
@@ -149,6 +91,62 @@
       @endif
 
     </div>
+
+    <!-- Sidebar -->
+    <aside class="blog-sidebar">
+
+      <!-- Search -->
+      <div class="sidebar-card">
+        <h4 class="sidebar-title"><i class="ti ti-search"></i> Search</h4>
+        <form action="/blog" method="GET" class="blog-search-form">
+          @if($currentTag)
+          <input type="hidden" name="tag" value="{{ $currentTag }}">
+          @endif
+          <input type="text" name="q" value="{{ $searchTerm ?? '' }}" placeholder="Search posts..." class="blog-search-input">
+          <button type="submit" class="blog-search-btn">Search</button>
+        </form>
+      </div>
+
+      <!-- Popular Posts -->
+      @if($popularPosts->count())
+      <div class="sidebar-card">
+        <h4 class="sidebar-title"><i class="ti ti-flame"></i> Popular Posts</h4>
+        <div class="popular-list">
+          @foreach($popularPosts as $pop)
+          <a href="/blog/{{ $pop->slug }}" class="popular-item">
+            <div class="popular-img">
+              @if($pop->featured_image)
+              <img src="{{ $pop->featured_image }}" alt="{{ $pop->title }}">
+              @else
+              <div class="popular-img-placeholder"><i class="ti ti-pencil"></i></div>
+              @endif
+            </div>
+            <div class="popular-info">
+              <h5>{{ $pop->title }}</h5>
+              <span class="popular-meta"><i class="ti ti-eye"></i> {{ number_format($pop->views_count) }} · {{ $pop->published_at?->format('M j, Y') }}</span>
+            </div>
+          </a>
+          @endforeach
+        </div>
+      </div>
+      @endif
+
+      <!-- Tags -->
+      @if(count($tags))
+      <div class="sidebar-card">
+        <h4 class="sidebar-title"><i class="ti ti-tags"></i> Tags</h4>
+        <div class="tag-cloud">
+          <a href="/blog" class="tag-pill {{ !$currentTag ? 'active' : '' }}">All</a>
+          @foreach($tags as $tag)
+          <a href="/blog?tag={{ urlencode($tag) }}{{ $searchTerm ? '&q='.urlencode($searchTerm) : '' }}" class="tag-pill {{ $currentTag === $tag ? 'active' : '' }}">{{ $tag }}</a>
+          @endforeach
+        </div>
+      </div>
+      @endif
+
+    </aside>
+
+    
 
   </div>
 </section>
