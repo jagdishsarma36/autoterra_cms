@@ -7,9 +7,9 @@
 <section class="bl-hero">
 @foreach(pageContentJson('blog', 'blog.hero') as $blogs) 
   <div class="bl-hero-inner">
-    <div class="sec-eye">{{ $blog['sec_eye'] ?? '' }}</div>
+    <div class="sec-eye">{!! $blog['sec_eye'] ?? '' !!}</div>
     <h1>{!! $blog['heading'] ?? '' !!}</h1>
-    <p>{{ $blog['description'] ?? '' }}</p>
+    <p>{!! $blog['description'] ?? '' !!}</p>
   </div>
 @endforeach
 </section>
