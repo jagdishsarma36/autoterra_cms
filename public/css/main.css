@@ -4347,7 +4347,89 @@ i.ti-calendar-event.web-highlight {
   text-align: center;
   padding: 80px 0;
 }
-
+.bl-newsletter {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 28px;
+}
+.bl-newsletter .qt-submit-btn { 
+    width: 100%;
+    background: var(--cyan);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 9px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    justify-content: center;
+}
+.bl-newsletter p {
+    font-size: 12px;
+    color: rgba(210, 230, 248, 0.45);
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+.bl-newsletter input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid rgba(0, 168, 248, 0.25);
+    border-radius: 6px;
+    background: rgba(0, 168, 248, 0.06);
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    margin-bottom: 8px;
+    transition: border-color 0.15s;
+}
+.bl-newsletter .field_wrap_email>label {
+    font-size: 14px!important;
+    font-weight: 700!important;
+    color: #fff!important;
+    margin-bottom: 6px!important;
+}
+.bl-side-section {
+    margin-bottom: 32px;
+}
+.bl-side-section .qt-submit-btn { 
+    width: 100%;
+    background: var(--cyan);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.bl-side-section p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 12px;
+}
+.bl-side-section input {
+   flex: 1;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+}
+.bl-side-section .field_wrap_email>label {
+display: block;
+    font-size: 13px!important;
+    font-weight: 600!important;
+    color: var(--body)!important;
+    margin-bottom: 5px!important;
+}
 /* ── Blog Responsive ── */
 @media (max-width: 900px) {
   .blog-wrap {
