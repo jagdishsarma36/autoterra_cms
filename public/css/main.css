@@ -4374,17 +4374,17 @@ i.ti-calendar-event.web-highlight {
     margin-bottom: 14px;
 }
 .bl-newsletter input {
-    width: 100%;
-    padding: 9px 12px;
-    border: 1px solid rgba(0, 168, 248, 0.25);
-    border-radius: 6px;
-    background: rgba(0, 168, 248, 0.06);
-    color: #fff;
+    width: 100%!important;
+    padding: 9px 12px!important;
+    border: 1px solid rgba(0, 168, 248, 0.25)!important;
+    border-radius: 6px!important;
+    background: rgba(0, 168, 248, 0.06)!important;
+    color: #fff!important;
     font-family: inherit;
-    font-size: 12px;
+    font-size: 12px!important;
     outline: none;
-    margin-bottom: 8px;
-    transition: border-color 0.15s;
+    margin-bottom: 8px!important;
+    transition: border-color 0.15s!important;
 }
 .bl-newsletter .field_wrap_email>label {
     font-size: 14px!important;
