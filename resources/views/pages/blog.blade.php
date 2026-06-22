@@ -52,31 +52,17 @@
       @endif
       
       <div class="bl-articles">
-        @if($posts->count())       
-        {{-- First Blog --}}
+        @if($posts->count())
+        
+        {{-- Featured First Post --}}
         @php $firstPost = $posts->first(); @endphp
-        <div class="blog-featured">
+        <div class="bl-featured">
             <a href="/blog/{{ $firstPost->slug }}" class="blog-card">
-                @if($firstPost->featured_image)
-                    <div class="blog-card-img"
-                        style="background:url({{ $firstPost->featured_image }}) center/cover;">
-                    </div>
-                @endif
-                <div class="blog-card-body">
-                    @if($firstPost->category)
-                        <span class="blog-card-cat">{{ $firstPost->category }}</span>
-                    @endif
-                    <h3 class="blog-card-title">{{ $firstPost->title }}</h3>
-                    <p class="blog-card-excerpt">
-                        {{ Str::limit($firstPost->excerpt ?? strip_tags($firstPost->content), 200) }}
-                    </p>
-                    <div class="blog-card-footer">
-                        <span>{{ $firstPost->author_name ?? 'AutoTerra Team' }}</span>
-                        <span>{{ $firstPost->published_at?->format('M j, Y') }}</span>
-                    </div>
-                </div>
+                {{-- Same card markup --}}
             </a>
         </div>
+
+
         <div class="blog-grid">
           @foreach($posts as $post)
           <a href="/blog/{{ $post->slug }}" class="blog-card">
