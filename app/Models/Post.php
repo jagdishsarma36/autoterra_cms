@@ -12,6 +12,7 @@ class Post extends Model
         'title', 'slug', 'content', 'excerpt', 'meta_title',
         'meta_description', 'featured_image', 'author_name',
         'category', 'tags', 'is_published', 'published_at', 'sort_order',
+        'views_count',
     ];
 
     protected $casts = [
@@ -33,6 +34,27 @@ class Post extends Model
     {
         return $query->where('is_published', true)
             ->where('published_at', '<=', now());
+    }
+
+    public function scopePopular(Builder $query, int $limit = 5): Builder
+    {
+        return $query->published()
+            ->orderByDesc('views_count')
+            ->limit($limit);
+    }
+
+    public function scopeSearch(Builder $query, string $term): Builder
+    {
+        return $query->where(function (Builder $q) use ($term) {
+            $q->where('title', 'like', "%{$term}%")
+              ->orWhere('content', 'like', "%{$term}%")
+              ->orWhere('excerpt', 'like', "%{$term}%");
+        });
+    }
+
+    public function scopeWithTag(Builder $query, string $tag): Builder
+    {
+        return $query->where('tags', 'like', '%"'.$tag.'"%');
     }
 
     public function getRouteKeyName(): string

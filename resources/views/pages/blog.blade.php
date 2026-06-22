@@ -3,9 +3,9 @@
 @section('body')
 @include('partials.nav')
 
-<!-- hero section --> 
+<!-- hero section -->
 <section class="bl-hero">
-@foreach(pageContentJson('blog', 'blog.hero') as $blogs) 
+@foreach(pageContentJson('blog', 'blog.hero') as $blogs)
   <div class="bl-hero-inner">
     <div class="sec-eye">{!! $blogs['sec_eye'] ?? '' !!}</div>
     <h1>{!! $blogs['heading'] ?? '' !!}</h1>
@@ -14,60 +14,127 @@
 @endforeach
 </section>
 
+<section class="blog-wrap">
+  <div class="blog-layout">
 
-<!-- blog filteers -->
-@php
-    $filters = pageContentJson('blog', 'blog.filters');
-@endphp
-<div class="bl-filter">
-    <span class="bl-filter-label">Filter:</span>
-    @foreach($filters as $filter)
-        <button
-            class="bl-cat {{ !empty($filter['active']) ? 'active' : '' }}"
-            onclick="filterCat(this,'{{ $filter['category'] }}')">
-            {{ $filter['label'] }}
-        </button>
-    @endforeach
-</div>
+    <!-- Sidebar -->
+    <aside class="blog-sidebar">
 
-
-
-<section style="padding:48px 60px;max-width:1200px;margin:0 auto;">
-  @if($posts->count())
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-    @foreach($posts as $post)
-    <a href="/blog/{{ $post->slug }}" style="background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;text-decoration:none;color:inherit;display:flex;flex-direction:column;">
-      @if($post->featured_image)
-      <div style="height:200px;background:url({{ $post->featured_image }}) center/cover;"></div>
-      @else
-      <div style="height:200px;background:linear-gradient(135deg,var(--cyan-lt),var(--off));display:flex;align-items:center;justify-content:center;">
-        <i class="ti ti-pencil" style="font-size:32px;color:var(--cyan);opacity:0.4;"></i>
+      <!-- Search -->
+      <div class="sidebar-card">
+        <h4 class="sidebar-title"><i class="ti ti-search"></i> Search</h4>
+        <form action="/blog" method="GET" class="blog-search-form">
+          @if($currentTag)
+          <input type="hidden" name="tag" value="{{ $currentTag }}">
+          @endif
+          <input type="text" name="q" value="{{ $searchTerm ?? '' }}" placeholder="Search posts..." class="blog-search-input">
+          <button type="submit" class="blog-search-btn">Search</button>
+        </form>
       </div>
-      @endif
-      <div style="padding:24px;flex:1;display:flex;flex-direction:column;">
-        @if($post->category)
-        <span style="font-size:11px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">{{ $post->category }}</span>
-        @endif
-        <h3 style="font-size:17px;font-weight:800;color:var(--body);margin-bottom:8px;line-height:1.3;">{{ $post->title }}</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:16px;flex:1;">{{ Str::limit($post->excerpt ?? strip_tags($post->content), 120) }}</p>
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);">
-          <span>{{ $post->author_name ?? 'AutoTerra Team' }}</span>
-          <span>{{ $post->published_at?->format('M j, Y') ?? '' }}</span>
+
+      <!-- Popular Posts -->
+      @if($popularPosts->count())
+      <div class="sidebar-card">
+        <h4 class="sidebar-title"><i class="ti ti-flame"></i> Popular Posts</h4>
+        <div class="popular-list">
+          @foreach($popularPosts as $pop)
+          <a href="/blog/{{ $pop->slug }}" class="popular-item">
+            <div class="popular-img">
+              @if($pop->featured_image)
+              <img src="{{ $pop->featured_image }}" alt="{{ $pop->title }}">
+              @else
+              <div class="popular-img-placeholder"><i class="ti ti-pencil"></i></div>
+              @endif
+            </div>
+            <div class="popular-info">
+              <h5>{{ $pop->title }}</h5>
+              <span class="popular-meta"><i class="ti ti-eye"></i> {{ number_format($pop->views_count) }} · {{ $pop->published_at?->format('M j, Y') }}</span>
+            </div>
+          </a>
+          @endforeach
         </div>
       </div>
-    </a>
-    @endforeach
+      @endif
+
+      <!-- Tags -->
+      @if(count($tags))
+      <div class="sidebar-card">
+        <h4 class="sidebar-title"><i class="ti ti-tags"></i> Tags</h4>
+        <div class="tag-cloud">
+          <a href="/blog" class="tag-pill {{ !$currentTag ? 'active' : '' }}">All</a>
+          @foreach($tags as $tag)
+          <a href="/blog?tag={{ urlencode($tag) }}{{ $searchTerm ? '&q='.urlencode($searchTerm) : '' }}" class="tag-pill {{ $currentTag === $tag ? 'active' : '' }}">{{ $tag }}</a>
+          @endforeach
+        </div>
+      </div>
+      @endif
+
+    </aside>
+
+    <!-- Main Content -->
+    <div class="blog-main">
+
+      <!-- Active filters -->
+      @if($searchTerm || $currentTag)
+      <div class="blog-filters">
+        <span class="filter-label">
+          @if($searchTerm)
+            Results for: <strong>"{{ $searchTerm }}"</strong>
+          @endif
+          @if($currentTag)
+            Tag: <strong>{{ $currentTag }}</strong>
+          @endif
+        </span>
+        <a href="/blog" class="filter-clear"><i class="ti ti-x"></i> Clear</a>
+      </div>
+      @endif
+
+      @if($posts->count())
+      <div class="blog-grid">
+        @foreach($posts as $post)
+        <a href="/blog/{{ $post->slug }}" class="blog-card">
+          @if($post->featured_image)
+          <div class="blog-card-img" style="background:url({{ $post->featured_image }}) center/cover;"></div>
+          @else
+          <div class="blog-card-img blog-card-img-placeholder">
+            <i class="ti ti-pencil" style="font-size:32px;color:var(--cyan);opacity:0.4;"></i>
+          </div>
+          @endif
+          <div class="blog-card-body">
+            @if($post->category)
+            <span class="blog-card-cat">{{ $post->category }}</span>
+            @endif
+            <h3 class="blog-card-title">{{ $post->title }}</h3>
+            <p class="blog-card-excerpt">{{ Str::limit($post->excerpt ?? strip_tags($post->content), 120) }}</p>
+            <div class="blog-card-footer">
+              <span>{{ $post->author_name ?? 'AutoTerra Team' }}</span>
+              <span><i class="ti ti-eye" style="margin-right:2px;"></i>{{ $post->views_count }}</span>
+              <span>{{ $post->published_at?->format('M j, Y') ?? '' }}</span>
+            </div>
+          </div>
+        </a>
+        @endforeach
+      </div>
+      <div class="blog-pagination">
+        {{ $posts->links() }}
+      </div>
+      @else
+      <div class="blog-empty">
+        <i class="ti ti-pencil" style="font-size:48px;color:var(--border);margin-bottom:16px;"></i>
+        <h3 style="font-size:20px;font-weight:800;color:var(--body);margin-bottom:8px;">No posts found</h3>
+        <p style="font-size:14px;color:var(--muted);">
+          @if($searchTerm || $currentTag)
+            Try adjusting your search or filter. <a href="/blog" style="color:var(--cyan);">View all posts</a>
+          @else
+            Blog posts will appear here once published from the admin panel.
+          @endif
+        </p>
+      </div>
+      @endif
+
+    </div>
+
   </div>
-  <div style="margin-top:40px;text-align:center;">
-    {{ $posts->links() }}
-  </div>
-  @else
-  <div style="text-align:center;padding:80px 0;">
-    <i class="ti ti-pencil" style="font-size:48px;color:var(--border);margin-bottom:16px;"></i>
-    <h3 style="font-size:20px;font-weight:800;color:var(--body);margin-bottom:8px;">No posts yet</h3>
-    <p style="font-size:14px;color:var(--muted);">Blog posts will appear here once published from the admin panel.</p>
-  </div>
-  @endif
 </section>
 
 @include('partials.footer')
