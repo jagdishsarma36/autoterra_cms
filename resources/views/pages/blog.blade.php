@@ -203,7 +203,7 @@
 
 <!-- blogs cta --> 
 @php
-    $cta = pageContentJson('blog.cta', 'blog.cta');
+    $cta = pageContentJson('blog', 'blog.cta');
 @endphp
 <section class="cta-band">
     <h2>{{ $cta['title'] }}</h2>
