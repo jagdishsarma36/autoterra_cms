@@ -201,5 +201,21 @@
   </div>
 </section>
 
+<!-- blogs cta --> 
+@php
+    $cta = pageContentJson('blog.cta', 'blog.cta');
+@endphp
+<section class="cta-band">
+    <h2>{{ $cta['title'] }}</h2>
+    <p>{{ $cta['description'] }}</p>
+    <div class="cta-row">
+        @foreach($cta['buttons'] as $button)
+            <a href="{{ $button['url'] }}" class="{{ $button['class'] }}">
+                {{ $button['text'] }}
+            </a>
+        @endforeach
+    </div>
+</section>
+
 @include('partials.footer')
 @endsection
