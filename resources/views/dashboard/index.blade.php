@@ -3,7 +3,7 @@
 @section('body')
 @include('partials.nav')
 
-<div style="display:flex;gap:32px;padding:48px 60px;max-width:1200px;margin:0 auto;align-items:flex-start;">
+<div class="dash-main" style="display:flex;gap:32px;padding:48px 60px;max-width:1200px;margin:0 auto;align-items:flex-start;">
 @include('partials.dashboard-sidebar')
 <div style="flex:1;min-width:0;">
   @if(session('success'))
@@ -15,7 +15,7 @@
   <h1 style="font-size:28px;font-weight:800;color:var(--body);margin-bottom:8px;">Welcome back, {{ Auth::user()->name }}</h1>
   <p style="font-size:14px;color:var(--muted);margin-bottom:32px;">Manage your subscriptions, licenses, and billing from here.</p>
 
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px;">
+  <div class="dash_count" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px;">
     <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px;">
       <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Active Subscriptions</div>
       <div style="font-size:32px;font-weight:800;color:var(--cyan);">{{ $activeSubscriptions->count() }}</div>
@@ -32,7 +32,7 @@
 
   @if($activeSubscriptions->count())
   <h2 style="font-size:18px;font-weight:800;margin-bottom:16px;">Active Subscriptions</h2>
-  <table style="width:100%;border-collapse:collapse;margin-bottom:40px;">
+  <table class="dash-tab" style="width:100%;border-collapse:collapse;margin-bottom:40px;">
     <tr style="background:var(--navy);color:#fff;">
       <th style="padding:10px 14px;text-align:left;font-size:12px;">Product</th>
       <th style="padding:10px 14px;text-align:left;font-size:12px;">Term</th>
@@ -56,7 +56,7 @@
   @endif
 
   <h2 style="font-size:18px;font-weight:800;margin-bottom:16px;">Recent Orders</h2>
-  <table style="width:100%;border-collapse:collapse;">
+  <table class="dash-tab" style="width:100%;border-collapse:collapse;">
     <tr style="background:var(--navy);color:#fff;">
       <th style="padding:10px 14px;text-align:left;font-size:12px;">Product</th>
       <th style="padding:10px 14px;text-align:left;font-size:12px;">Term</th>
