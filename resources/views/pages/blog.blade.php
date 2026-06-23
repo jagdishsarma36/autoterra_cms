@@ -108,7 +108,7 @@
               <p class="blog-card-excerpt">{{ Str::limit($post->excerpt ?? strip_tags($post->content), 120) }}</p>
               <div class="blog-card-footer">
                 <span>{{ $post->author_name ?? 'AutoTerra Team' }}</span>
-                <span><i class="ti ti-eye" style="margin-right:2px; display:none;"></i>{{ $post->views_count }}</span>
+                <span style="display:none;"><i class="ti ti-eye" style="margin-right:2px;"></i>{{ $post->views_count }}</span>
                 <span>{{ $post->published_at?->format('M j, Y') ?? '' }}</span>
               </div>
             </div>
