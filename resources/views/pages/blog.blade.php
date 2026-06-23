@@ -119,7 +119,7 @@
           </a>
           @endforeach
         </div>
-         @endif
+
       </div>
 
       <div class="blog-pagination">
