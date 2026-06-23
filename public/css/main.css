@@ -4000,53 +4000,6 @@ i.ti-calendar-event.web-highlight {
 .blog-card-img {
     min-height:280px;
 }
-/* ================================================================
-   RESPONSIVE — TABLET (≤900px)
-================================================================ */
-@media (max-width: 900px) {
-  .nav { padding: 13px 24px; }
-  .nav-links { display: none; }
-  .hamburger { display: block; }
-  .section { padding: 48px 24px; }
-  .hero { padding: 60px 24px 48px; }
-  .hero h1 { font-size: 34px; }
-  .stats-strip { flex-wrap: wrap; gap: 32px; padding: 32px 24px; }
-  .page-hero { padding: 40px 24px 36px; }
-  .page-hero h1 { font-size: 28px; }
-  .foot-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-  footer { padding: 44px 24px 24px; }
-  .cta-band { padding: 56px 24px; }
-}
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-    .feat-grid-lr, .qt-body, .sol-section-inner, .ct-main {
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .form_tell-us-what-you-need {
-        width: 100%!important;
-        grid-template-columns: unset!important;
-    }
-    .abt-story {
-        padding: 48px 24px;
-        grid-template-columns: 1fr;
-        gap: 36px;
-    }
-    .abt-infycons {
-        padding: 48px 24px;
-        grid-template-columns: 1fr;
-        gap: 36px;
-    }
-    .legal-content {
-        overflow-y: auto;
-    }
-}
-
-/* ── Blog Sidebar Layout ── */
-/* .blog-wrap {
-  padding: 48px 60px;
-  max-width: 1200px;
-  margin: 0 auto;
-} */
 .blog-layout {
     display: grid;
     grid-template-columns: 1fr 300px;
@@ -4441,35 +4394,56 @@ display: block;
     color: var(--body)!important;
     margin-bottom: 5px!important;
 }
-/* ── Blog Responsive ── */
+/* ================================================================
+   RESPONSIVE — TABLET (≤900px)
+================================================================ */
 @media (max-width: 900px) {
-  .blog-wrap {
-    padding: 32px 20px;
-  }
-  .blog-layout {
-    flex-direction: column;
-  }
-  .blog-sidebar {
-    width: 100%;
-    min-width: 100%;
-    position: static;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  .sidebar-card {
-    margin-bottom: 0;
-  }
-  .blog-grid {
-    grid-template-columns: 1fr;
-  }
+  .nav { padding: 13px 24px; }
+  .nav-links { display: none; }
+  .hamburger { display: block; }
+  .section { padding: 48px 24px; }
+  .hero { padding: 60px 24px 48px; }
+  .hero h1 { font-size: 34px; }
+  .stats-strip { flex-wrap: wrap; gap: 32px; padding: 32px 24px; }
+  .page-hero { padding: 40px 24px 36px; }
+  .page-hero h1 { font-size: 28px; }
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+  footer { padding: 44px 24px 24px; }
+  .cta-band { padding: 56px 24px; }
 }
-@media (max-width: 600px) {
-  .blog-sidebar {
-    grid-template-columns: 1fr;
-  }
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .feat-grid-lr, .qt-body, .sol-section-inner, .ct-main, .blog-layout {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .form_tell-us-what-you-need {
+        width: 100%!important;
+        grid-template-columns: unset!important;
+    }
+    .abt-story {
+        padding: 48px 24px;
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+    .abt-infycons {
+        padding: 48px 24px;
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+    .legal-content {
+        overflow-y: auto;
+    }
+    .bl-articles {
+        padding: 32px 24px;
+        border-right: none;
+    }
+    .bl-sidebar {
+        gap: 4px;
+    }
+    .sidebar-card {
+        margin-bottom: 20px;
+    }
 }
-
 /* ================================================================
    RESPONSIVE — MOBILE (≤600px)
 ================================================================ */
@@ -4482,7 +4456,6 @@ display: block;
   .stats-strip { gap: 24px; }
   .stat-number { font-size: 28px; }
 }
-
 @media screen and (max-width: 767px) {
     .ps-hero-btns {
     justify-content: center;
