@@ -121,7 +121,6 @@
         </div>
          @endif
       </div>
-     
 
       <div class="blog-pagination">
         {{ $posts->links() }}
