@@ -4487,7 +4487,7 @@ display: block;
     .ps-hero-btns {
     justify-content: center;
     }
-    .feat-grid-lr, .sysreq-grid, .feat-grid, .tracks, .pr-cards-grid, .pro-grid, .pro-caps-grid, .pro-who-grid, .qt-body, .form-row, .res-doc-grid, .res-webinar-grid, .res-video-grid, .sol-section-inner, .ct-main {
+    .feat-grid-lr, .sysreq-grid, .feat-grid, .tracks, .pr-cards-grid, .pro-grid, .pro-caps-grid, .pro-who-grid, .qt-body, .form-row, .res-doc-grid, .res-webinar-grid, .res-video-grid, .sol-section-inner, .ct-main, .blog-layout {
         display: flex;
         flex-wrap: wrap;
     }
@@ -4625,6 +4625,16 @@ display: block;
     }
     .legal-content {
         overflow-y: auto;
+    }
+    .bl-articles {
+        padding: 32px 24px;
+        border-right: none;
+    }
+    .bl-sidebar {
+        gap: 4px;
+    }
+    .sidebar-card {
+        margin-bottom: 20px;
     }
 }
 
