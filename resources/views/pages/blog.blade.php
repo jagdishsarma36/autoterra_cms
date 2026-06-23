@@ -119,8 +119,9 @@
           </a>
           @endforeach
         </div>
+         @endif
       </div>
-      @endif
+     
 
       <div class="blog-pagination">
         {{ $posts->links() }}
