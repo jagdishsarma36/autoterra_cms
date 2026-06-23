@@ -218,7 +218,6 @@ img { max-width: 100%; display: block; }
   display: none; color: rgba(210,230,248,0.7);
   background: none; border: none; font-size: 24px;
 }
-.nav-das { display: none;}
 
 /* ================================================================
    FOOTER
@@ -4446,7 +4445,10 @@ display: block;
     }
     .blog-grid {
     grid-template-columns: 1fr;
-}
+    }
+    .nav-das { 
+        display: none;
+    }
 }
 /* ================================================================
    RESPONSIVE — MOBILE (≤600px)
@@ -4612,6 +4614,9 @@ display: block;
     }
     .sidebar-card {
         margin-bottom: 20px;
+    }
+    .nav-das { 
+        display: none;
     }
 }
 
