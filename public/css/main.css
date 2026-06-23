@@ -3989,6 +3989,17 @@ i.ti-calendar-event.web-highlight {
     cursor: pointer;
     transition: all 0.15s;
 }
+.bl-featured {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+}
+.blog-card-img {
+    min-height:280px;
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
