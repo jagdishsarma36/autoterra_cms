@@ -80,7 +80,7 @@
                     </p>
                     <div class="blog-card-footer">
                         <span>{{ $featuredPost->author_name ?? 'AutoTerra Team' }}</span>
-                        <span>
+                        <span style="display:none">
                             <i class="ti ti-eye" style="margin-right:2px;"></i>
                             {{ $featuredPost->views_count }}
                         </span>
