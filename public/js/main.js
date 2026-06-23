@@ -381,4 +381,4 @@ document.addEventListener('DOMContentLoaded', function () {
       links.style.gap = '16px';
       links.style.zIndex = '99';
       links.style.borderBottom = '1px solid rgba(0,168,248,0.12)';
-    }
+    });
