@@ -4412,7 +4412,7 @@ display: block;
   .cta-band { padding: 56px 24px; }
 }
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-    .feat-grid-lr, .qt-body, .sol-section-inner, .ct-main, .blog-layout {
+    .feat-grid-lr, .qt-body, .sol-section-inner, .ct-main {
         display: flex;
         flex-wrap: wrap;
     }
@@ -4443,6 +4443,9 @@ display: block;
     .sidebar-card {
         margin-bottom: 20px;
     }
+    .blog-grid {
+    grid-template-columns: 1fr;
+}
 }
 /* ================================================================
    RESPONSIVE — MOBILE (≤600px)
