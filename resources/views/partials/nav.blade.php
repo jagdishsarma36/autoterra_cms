@@ -25,6 +25,9 @@
     @endif
   </div>
   <div class="nav-right">
+    <button class="hamburger" aria-label="Open menu">
+      <i class="ti ti-menu-2"></i>
+    </button>
     @if($isLoggedIn)
       <a href="{{ route('dashboard') }}" class="nav-login"><i class="ti ti-layout-dashboard" style="font-size:15px;"></i> Dashboard</a>
     @else
