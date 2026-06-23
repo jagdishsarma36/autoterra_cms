@@ -52,35 +52,48 @@
       @endif
       
       <div class="bl-articles">
+      @php
+        $featuredPost = $posts->first();
+        $gridPosts = $posts->skip(1);
+      @endphp
         @if($posts->count())
-        @php
-    $featuredPost = $posts->first();
-    $gridPosts = $posts->skip(1);
-@endphp
 
-@if($featuredPost)
-
-    <div class="bl-featured">
-        <a href="/blog/{{ $featuredPost->slug }}" class="blog-featured-card">
-            @if($featuredPost->featured_image)
-                <div class="blog-featured-img"
-                     style="background:url({{ $featuredPost->featured_image }}) center/cover;">
-                </div>
-            @endif
-
-            <div class="blog-featured-body">
-                @if($featuredPost->category)
-                    <span class="blog-card-cat">{{ $featuredPost->category }}</span>
+      {{-- First Blog --}}
+        <div class="bl-featured">
+            <a href="/blog/{{ $featuredPost->slug }}" class="blog-card">
+                @if($featuredPost->featured_image)
+                    <div class="blog-card-img"
+                        style="background:url({{ $featuredPost->featured_image }}) center/cover;">
+                    </div>
+                @else
+                    <div class="blog-card-img blog-card-img-placeholder">
+                        <i class="ti ti-pencil" style="font-size:32px;color:var(--cyan);opacity:0.4;"></i>
+                    </div>
                 @endif
 
-                <h2>{{ $featuredPost->title }}</h2>
+                <div class="blog-card-body">
+                    @if($featuredPost->category)
+                        <span class="blog-card-cat">{{ $featuredPost->category }}</span>
+                    @endif
 
-                <p>
-                    {{ Str::limit($featuredPost->excerpt ?? strip_tags($featuredPost->content), 180) }}
-                </p>
-            </div>
-        </a>
-    </div>
+                    <h3 class="blog-card-title">{{ $featuredPost->title }}</h3>
+
+                    <p class="blog-card-excerpt">
+                        {{ Str::limit($featuredPost->excerpt ?? strip_tags($featuredPost->content), 180) }}
+                    </p>
+
+                    <div class="blog-card-footer">
+                        <span>{{ $featuredPost->author_name ?? 'AutoTerra Team' }}</span>
+                        <span>
+                            <i class="ti ti-eye" style="margin-right:2px;"></i>
+                            {{ $featuredPost->views_count }}
+                        </span>
+                        <span>{{ $featuredPost->published_at?->format('M j, Y') ?? '' }}</span>
+                    </div>
+                </div>
+            </a>
+        </div>        
+
         <div class="blog-grid">
           @foreach($gridPosts as $post)
           <a href="/blog/{{ $post->slug }}" class="blog-card">
