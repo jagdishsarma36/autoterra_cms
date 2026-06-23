@@ -26,7 +26,7 @@
   </div>
   <div class="nav-right">
     @if($isLoggedIn)
-      <a href="{{ route('dashboard') }}" class="nav-login"><i class="ti ti-layout-dashboard" style="font-size:15px;"></i> Dashboard</a>
+      <a href="{{ route('dashboard') }}" class="nav-login nav-das"><i class="ti ti-layout-dashboard" style="font-size:15px;"></i> Dashboard</a>
     @else
       <a href="{{ route('login') }}" class="nav-login"><i class="ti ti-user" style="font-size:15px;"></i> {{ $loginText }}</a>
     @endif
