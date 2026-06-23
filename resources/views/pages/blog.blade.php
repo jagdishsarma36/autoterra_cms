@@ -56,7 +56,7 @@
         $featuredPost = $posts->first();
         $gridPosts = $posts->skip(1);
       @endphp
-        @if($posts->count())
+      @if($posts->count())
 
       {{-- First Blog --}}
         <div class="bl-featured">
@@ -70,18 +70,14 @@
                         <i class="ti ti-pencil" style="font-size:32px;color:var(--cyan);opacity:0.4;"></i>
                     </div>
                 @endif
-
                 <div class="blog-card-body">
                     @if($featuredPost->category)
                         <span class="blog-card-cat">{{ $featuredPost->category }}</span>
                     @endif
-
                     <h3 class="blog-card-title">{{ $featuredPost->title }}</h3>
-
                     <p class="blog-card-excerpt">
                         {{ Str::limit($featuredPost->excerpt ?? strip_tags($featuredPost->content), 180) }}
                     </p>
-
                     <div class="blog-card-footer">
                         <span>{{ $featuredPost->author_name ?? 'AutoTerra Team' }}</span>
                         <span>
@@ -119,7 +115,6 @@
           </a>
           @endforeach
         </div>
-
       </div>
 
       <div class="blog-pagination">
@@ -138,7 +133,6 @@
         </p>
       </div>
       @endif
-
     </div>
 
     <!-- Sidebar -->
