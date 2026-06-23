@@ -364,3 +364,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+/* ── Mobile nav toggle ── */
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      var links = document.querySelector('.nav-links');
+      if (!links) return;
+      var open = links.style.display === 'flex';
+      links.style.display = open ? 'none' : 'flex';
+      links.style.flexDirection = 'column';
+      links.style.position = 'absolute';
+      links.style.top = '56px';
+      links.style.left = '0';
+      links.style.right = '0';
+      links.style.background = '#0B1522';
+      links.style.padding = '16px 24px 20px';
+      links.style.gap = '16px';
+      links.style.zIndex = '99';
+      links.style.borderBottom = '1px solid rgba(0,168,248,0.12)';
+    }
