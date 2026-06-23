@@ -25,14 +25,14 @@
     @endif
   </div>
   <div class="nav-right">
-    <button class="hamburger" aria-label="Open menu">
-      <i class="ti ti-menu-2"></i>
-    </button>
     @if($isLoggedIn)
       <a href="{{ route('dashboard') }}" class="nav-login"><i class="ti ti-layout-dashboard" style="font-size:15px;"></i> Dashboard</a>
     @else
       <a href="{{ route('login') }}" class="nav-login"><i class="ti ti-user" style="font-size:15px;"></i> {{ $loginText }}</a>
     @endif
     <a href="{{ $ctaUrl }}" class="btn-cyan" style="padding:10px 22px;font-size:13px;font-weight:700;border-radius:7px;">{{ $ctaText }}</a>
+    <button class="hamburger" aria-label="Open menu">
+      <i class="ti ti-menu-2"></i>
+    </button>
   </div>
 </nav>
