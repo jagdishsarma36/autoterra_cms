@@ -4618,11 +4618,8 @@ display: block;
     .nav-das { 
         display: none;
     }
-    .dash-main {
-        display: inline-block!important;
-        flex-wrap: wrap!important;
+    .dash-main aside {
         width: 100%!important;
-        padding: 20px 20px!important;
     }
     .dash_count {
         display: flex!important;
@@ -4636,7 +4633,7 @@ display: block;
         padding: 30px 20px!important;
         display: flex;
     }
-    .subs_nav {
+    .dash-main, .subs_nav, .orders_main,.profile_main {
         flex-wrap: wrap;
         padding: 40px 20px !important;
     }
@@ -4653,15 +4650,14 @@ display: block;
     .license_tabs {
         overflow-x: auto;
     }
-    .orders_main {
-        flex-wrap: wrap;
-        padding: 40px 20px !important;
-    }
     .orders_main aside {
         width:100%!important;
     }
     .orders_tabs {
         overflow-x: auto;
+    }
+    .profile_main aside {
+        width:100%!important;
     }
 }
 
