@@ -2,9 +2,9 @@
 @section('title', 'Subscriptions — AutoTerra')
 @section('body')
 @include('partials.nav')
-<div style="display:flex;gap:32px;padding:48px 60px;max-width:1200px;margin:0 auto;align-items:flex-start;">
+<div class="subs_nav" style="display:flex;gap:32px;padding:48px 60px;max-width:1200px;margin:0 auto;align-items:flex-start;">
 @include('partials.dashboard-sidebar')
-<div style="flex:1;min-width:0;">
+<div class="subs_tabs" style="flex:1;min-width:0;">
   <h1 style="font-size:28px;font-weight:800;margin-bottom:24px;">My Subscriptions</h1>
   @forelse($subscriptions as $sub)
   <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="window.location='/dashboard/subscriptions/{{ $sub->id }}'">
