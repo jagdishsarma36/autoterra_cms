@@ -3052,7 +3052,6 @@ span.field-hint {
     padding: 0 60px;
     scrollbar-width: none;
     padding-top: 10px;
-    padding-bottom: 10px;
 }
 .ps-tab.active {
     color: var(--cyan);
