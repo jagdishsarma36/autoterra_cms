@@ -2,9 +2,9 @@
 @section('title', 'Orders — AutoTerra')
 @section('body')
 @include('partials.nav')
-<div style="display:flex;gap:32px;padding:48px 60px;max-width:1200px;margin:0 auto;align-items:flex-start;">
+<div class="orders_main" style="display:flex;gap:32px;padding:48px 60px;max-width:1200px;margin:0 auto;align-items:flex-start;">
 @include('partials.dashboard-sidebar')
-<div style="flex:1;min-width:0;">
+<div class="orders_tabs" style="flex:1;min-width:0;">
   <h1 style="font-size:28px;font-weight:800;margin-bottom:24px;">Billing History</h1>
   <table style="width:100%;border-collapse:collapse;">
     <tr style="background:var(--navy);color:#fff;">
