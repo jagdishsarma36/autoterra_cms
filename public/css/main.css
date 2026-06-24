@@ -4449,6 +4449,9 @@ display: block;
     .nav-das { 
         display: none;
     }
+    .license_tabs, .orders_tabs {
+        overflow-x: auto;
+    }
 }
 /* ================================================================
    RESPONSIVE — MOBILE (≤600px)
