@@ -97,6 +97,7 @@
   </p>
   <div class="res-video-grid">
     @foreach($videos as $video)
+    <div  class="res-video-card">
         <div class="res-video-thumb">
           {{-- Thumbnail --}}
             @if(!empty($video['media_url']))
@@ -126,6 +127,7 @@
           </div>
         </div>
       <!-- </a> -->
+    </div>
     @endforeach
   </div>
   <div style="text-align:center;margin-top:28px;">
