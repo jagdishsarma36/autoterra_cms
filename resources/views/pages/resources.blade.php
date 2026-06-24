@@ -97,22 +97,22 @@
   </p>
   <div class="res-video-grid">
     @foreach($videos as $video)
-      <a href="{{ $video['media_url'] ?? '#' }}" class="res-video-card">
         <div class="res-video-thumb">
           {{-- Thumbnail --}}
-            @if(!empty($video['image_url']))
-            @if(Str::contains($video['image_url'], '<iframe'))
-            {!! $video['image_url'] !!}
-            @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $video['image_url']))
+            @if(!empty($video['media_url']))
+            @if(Str::contains($video['media_url'], '<iframe'))
+            {!! $video['media_url'] !!}
+            @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $video['media_url']))
            <video playsinline controls>
-            <source src="{{ $video['image_url'] }}">
+            <source src="{{ $video['media_url'] }}">
             Your browser does not support the video tag.
           </video>
             @else
-              <img src="{{ $video['image_url'] }}" alt="section image">
+              <img src="{{ $video['media_url'] }}" alt="section image">
             @endif
             @endif
         </div>
+        <!-- <a href="{{ $video['media_url'] ?? '#' }}" class="res-video-card"> -->
         <div class="res-video-body">
           <div class="tag">
             {{ $video['tag'] ?? '' }}
@@ -125,7 +125,7 @@
             {{ $video['duration'] ?? '' }} · {{ $video['quality'] ?? '' }} · {{ $video['year'] ?? '' }}
           </div>
         </div>
-      </a>
+      <!-- </a> -->
     @endforeach
   </div>
   <div style="text-align:center;margin-top:28px;">
