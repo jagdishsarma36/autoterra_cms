@@ -4643,6 +4643,17 @@ display: block;
     .subs_nav aside {
         width: 100%!important;
     }
+    .license_main {
+        flex-wrap: wrap;
+        padding: 40px 20px!important;
+    }
+    .license_main aside {
+        width: 100%!important;
+    }
+    .license_tabs {
+        overflow-x: auto;
+    }
+
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
