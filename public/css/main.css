@@ -3537,6 +3537,8 @@ span.field-hint {
     gap: 0;
     overflow-x: auto;
     scrollbar-width: none;
+    position: sticky;
+    top: 70px;
 }
 .res-tab {
     background: none;
