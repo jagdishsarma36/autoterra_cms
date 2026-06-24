@@ -4618,7 +4618,7 @@ display: block;
     .nav-das { 
         display: none;
     }
-    .dash-main aside {
+    .dash-main aside, .subs_nav aside, .license_main aside, .orders_main aside, .profile_main aside {
         width: 100%!important;
     }
     .dash_count {
@@ -4633,31 +4633,12 @@ display: block;
         padding: 30px 20px!important;
         display: flex;
     }
-    .dash-main, .subs_nav, .orders_main,.profile_main {
+    .dash-main, .subs_nav, .orders_main,.profile_main, .license_main {
         flex-wrap: wrap;
         padding: 40px 20px !important;
     }
-    .subs_nav aside {
-        width: 100%!important;
-    }
-    .license_main {
-        flex-wrap: wrap;
-        padding: 40px 20px!important;
-    }
-    .license_main aside {
-        width: 100%!important;
-    }
-    .license_tabs {
+    .license_tabs, .orders_tabs {
         overflow-x: auto;
-    }
-    .orders_main aside {
-        width:100%!important;
-    }
-    .orders_tabs {
-        overflow-x: auto;
-    }
-    .profile_main aside {
-        width:100%!important;
     }
 }
 
