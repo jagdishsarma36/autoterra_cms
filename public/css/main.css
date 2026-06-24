@@ -4636,6 +4636,13 @@ display: block;
         padding: 30px 20px!important;
         display: flex;
     }
+    .subs_nav {
+        flex-wrap: wrap;
+        padding: 40px 20px !important;
+    }
+    .subs_nav aside {
+        width: 100%!important;
+    }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
