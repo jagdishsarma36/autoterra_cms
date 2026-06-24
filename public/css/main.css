@@ -4449,7 +4449,7 @@ display: block;
     .nav-das { 
         display: none;
     }
-    .license_tabs, .orders_tabs {
+    .license_tabs, .orders_tabs, .dash-tab {
         overflow-x: auto;
     }
 }
