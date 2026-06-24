@@ -103,7 +103,7 @@
             @if(Str::contains($video['media_url'], '<iframe'))
             {!! $video['media_url'] !!}
             @elseif(preg_match('/\.(mp4|webm|ogg)$/i', $video['media_url']))
-           <video playsinline controls>
+          <video class="vdo_res" playsinline controls>
             <source src="{{ $video['media_url'] }}">
             Your browser does not support the video tag.
           </video>
