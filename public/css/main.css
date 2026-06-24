@@ -4653,7 +4653,16 @@ display: block;
     .license_tabs {
         overflow-x: auto;
     }
-
+    .orders_main {
+        flex-wrap: wrap;
+        padding: 40px 20px !important;
+    }
+    .orders_main aside {
+        width:100%!important;
+    }
+    .orders_tabs {
+        overflow-x: auto;
+    }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
