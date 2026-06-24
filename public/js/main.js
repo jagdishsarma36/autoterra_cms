@@ -325,6 +325,17 @@ function scrollToModule(id, btn) {
     if (btn) btn.classList.add('active');
 }
 
+//active tabs for resourses
+document.querySelectorAll('.res-tab').forEach(tab => {
+    tab.addEventListener('click', function () {
+        document.querySelectorAll('.res-tab').forEach(t => {
+            t.classList.remove('active');
+        });
+
+        this.classList.add('active');
+    });
+});
+
 // carousel pro spatial
 let currentPsSlide = 0;
 function setPsSlide(index, btn = null) {
