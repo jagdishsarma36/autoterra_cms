@@ -2,9 +2,9 @@
 @section('title', 'Profile — AutoTerra')
 @section('body')
 @include('partials.nav')
-<div style="display:flex;gap:32px;padding:48px 60px;max-width:1200px;margin:0 auto;align-items:flex-start;">
+<div class="profile_main" style="display:flex;gap:32px;padding:48px 60px;max-width:1200px;margin:0 auto;align-items:flex-start;">
 @include('partials.dashboard-sidebar')
-<div style="flex:1;min-width:0;">
+<div class="profile_tabs" style="flex:1;min-width:0;">
   <h1 style="font-size:28px;font-weight:800;margin-bottom:24px;">My Profile</h1>
   @if(session('success'))
   <div style="background:#F0FFF8;border:1px solid #6EE7B7;border-radius:8px;padding:12px 18px;margin-bottom:24px;font-size:14px;color:#065F46;">{{ session('success') }}</div>
