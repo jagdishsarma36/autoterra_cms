@@ -16,12 +16,27 @@
       <span class="logo-a">{{ $logoA }}</span><span class="logo-t">{{ $logoT }}</span>
     @endif
   </a>
-  <div class="nav-links">
+  {{--<div class="nav-links">
     @foreach($navLinks as $link)
     <a href="{{ $link['url'] }}">{{ $link['label'] }}</a>
     @endforeach
     @if($isLoggedIn)
     <a href="{{ route('dashboard') }}">Dashboard</a>
+    @endif
+  </div>--}}
+  <div class="nav-links">
+    @foreach($navLinks as $link)
+    <a href="{{ $link['url'] }}"
+       class="{{ request()->path() == trim($link['url'], '/') ? 'active' : '' }}">
+        {{ $link['label'] }}
+    </a>
+    @endforeach
+
+    @if($isLoggedIn)
+    <a href="{{ route('dashboard') }}"
+       class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        Dashboard
+    </a>
     @endif
   </div>
   <div class="nav-right">
