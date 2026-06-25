@@ -176,9 +176,7 @@
                     </div>
                 @endif
                 @if(!empty($road['cta']))
-                    <a href="{{ url('contact') }}"
-                      class="btn-cyan"
-                      style="margin-top:20px;display:inline-block;">
+                   <a href="{{ $road['cta_url'] ?: '#' }}" class="btn-cyan">
                         {{ $road['cta'] }}
                     </a>
                 @endif
