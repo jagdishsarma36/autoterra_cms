@@ -1302,7 +1302,7 @@ nav.sol-nav {
     color: #7C4DBC;
 }
 .sol_img_sec {
-    height:420px;
+    height:auto;
 }
 /****QUOTE*******/
 .qt-trust {
@@ -4575,7 +4575,7 @@ display: block;
         grid-template-columns:  unset;
     }
     .sol_img_sec {
-        max-height:180px;
+        min-height:180px;
     }
     .sol-section {
         padding: 40px 20px;
