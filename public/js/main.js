@@ -393,3 +393,34 @@ document.addEventListener('DOMContentLoaded', function () {
       links.style.zIndex = '99';
       links.style.borderBottom = '1px solid rgba(0,168,248,0.12)';
     });
+
+//**** pro spatial count ****//
+$('.ps-stat-num').each(function () {
+    var $this = $(this);
+    var original = $this.text().trim();
+
+    // Extract first number
+    var match = original.match(/[\d,]+/);
+
+    if (!match) return;
+
+    var target = parseInt(match[0].replace(/,/g, ''), 10);
+
+    // Text before and after the number
+    var prefix = original.substring(0, match.index);
+    var suffix = original.substring(match.index + match[0].length);
+
+    $({ count: 0 }).animate(
+        { count: target },
+        {
+            duration: 2000,
+            easing: 'swing',
+            step: function () {
+                $this.text(prefix + Math.floor(this.count) + suffix);
+            },
+            complete: function () {
+                $this.text(prefix + target + suffix);
+            }
+        }
+    );
+});
