@@ -15,6 +15,7 @@ class RecentQuoteRequestsWidget extends TableWidget
 
     public function table(Table $table): Table
     {
+        return '';
         return $table
             ->query(QuoteRequest::latest())
             ->paginated([5])
