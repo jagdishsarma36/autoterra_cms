@@ -38,7 +38,7 @@ class LatestCustomersWidget extends TableWidget
                     ->sortable(),
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
+                \Filament\Actions\Action::make('view')
                     ->label('View')
                     ->url(fn ($record): string => "/admin/users/{$record->id}/view")
                     ->icon('heroicon-o-eye')
