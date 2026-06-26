@@ -24,6 +24,11 @@ class RecentSubmissionsWidget extends TableWidget
                 Tables\Columns\TextColumn::make('form.name')
                     ->label('Form')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('data.first_name')
                     ->label('First Name')
                     ->getStateUsing(fn (FormSubmission $record): string =>
@@ -42,7 +47,7 @@ class RecentSubmissionsWidget extends TableWidget
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('M j, Y g:i A')
                     ->sortable(),
-            ])
+            ]) 
             ->actions([
                 \Filament\Actions\Action::make('view')
                     ->label('View')
