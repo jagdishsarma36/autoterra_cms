@@ -24,11 +24,16 @@ class RecentSubmissionsWidget extends TableWidget
                 Tables\Columns\TextColumn::make('form.name')
                     ->label('Form')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('data.first_name')
+                    ->label('First Name')
+                    ->getStateUsing(fn (FormSubmission $record): string =>
+                        $record->data['first_name'] ?? $record->data['name'] ?? $record->name ?? '-'
+                    ),
+                Tables\Columns\TextColumn::make('data.email')
+                    ->label('Email')
+                    ->getStateUsing(fn (FormSubmission $record): string =>
+                        $record->data['email'] ?? $record->email ?? '-'
+                    ),
                 Tables\Columns\TextColumn::make('ip_address')
                     ->label('IP'),
                 Tables\Columns\IconColumn::make('is_read')
