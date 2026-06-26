@@ -17,7 +17,8 @@ class QuoteRequestResource extends Resource
 
     public static function getNavigationItems(): array
     {
-        return [parent::getNavigationItems()[0]->label('Quote Requests')];
+        return false;
+        // return [parent::getNavigationItems()[0]->label('Quote Requests')];
     }
 
     public static function getNavigationGroup(): ?string
