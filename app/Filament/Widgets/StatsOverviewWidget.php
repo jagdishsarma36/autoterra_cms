@@ -5,7 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Order;
 use App\Models\Subscription;
 use App\Models\User;
-use App\Models\QuoteRequest;
+use App\Models\FormSubmission;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -48,9 +48,9 @@ class StatsOverviewWidget extends BaseWidget
                 ->descriptionIcon('heroicon-m-users')
                 ->color('gray'),
 
-            Stat::make('Pending Quotes', number_format(QuoteRequest::where('status', 'pending')->count()))
-                ->description(QuoteRequest::count() . ' total requests')
-                ->descriptionIcon('heroicon-m-document-text')
+            Stat::make('Unread Submissions', number_format(FormSubmission::unread()->count()))
+                ->description(FormSubmission::count() . ' total submissions')
+                ->descriptionIcon('heroicon-m-inbox')
                 ->color('danger'),
         ];
     }
