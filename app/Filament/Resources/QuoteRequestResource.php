@@ -15,10 +15,14 @@ class QuoteRequestResource extends Resource
     protected static ?string $model = QuoteRequest::class;
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function getNavigationItems(): array
+    public static function shouldRegisterNavigation(): bool
     {
         return false;
-        // return [parent::getNavigationItems()[0]->label('Quote Requests')];
+    }
+
+    public static function getNavigationItems(): array
+    {
+        return [parent::getNavigationItems()[0]->label('Quote Requests')];
     }
 
     public static function getNavigationGroup(): ?string
