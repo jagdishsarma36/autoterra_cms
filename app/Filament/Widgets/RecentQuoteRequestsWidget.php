@@ -43,7 +43,7 @@ class RecentQuoteRequestsWidget extends TableWidget
                     ->sortable(),
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
+                \Filament\Actions\Action::make('view')
                     ->label('View')
                     ->url(fn ($record): string => "/admin/quote-requests/{$record->id}/edit")
                     ->icon('heroicon-o-eye')

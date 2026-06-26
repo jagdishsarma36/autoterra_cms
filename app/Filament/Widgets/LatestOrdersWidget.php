@@ -56,7 +56,7 @@ class LatestOrdersWidget extends TableWidget
                     ->sortable(),
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
+                \Filament\Actions\Action::make('view')
                     ->label('View')
                     ->url(fn ($record): string => "/admin/orders/{$record->id}/view")
                     ->icon('heroicon-o-eye')
