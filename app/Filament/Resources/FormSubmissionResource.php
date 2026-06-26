@@ -11,7 +11,7 @@ use Filament\Tables\Table;
 class FormSubmissionResource extends Resource
 {
     protected static ?string $model = FormSubmission::class;
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'id';
     protected static ?string $modelLabel = 'Submission';
     protected static ?string $pluralModelLabel = 'Submissions';
 
@@ -41,8 +41,16 @@ class FormSubmissionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('form.name')->sortable(),
-                Tables\Columns\TextColumn::make('name')->searchable(),
-                Tables\Columns\TextColumn::make('email')->searchable(),
+                Tables\Columns\TextColumn::make('data.first_name')
+                    ->label('First Name')
+                    ->getStateUsing(fn (FormSubmission $record): string =>
+                        $record->data['first_name'] ?? $record->data['name'] ?? $record->name ?? '-'
+                    ),
+                Tables\Columns\TextColumn::make('data.email')
+                    ->label('Email')
+                    ->getStateUsing(fn (FormSubmission $record): string =>
+                        $record->data['email'] ?? $record->email ?? '-'
+                    ),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('M j, Y g:i A')->sortable(),
                 Tables\Columns\IconColumn::make('is_read')->boolean(),
             ])
