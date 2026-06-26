@@ -58,7 +58,7 @@ class LatestOrdersWidget extends TableWidget
             ->actions([
                 \Filament\Actions\Action::make('view')
                     ->label('View')
-                    ->url(fn ($record): string => "/admin/orders/{$record->id}/view")
+                    ->url(fn ($record): string => "/admin/orders/{$record->id}")
                     ->icon('heroicon-o-eye')
                     ->color('gray'),
             ])

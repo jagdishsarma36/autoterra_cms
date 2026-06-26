@@ -40,7 +40,7 @@ class LatestCustomersWidget extends TableWidget
             ->actions([
                 \Filament\Actions\Action::make('view')
                     ->label('View')
-                    ->url(fn ($record): string => "/admin/users/{$record->id}/view")
+                    ->url(fn ($record): string => "/admin/users/{$record->id}")
                     ->icon('heroicon-o-eye')
                     ->color('gray'),
             ])
