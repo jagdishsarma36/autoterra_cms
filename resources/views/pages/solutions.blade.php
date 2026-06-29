@@ -78,7 +78,7 @@
                     </div>
                     <div class="sol-product-pills">
                         @foreach($survey['recommended_editions'] as $edition)
-                        <a href="#" class="sol-pill">
+                        <a href="#editions/pro-spatial" class="sol-pill">
                             <i class="ti ti-package"></i>
                             {{ $edition }}
 
@@ -131,7 +131,7 @@
                         </div>
                         <div class="sol-product-pills">
                             @foreach($road['recommended_editions'] as $edition)
-                                <a href="#" class="sol-pill">
+                                <a href="#editions/pro-spatial" class="sol-pill">
                                     <i class="ti ti-package"></i>
                                     {{ $edition }}
 
