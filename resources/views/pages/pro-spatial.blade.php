@@ -288,7 +288,7 @@
 @php
     $upgrade = pageContentJson('pro_spatial', 'spatial.upgrade');
 @endphp
-<section class="upgrade-wrap">
+<section class="upgrade-wrap" id="editions">
     <div class="sec-eye">{{ $upgrade['eye'] }}</div>
     <h2 class="sec-h2">{{ $upgrade['title'] }}</h2>
     <p class="sec-sub">{{ $upgrade['subtitle'] }}</p>
