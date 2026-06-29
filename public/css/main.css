@@ -4401,6 +4401,24 @@ display: block;
     color: var(--body)!important;
     margin-bottom: 5px!important;
 }
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Initial state */
+.section {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: all .8s cubic-bezier(.22,.61,.36,1);
+    will-change: transform, opacity;
+}
+
+/* Visible */
+.section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
