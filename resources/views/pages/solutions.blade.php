@@ -267,7 +267,7 @@
                     </div>
                     <div class="sol-product-pills">
                         @foreach($lidar['recommended_editions'] as $edition)
-                        <a href="{{ $edition['url'] }}" class="sol-pill">
+                        <a href="/pro-spatial#editions" class="sol-pill">
                             <i class="ti {{ $edition['icon'] }}"></i>
                             {{ $edition['name'] }}
                             @if(!empty($edition['featured']))
@@ -309,7 +309,7 @@
                         <div class="sol-products-strip-lbl">Recommended editions</div>
                         <div class="sol-product-pills">
                             @foreach($mining['recommended_editions'] as $edition)
-                                <a href="{{ $edition['url'] }}" class="sol-pill">
+                                <a href="/pro-spatial#editions" class="sol-pill">
                                     <i class="ti ti-package"></i>
                                     {{ $edition['name'] }}
                                     @if(!empty($edition['highlight']))
