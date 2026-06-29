@@ -424,22 +424,26 @@ $('.ps-stat-num').each(function () {
         }
     );
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('section').forEach(section => {
-        section.classList.add('reveal');
+//Animations All Sections
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("section").forEach(section => {
+        section.classList.add("reveal");
     });
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+
             if (entry.isIntersecting) {
-                entry.target.classList.add('show');
-                observer.unobserve(entry.target); // animate only once
+                entry.target.classList.add("show");
+            } else {
+                entry.target.classList.remove("show");
             }
+
         });
     }, {
         threshold: 0.15
     });
-    document.querySelectorAll('.reveal').forEach(el => {
+    document.querySelectorAll(".reveal").forEach(el => {
         observer.observe(el);
     });
+
 });
