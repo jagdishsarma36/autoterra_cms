@@ -4395,27 +4395,21 @@ i.ti-calendar-event.web-highlight {
     outline: none;
 }
 .bl-side-section .field_wrap_email>label {
-display: block;
+    display: block;
     font-size: 13px!important;
     font-weight: 600!important;
     color: var(--body)!important;
     margin-bottom: 5px!important;
 }
-/* Smooth scrolling */
 html {
     scroll-behavior: smooth;
 }
-
-/* Initial state */
-.section {
+.reveal {
     opacity: 0;
-    transform: translateY(80px);
-    transition: all .8s cubic-bezier(.22,.61,.36,1);
-    will-change: transform, opacity;
+    transform: translateY(60px);
+    transition: opacity .8s ease, transform .8s ease;
 }
-
-/* Visible */
-.section.show {
+.reveal.show {
     opacity: 1;
     transform: translateY(0);
 }

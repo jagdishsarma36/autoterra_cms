@@ -425,24 +425,21 @@ $('.ps-stat-num').each(function () {
     );
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    const sections = document.querySelectorAll(".section");
-
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('section').forEach(section => {
+        section.classList.add('reveal');
+    });
     const observer = new IntersectionObserver((entries) => {
-
         entries.forEach(entry => {
-
             if (entry.isIntersecting) {
-                entry.target.classList.add("show");
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target); // animate only once
             }
-
         });
-
     }, {
         threshold: 0.15
     });
-
-    sections.forEach(section => observer.observe(section));
-
+    document.querySelectorAll('.reveal').forEach(el => {
+        observer.observe(el);
+    });
 });
