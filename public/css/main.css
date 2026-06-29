@@ -4401,17 +4401,21 @@ i.ti-calendar-event.web-highlight {
     color: var(--body)!important;
     margin-bottom: 5px!important;
 }
-html {
-    scroll-behavior: smooth;
+/* ** Animations All Page** */
+html{
+    scroll-behavior:smooth;
 }
-.reveal {
-    opacity: 0;
-    transform: translateY(60px);
-    transition: opacity .8s ease, transform .8s ease;
+.reveal{
+    opacity:0;
+    transform:translateY(80px);
+    transition:
+        opacity .9s cubic-bezier(.22,.61,.36,1),
+        transform .9s cubic-bezier(.22,.61,.36,1);
+    will-change:transform,opacity;
 }
-.reveal.show {
-    opacity: 1;
-    transform: translateY(0);
+.reveal.show{
+    opacity:1;
+    transform:translateY(0);
 }
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
