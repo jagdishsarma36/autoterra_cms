@@ -292,7 +292,6 @@ function renderCards() {
       const price = getPrice(slug);
       const isPopular = slug === 'prospatial';
       const features = PRODUCT_FEATURES[slug] || [];
-      const termClass = selectedTerm === 'daily' ? ' daily' : selectedTerm === 'weekly' ? ' weekly' : '';
       html += `<div class="buy-card${slug === selectedProduct ? ' selected' : ''}${isPopular ? ' popular-card' : ''}" id="card-${slug}" onclick="selectProduct('${slug}')">
         ${isPopular ? '<div class="buy-card-badge hot">Most Popular</div>' : ''}
         <div class="buy-card-select-ring"><i class="ti ti-check" style="font-size:10px;"></i></div>
