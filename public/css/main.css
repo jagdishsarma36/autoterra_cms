@@ -4417,6 +4417,13 @@ html{
     opacity:1;
     transform:translateY(0);
 }
+/***  BUY PAGE   ***/
+.term-tab.daily, .term-tab.weekly {
+    display: none;
+}
+.term-tab.daily, .term-tab.weekly {
+    display: none;
+}
 /* ================================================================
    RESPONSIVE — TABLET (≤900px)
 ================================================================ */
