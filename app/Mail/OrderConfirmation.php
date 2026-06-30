@@ -31,20 +31,3 @@ class OrderConfirmation extends Mailable
         );
     }
 }
-
-public function __construct(
-    public Order $order,
-    public ?string $previousStatus = null,
-) {}
-
-public function envelope(): Envelope
-{
-    $subject = match ($this->order->status) {
-        'paid' => 'Order Confirmed — ' . $this->order->product->name,
-        'refunded' => 'Refund Processed — ' . $this->order->product->name,
-        'cancelled' => 'Order Cancelled — ' . $this->order->product->name,
-        'failed' => 'Payment Failed — ' . $this->order->product->name,
-        default => 'Order Update — ' . $this->order->product->name,
-    };
-    return new Envelope(subject: $subject);
-}
