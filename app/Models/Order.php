@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Mail\OrderConfirmation;
-use Illuminate\Support\Facades\Mail;
 
 class Order extends Model
 {
@@ -37,16 +35,4 @@ class Order extends Model
     {
         return $this->hasMany(LicenseKey::class);
     }
-}
-
-
-protected static function booted(): void
-{
-    static::updated(function (Order $order) {
-        $original = $order->getOriginal('status');
-        $changed = $order->status;
-        if ($original !== $changed && $order->user?->email) {
-            Mail::to($order->user->email)->send(new OrderConfirmation($order, $original));
-        }
-    });
 }
