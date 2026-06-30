@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPasswordMail;
-use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,13 +47,6 @@ class ForgotPasswordController extends Controller
             Mail::to($user->email)->send(new ForgotPasswordMail($user, $newPassword));
         } catch (\Throwable $e) {
             Log::error('Failed to send forgot password email: ' . $e->getMessage());
-        }
-
-        try {
-            $adminEmail = Setting::get('site_email', 'support@autoterra.net');
-            Mail::to($adminEmail)->send(new ForgotPasswordMail($user, $newPassword));
-        } catch (\Throwable $e) {
-            Log::error('Failed to send admin forgot password notification: ' . $e->getMessage());
         }
 
         return redirect()->route('login')->with(
