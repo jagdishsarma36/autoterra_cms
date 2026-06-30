@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Mail\SubscriptionStatusChanged;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class Subscription extends Model
 {
@@ -19,6 +21,25 @@ class Subscription extends Model
             'current_period_start' => 'datetime',
             'current_period_end' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::updating(function (Subscription $subscription) {
+            if ($subscription->isDirty('status')) {
+                try {
+                    Mail::to($subscription->user->email)->send(
+                        new SubscriptionStatusChanged(
+                            $subscription,
+                            $subscription->getOriginal('status'),
+                            $subscription->status,
+                        )
+                    );
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error('Failed to send subscription status change email: ' . $e->getMessage());
+                }
+            }
+        });
     }
 
     public function user()
