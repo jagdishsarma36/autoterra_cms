@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\AdminSubscriptionNotification;
 use App\Mail\SubscriptionStatusChanged;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
@@ -25,15 +26,26 @@ class Subscription extends Model
 
     protected static function booted(): void
     {
+        static::created(function (Subscription $subscription) {
+            try {
+                $adminEmail = Setting::get('site_email', 'support@autoterra.net');
+                Mail::to($adminEmail)->send(new AdminSubscriptionNotification($subscription, 'created'));
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('Failed to send admin subscription notification: ' . $e->getMessage());
+            }
+        });
+
         static::updating(function (Subscription $subscription) {
             if ($subscription->isDirty('status')) {
+                $oldStatus = $subscription->getOriginal('status');
+                $newStatus = $subscription->status;
                 try {
                     Mail::to($subscription->user->email)->send(
-                        new SubscriptionStatusChanged(
-                            $subscription,
-                            $subscription->getOriginal('status'),
-                            $subscription->status,
-                        )
+                        new SubscriptionStatusChanged($subscription, $oldStatus, $newStatus)
+                    );
+                    $adminEmail = Setting::get('site_email', 'support@autoterra.net');
+                    Mail::to($adminEmail)->send(
+                        new AdminSubscriptionNotification($subscription, 'status_changed', $oldStatus, $newStatus)
                     );
                 } catch (\Throwable $e) {
                     \Illuminate\Support\Facades\Log::error('Failed to send subscription status change email: ' . $e->getMessage());
