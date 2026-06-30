@@ -40,6 +40,13 @@
           <tr><td>Term</td><td>{{ termLabel($order->term) }}</td></tr>
           <tr><td>Payment Method</td><td>{{ strtoupper($order->currency) }}</td></tr>
           <tr><td>Status</td><td style="color:#1DA870;font-weight:700;">{{ ucfirst($order->status) }}</td></tr>
+          @php
+            $heading = match ($status) { 'paid' => 'Order Confirmed', 'refunded' => 'Refund Processed', ... };
+            $message = match ($status) { 'paid' => 'Thank you for your purchase!...', 'refunded' => 'Your refund has been processed...', ... };
+          @endphp
+          @if($order->status === 'paid')
+            <p>Your license key will be available...</p>
+          @endif
           @if($order->razorpay_payment_id)
           <tr><td>Payment ID</td><td>{{ $order->razorpay_payment_id }}</td></tr>
           @endif
