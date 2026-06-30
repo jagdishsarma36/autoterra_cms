@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Mail\OrderStatusChanged;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class Order extends Model
 {
@@ -19,6 +21,25 @@ class Order extends Model
             'gst_amount' => 'integer',
             'total_amount' => 'integer',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::updating(function (Order $order) {
+            if ($order->isDirty('status')) {
+                try {
+                    Mail::to($order->user->email)->send(
+                        new OrderStatusChanged(
+                            $order,
+                            $order->getOriginal('status'),
+                            $order->status,
+                        )
+                    );
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error('Failed to send status change email: ' . $e->getMessage());
+                }
+            }
+        });
     }
 
     public function user()
