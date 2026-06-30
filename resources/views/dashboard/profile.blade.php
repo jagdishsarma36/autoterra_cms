@@ -46,17 +46,20 @@
   @endif
   <form method="POST" action="{{ route('dashboard.password.update') }}">
     @csrf
-    <div style="margin-bottom:16px;">
+    <div style="margin-bottom:16px;position:relative;">
       <label style="display:block;font-size:13px;font-weight:600;margin-bottom:5px;">Current Password</label>
-      <input type="password" name="current_password" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;" required>
+      <input type="password" name="current_password" id="current_password" style="width:100%;padding:10px 40px 10px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;" required>
+      <span onclick="togglePassword('current_password', this)" style="position:absolute;right:12px;bottom:10px;cursor:pointer;color:var(--muted);"><i class="ti ti-eye"></i></span>
     </div>
-    <div style="margin-bottom:16px;">
+    <div style="margin-bottom:16px;position:relative;">
       <label style="display:block;font-size:13px;font-weight:600;margin-bottom:5px;">New Password</label>
-      <input type="password" name="new_password" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;" required>
+      <input type="password" name="new_password" id="new_password" style="width:100%;padding:10px 40px 10px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;" required>
+      <span onclick="togglePassword('new_password', this)" style="position:absolute;right:12px;bottom:10px;cursor:pointer;color:var(--muted);"><i class="ti ti-eye"></i></span>
     </div>
-    <div style="margin-bottom:16px;">
+    <div style="margin-bottom:16px;position:relative;">
       <label style="display:block;font-size:13px;font-weight:600;margin-bottom:5px;">Confirm New Password</label>
-      <input type="password" name="new_password_confirmation" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;" required>
+      <input type="password" name="new_password_confirmation" id="new_password_confirmation" style="width:100%;padding:10px 40px 10px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;" required>
+      <span onclick="togglePassword('new_password_confirmation', this)" style="position:absolute;right:12px;bottom:10px;cursor:pointer;color:var(--muted);"><i class="ti ti-eye"></i></span>
     </div>
     <button type="submit" style="background:var(--cyan);color:#fff;border:none;border-radius:7px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;">Update Password</button>
   </form>
@@ -64,4 +67,20 @@
 </div>
 
 @include('partials.footer')
+@endsection
+
+@section('scripts')
+<script>
+function togglePassword(id, el) {
+  const input = document.getElementById(id);
+  const icon = el.querySelector('i');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.className = 'ti ti-eye-off';
+  } else {
+    input.type = 'password';
+    icon.className = 'ti ti-eye';
+  }
+}
+</script>
 @endsection
