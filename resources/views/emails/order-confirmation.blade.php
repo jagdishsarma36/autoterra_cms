@@ -30,8 +30,32 @@
       <h1><span>AUTO</span>TERRA</h1>
     </div>
     <div class="body">
-      <h2>Order Confirmed</h2>
-      <p>Thank you for your purchase! Your order has been successfully processed.</p>
+      @php
+        $s = $order->status;
+        $heading = match ($s) {
+          'paid' => 'Order Confirmed',
+          'refunded' => 'Refund Processed',
+          'cancelled' => 'Order Cancelled',
+          'failed' => 'Payment Failed',
+          default => 'Order Updated',
+        };
+        $message = match ($s) {
+          'paid' => 'Thank you for your purchase! Your order has been successfully processed.',
+          'refunded' => 'Your refund has been processed. The amount will be credited back to your account.',
+          'cancelled' => 'Your order has been cancelled as requested.',
+          'failed' => 'The payment for your order has failed. Please try again or contact support.',
+          default => 'Your order status has been updated to ' . $s . '.',
+        };
+        $statusColor = match ($s) {
+          'paid' => '#1DA870',
+          'refunded' => '#F59E0B',
+          'cancelled' => '#EF4444',
+          'failed' => '#EF4444',
+          default => '#6B7280',
+        };
+      @endphp
+      <h2>{{ $heading }}</h2>
+      <p>{{ $message }}</p>
 
       <div class="details">
         <table>
@@ -39,14 +63,7 @@
           <tr><td>Product</td><td>{{ $order->product->name }}</td></tr>
           <tr><td>Term</td><td>{{ termLabel($order->term) }}</td></tr>
           <tr><td>Payment Method</td><td>{{ strtoupper($order->currency) }}</td></tr>
-          <tr><td>Status</td><td style="color:#1DA870;font-weight:700;">{{ ucfirst($order->status) }}</td></tr>
-          @php
-            $heading = match ($status) { 'paid' => 'Order Confirmed', 'refunded' => 'Refund Processed', ... };
-            $message = match ($status) { 'paid' => 'Thank you for your purchase!...', 'refunded' => 'Your refund has been processed...', ... };
-          @endphp
-          @if($order->status === 'paid')
-            <p>Your license key will be available...</p>
-          @endif
+          <tr><td>Status</td><td style="color:{{ $statusColor }};font-weight:700;">{{ ucfirst($s) }}</td></tr>
           @if($order->razorpay_payment_id)
           <tr><td>Payment ID</td><td>{{ $order->razorpay_payment_id }}</td></tr>
           @endif
@@ -61,7 +78,9 @@
 
       <a href="{{ config('app.url') }}/dashboard" class="btn">View in Dashboard</a>
 
+      @if($s === 'paid')
       <p style="font-size:13px;">Your license key will be available in your dashboard. You can download and activate your software immediately.</p>
+      @endif
     </div>
     <div class="footer">
       <p>AutoTerra by Infyterra Technologies · <a href="{{ config('app.url') }}">autoterra.net</a></p>
