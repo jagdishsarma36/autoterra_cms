@@ -13,6 +13,10 @@ class RegisterController extends Controller
 {
     public function show(Request $request)
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.signup', [
             'redirect' => $request->query('redirect'),
         ]);

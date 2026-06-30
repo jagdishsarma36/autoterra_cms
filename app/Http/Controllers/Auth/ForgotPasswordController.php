@@ -7,6 +7,7 @@ use App\Mail\ForgotPasswordMail;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -16,6 +17,10 @@ class ForgotPasswordController extends Controller
 {
     public function show()
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.forgot-password');
     }
 
