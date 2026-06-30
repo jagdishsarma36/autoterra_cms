@@ -10,6 +10,10 @@ class LoginController extends Controller
 {
     public function show(Request $request)
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.login', [
             'redirect' => $request->query('redirect'),
         ]);
