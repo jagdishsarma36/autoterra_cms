@@ -67,6 +67,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/orders/{order}/print', [DashboardController::class, 'orderPrint'])->name('dashboard.order.print');
     Route::get('/profile', [DashboardController::class, 'profile'])->name('dashboard.profile');
     Route::put('/profile', [DashboardController::class, 'updateProfile'])->name('dashboard.profile.update');
+    Route::post('/profile/password', [DashboardController::class, 'updatePassword'])->name('dashboard.password.update');
 });
 
 // Razorpay
