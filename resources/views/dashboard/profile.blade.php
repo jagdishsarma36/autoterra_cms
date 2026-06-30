@@ -34,6 +34,32 @@
     </div>
     <button type="submit" style="background:var(--cyan);color:#fff;border:none;border-radius:7px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;">Save Changes</button>
   </form>
+
+  <hr style="margin:32px 0;border:none;border-top:1px solid var(--border);">
+
+  <h2 style="font-size:22px;font-weight:700;margin-bottom:20px;">Change Password</h2>
+  @if(session('password_success'))
+  <div style="background:#F0FFF8;border:1px solid #6EE7B7;border-radius:8px;padding:12px 18px;margin-bottom:24px;font-size:14px;color:#065F46;">{{ session('password_success') }}</div>
+  @endif
+  @if(session('password_error'))
+  <div style="background:#FFF0F0;border:1px solid #FCA5A5;border-radius:8px;padding:12px 18px;margin-bottom:24px;font-size:14px;color:#991B1B;">{{ session('password_error') }}</div>
+  @endif
+  <form method="POST" action="{{ route('dashboard.password.update') }}">
+    @csrf
+    <div style="margin-bottom:16px;">
+      <label style="display:block;font-size:13px;font-weight:600;margin-bottom:5px;">Current Password</label>
+      <input type="password" name="current_password" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;" required>
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="display:block;font-size:13px;font-weight:600;margin-bottom:5px;">New Password</label>
+      <input type="password" name="new_password" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;" required>
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="display:block;font-size:13px;font-weight:600;margin-bottom:5px;">Confirm New Password</label>
+      <input type="password" name="new_password_confirmation" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:7px;font-size:14px;" required>
+    </div>
+    <button type="submit" style="background:var(--cyan);color:#fff;border:none;border-radius:7px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;">Update Password</button>
+  </form>
 </div>
 </div>
 
