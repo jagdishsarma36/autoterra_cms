@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialController;
@@ -43,6 +44,10 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Social auth
 Route::get('/auth/{provider}', [SocialController::class, 'redirect'])->name('social.redirect');
 Route::get('/auth/{provider}/callback', [SocialController::class, 'callback']);
+
+// Forgot password
+Route::get('/forgot-password', [ForgotPasswordController::class, 'show'])->name('password.forgot');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendPassword']);
 
 // API
 Route::get('/api/pricing', [PricingController::class, 'index'])->name('api.pricing');
