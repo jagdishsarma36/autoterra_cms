@@ -258,7 +258,8 @@ function renderTermTabs() {
     const hasProduct = Object.values(PRICING).some(p => p.prices[t] != null);
     if (!hasProduct) return;
     const btn = document.createElement('button');
-    btn.className = 'term-tab' + (t === selectedTerm ? ' active' : '');
+    btn.className = 'term-tab' + (t === selectedTerm ? ' active' : '') + (t === 'daily' ? ' daily' : '') + (t === 'weekly' ? ' weekly' : '');
+    // btn.className = 'term-tab' + (t === selectedTerm ? ' active' : '');
     btn.dataset.term = t;
     btn.innerHTML = TERM_LABELS[t] + (t === '1yr' ? ' <span class="badge-pop">Popular</span>' : '') + (t === '3yr' ? ' <span class="badge-val">Best value</span>' : '');
     btn.onclick = function() { setTerm(t); };
