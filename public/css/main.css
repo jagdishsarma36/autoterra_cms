@@ -4417,6 +4417,14 @@ html{
     opacity:1;
     transform:translateY(0);
 }
+/* Disable reveal animation on legal pages (terms, privacy, cookies) */
+.legal-hero.reveal,
+.legal-hero.reveal.show,
+section:has(>.legal-wrap).reveal,
+section:has(>.legal-wrap).reveal.show {
+    opacity: 1 !important;
+    transform: none !important;
+}
 /***  BUY PAGE   ***/
 .term-tab.daily, .term-tab.weekly {
     display: none;
