@@ -90,7 +90,7 @@
 
     @endforeach
 
-  </div><!-- /legal-content -->
+  </div>
 
 </div>
 </section>
