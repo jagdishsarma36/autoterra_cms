@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Responses\LogoutResponse;
 use App\Services\RazorpayService;
-use Filament\Auth\Http\Responses\Contracts\LogoutResponse as LogoutResponseContract;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 
@@ -19,8 +17,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->app->bind(LogoutResponseContract::class, LogoutResponse::class);
-
         // Load helper file
         require_once app_path('Helpers/content.php');
 
