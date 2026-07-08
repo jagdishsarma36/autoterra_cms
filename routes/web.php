@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Extra\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialController;
 use App\Http\Controllers\DashboardController;
@@ -40,7 +39,7 @@ Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/signup', [RegisterController::class, 'show'])->name('register');
 Route::post('/signup', [RegisterController::class, 'register']);
-Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Social auth
 Route::get('/auth/{provider}', [SocialController::class, 'redirect'])->name('social.redirect');
