@@ -3,43 +3,63 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ForgotPasswordMail;
+use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
-class LoginController extends Controller
+class ForgotPasswordController extends Controller
 {
-    public function show(Request $request)
+    public function show()
     {
         if (Auth::check()) {
             return redirect()->route('dashboard');
         }
 
-        return view('auth.login', [
-            'redirect' => $request->query('redirect'),
-        ]);
+        return view('auth.forgot-password');
     }
 
-    public function login(Request $request)
+    public function sendPassword(Request $request)
     {
         $request->validate([
             'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
         ]);
 
-        $credentials = $request->only('email', 'password');
-        $remember = $request->boolean('remember');
+        $user = User::where('email', $request->email)->first();
 
-        if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
-
-            $redirectTo = $request->input('redirect') ?: route('dashboard');
-
-            return redirect($redirectTo)
-                ->with('success', 'Welcome back!');
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'We could not find an account with that email address.',
+            ])->onlyInput('email');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        $newPassword = Str::password(12);
+
+        $user->update([
+            'password' => Hash::make($newPassword),
+        ]);
+
+        try {
+            Mail::to($user->email)->send(new ForgotPasswordMail($user, $newPassword));
+        } catch (\Throwable $e) {
+            Log::error('Failed to send forgot password email: ' . $e->getMessage());
+        }
+
+        try {
+            $adminEmail = Setting::get('site_email', 'support@autoterra.net');
+            Mail::to($adminEmail)->send(new ForgotPasswordMail($user, $newPassword));
+        } catch (\Throwable $e) {
+            Log::error('Failed to send admin forgot password notification: ' . $e->getMessage());
+        }
+
+        return redirect()->route('login')->with(
+            'success',
+            'A new password has been sent to your email address.'
+        );
     }
 }
