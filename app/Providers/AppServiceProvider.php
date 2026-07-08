@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Http\Responses\LogoutResponse;
 use App\Services\RazorpayService;
-use Filament\Http\Responses\Auth\Contracts\LogoutResponse as LogoutResponseContract;
+use Filament\Auth\Http\Responses\Contracts\LogoutResponse as LogoutResponseContract;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 
