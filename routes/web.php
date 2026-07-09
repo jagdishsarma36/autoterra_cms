@@ -92,19 +92,6 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('filament.')->gro
 // Admin invoice print (outside Filament middleware)
 Route::middleware(['auth', 'verified'])->get('/admin/invoices/{order}/print', [PageController::class, 'adminInvoicePrint'])->name('admin.invoice.print');
 
-// Admin fallback — prevents catch-all from intercepting /admin/* GET requests
-Route::prefix('admin')->group(function () {
-    Route::get('/login', function () {
-        return redirect('/admin/login');
-    });
-    Route::get('/logout', function () {
-        return redirect('/admin/login');
-    });
-    Route::get('{path}', function () {
-        abort(404);
-    })->where('path', '.*');
-});
-
 // CMS pages at root: /{slug} — MUST be last (catch-all)
 Route::get('/{slug}', [PageController::class, 'cmsPage'])
     ->where('slug', '.*')
