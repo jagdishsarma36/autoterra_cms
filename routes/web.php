@@ -10,6 +10,8 @@ use App\Http\Controllers\PricingController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\FormController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Public pages
@@ -93,7 +95,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('filament.')->gro
 Route::middleware(['auth', 'verified'])->get('/admin/invoices/{order}/print', [PageController::class, 'adminInvoicePrint'])->name('admin.invoice.print');
 
 // Handle GET /admin/logout gracefully (Filament only registers POST)
-Route::get('/admin/logout', function () {
+Route::get('/admin/logout', function (Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
     return redirect('/admin/login');
 })->name('admin.logout.get');
 
