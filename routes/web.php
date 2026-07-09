@@ -92,6 +92,11 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('filament.')->gro
 // Admin invoice print (outside Filament middleware)
 Route::middleware(['auth', 'verified'])->get('/admin/invoices/{order}/print', [PageController::class, 'adminInvoicePrint'])->name('admin.invoice.print');
 
+// Handle GET /admin/logout gracefully (Filament only registers POST)
+Route::get('/admin/logout', function () {
+    return redirect('/admin/login');
+})->name('admin.logout.get');
+
 // CMS pages at root: /{slug} — MUST be last (catch-all)
 Route::get('/{slug}', [PageController::class, 'cmsPage'])
     ->where('slug', '.*')
