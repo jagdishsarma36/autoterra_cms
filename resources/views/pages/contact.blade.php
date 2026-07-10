@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Contact — AutoTerra')
+@section('meta_description', 'Contact AutoTerra for sales, product support, or general inquiries. Our team is here to help with geospatial software and LiDAR solutions.')
 @section('body')
 @include('partials.nav')
 

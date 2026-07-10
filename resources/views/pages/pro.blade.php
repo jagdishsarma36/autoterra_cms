@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'AutoTerra Pro — AutoTerra')
+@section('meta_description', 'AutoTerra Pro offers advanced LiDAR processing, terrain modeling, and GIS workflows for surveying and mapping professionals.')
 @section('body')
 @include('partials.nav')
 <!-- Hero Section -->

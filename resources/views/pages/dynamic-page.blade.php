@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', $page->meta_title ?: $page->title . ' — AutoTerra')
+@section('meta_description', $page->meta_description ?: 'AutoTerra delivers advanced LiDAR processing, terrain modeling, CAD integration, and spatial analysis software for surveying, mapping, and engineering professionals.')
 @section('body')
 @include('partials.nav')
 

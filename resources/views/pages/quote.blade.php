@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Request a Quote — AutoTerra')
+@section('meta_description', 'Request a customized quote for AutoTerra geospatial software solutions. Get pricing information for LiDAR processing, terrain modeling, and GIS workflows.')
 @section('body')
 @include('partials.nav')
 
