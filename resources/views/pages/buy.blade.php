@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Buy AutoTerra — Pricing & Plans')
+@section('meta_description', 'Buy AutoTerra geospatial software for LiDAR processing, terrain modeling, and GIS workflows. Choose the right solution for your mapping needs.')
 
 @section('styles')
 <style>

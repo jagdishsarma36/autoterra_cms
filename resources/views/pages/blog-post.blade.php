@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', $post->meta_title ?: $post->title . ' — AutoTerra Blog')
+@section('meta_description', $post->meta_description ?: 'Read the latest news and updates from the AutoTerra Blog.')
 @section('body')
 @include('partials.nav')
 
