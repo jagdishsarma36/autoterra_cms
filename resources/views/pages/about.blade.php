@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('title', 'About — AutoTerra')
+@section('meta_description', 'Learn about AutoTerra, delivering advanced LiDAR processing, terrain modeling, and spatial analysis solutions for surveying, GIS, and engineering professionals.')
+<link rel="canonical" href="@yield('canonical_url', url()->current())">
 @section('body')
 @include('partials.nav')
 <section class="page-hero" style="background:var(--navy);padding:60px;">
