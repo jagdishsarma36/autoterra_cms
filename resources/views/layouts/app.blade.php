@@ -6,6 +6,26 @@
   <title>@yield('title', 'AutoTerra')</title>
   <meta name="description" content="@yield('meta_description', 'AutoTerra delivers advanced LiDAR processing, terrain modeling, CAD integration, and spatial analysis software for surveying, mapping, and engineering professionals.')">
   <link rel="canonical" href="{{ url()->current() }}">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AutoTerra">
+  <meta property="og:title" content="@yield('title', 'AutoTerra')">
+  <meta property="og:description" content="@yield('meta_description', 'AutoTerra delivers advanced LiDAR processing, terrain modeling, CAD integration, and spatial analysis software for surveying, mapping, and engineering professionals.')">
+  <meta property="og:url" content="{{ url()->current() }}">
+  <meta property="og:image" content="https://autoterra.net/storage/media/01KX5XADJQS717E43QAJ9P26RP.png">
+  <meta property="og:image:secure_url" content="https://autoterra.net/storage/media/01KX5XADJQS717E43QAJ9P26RP.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="AutoTerra">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="@yield('title', 'AutoTerra')">
+  <meta name="twitter:description" content="@yield('meta_description', 'AutoTerra delivers advanced LiDAR processing, terrain modeling, CAD integration, and spatial analysis software for surveying, mapping, and engineering professionals.')">
+  <meta name="twitter:image" content="https://autoterra.net/storage/media/01KX5XADJQS717E43QAJ9P26RP.png">
+  <meta name="twitter:site" content="@AutoTerra">
+
   <meta name="csrf-token" content="{{ csrf_token() }}">
   
   <!-- Preload CSS -->
