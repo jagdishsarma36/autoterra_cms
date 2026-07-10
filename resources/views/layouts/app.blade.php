@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title', 'AutoTerra')</title>
-  <meta name="description" content="@yield('meta_description', 'AutoTerra delivers advanced LiDAR processing, terrain modeling, CAD integration, and AI-powered spatial analysis software for surveying, mapping, and engineering professionals.')">
+  <meta name="description" content="@yield('meta_description', 'AutoTerra delivers advanced LiDAR processing, terrain modeling, CAD integration, and spatial analysis software for surveying, mapping, and engineering professionals.')">
   <link rel="canonical" href="{{ url()->current() }}">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   
