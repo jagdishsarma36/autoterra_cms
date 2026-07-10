@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'AutoTerra')
+@section('meta_description', 'AutoTerra Privacy Policy. Learn how we collect, use, and protect your personal information.')
 @section('body')
 @include('partials.nav')
 

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'AutoTerra')
+@section('meta_description', 'AutoTerra uses cookies to enhance your browsing experience and provide personalized content. Learn more about our cookie policy.')
 
 @section('body')
 @include('partials.nav')

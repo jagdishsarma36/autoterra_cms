@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'AutoTerra')
+@section('meta_description', 'Access AutoTerra resources including documentation, tutorials, and downloads for our geospatial software solutions.')
 
 @section('body')
 @include('partials.nav')

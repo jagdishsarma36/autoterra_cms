@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Products — AutoTerra')
+@section('meta_description', 'Explore AutoTerra\'s range of geospatial software products for LiDAR processing, terrain modeling, and GIS workflows.')
 @section('body')
 @include('partials.nav')
 <div class="page-hero"><div class="sec-eye">{{ pageContent('products', 'hero.eyebrow') }}</div><h1>{{ pageContent('products', 'hero.heading') }}</h1><p>{{ pageContent('products', 'hero.description') }}</p></div>

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'AutoTerra')
+@section('meta_description', 'AutoTerra End User License Agreement. Please read this agreement carefully before using our software.')
 @section('body')
 @include('partials.nav')
 

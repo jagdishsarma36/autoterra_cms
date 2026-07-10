@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'AutoTerra')
+@section('meta_description', 'Explore AutoTerra\'s comprehensive solutions for LiDAR processing, terrain modeling, and GIS workflows across various industries.')
 @section('body')
 @include('partials.nav')
 

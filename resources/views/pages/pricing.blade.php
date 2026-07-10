@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Pricing — AutoTerra')
+@section('meta_description', 'Compare AutoTerra pricing plans for LiDAR processing, terrain modeling, and GIS workflows. Find the right solution for your geospatial needs.')
 @section('body')
 @include('partials.nav')
 
