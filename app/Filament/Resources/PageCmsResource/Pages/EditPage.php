@@ -13,7 +13,6 @@ class EditPage extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        //dump($this->record->slug);
         return [
             Actions\DeleteAction::make(),
             Actions\Action::make('viewPage')
