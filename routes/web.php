@@ -105,6 +105,7 @@ Route::get('/admin/logout', function (Request $request) {
 
 Route::get('/preview/{post}', function (Post $post) {
     dump($post);
+    exit();
     return view('posts.show', compact('post'));
 })->middleware('auth')->name('posts.preview');
 
