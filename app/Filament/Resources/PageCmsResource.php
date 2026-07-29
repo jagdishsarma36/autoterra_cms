@@ -71,6 +71,9 @@ class PageCmsResource extends Resource
                     ->url(fn ($record) => '/' . $record->slug)
                     ->openUrlInNewTab(),
                 \Filament\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
