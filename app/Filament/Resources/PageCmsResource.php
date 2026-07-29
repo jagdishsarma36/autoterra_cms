@@ -70,6 +70,7 @@ class PageCmsResource extends Resource
                     ->icon('heroicon-o-eye')
                     ->url(fn ($record) => '/' . $record->slug)
                     ->openUrlInNewTab(),
+                \Filament\Actions\EditAction::make(),
             ]);
     }
 
