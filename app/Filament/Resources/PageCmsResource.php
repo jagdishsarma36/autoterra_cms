@@ -73,7 +73,7 @@ class PageCmsResource extends Resource
                 \Filament\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\DeleteBulkAction::make(),
             ]);
     }
 
