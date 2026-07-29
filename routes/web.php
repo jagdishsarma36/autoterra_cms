@@ -109,5 +109,6 @@ Route::get('/{slug}', [PageController::class, 'cmsPage'])
     ->name('cms.show');
 
 Route::get('/preview/{post}', function (Post $post) {
+    dump($post);
     return view('posts.show', compact('post'));
 })->middleware('auth')->name('posts.preview');
