@@ -80,6 +80,7 @@ class PageCms extends Model
 
     public function getRouteKeyName(): string
     {
-        return 'slug';
+       // return 'slug';
+        return 'id';
     }
 }
