@@ -13,6 +13,7 @@ use App\Http\Controllers\FormController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\Post;
 
 // Public pages
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -106,3 +107,7 @@ Route::get('/admin/logout', function (Request $request) {
 Route::get('/{slug}', [PageController::class, 'cmsPage'])
     ->where('slug', '.*')
     ->name('cms.show');
+
+Route::get('/preview/{post}', function (Post $post) {
+    return view('posts.show', compact('post'));
+})->middleware('auth')->name('posts.preview');
