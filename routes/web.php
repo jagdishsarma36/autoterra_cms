@@ -103,12 +103,14 @@ Route::get('/admin/logout', function (Request $request) {
     return redirect('/admin/login');
 })->name('admin.logout.get');
 
+Route::get('/preview/{post}', function (Post $post) {
+    dump($post);
+    return view('posts.show', compact('post'));
+})->middleware('auth')->name('posts.preview');
+
+
 // CMS pages at root: /{slug} — MUST be last (catch-all)
 Route::get('/{slug}', [PageController::class, 'cmsPage'])
     ->where('slug', '.*')
     ->name('cms.show');
 
-Route::get('/preview/{post}', function (Post $post) {
-    dump($post);
-    return view('posts.show', compact('post'));
-})->middleware('auth')->name('posts.preview');
