@@ -133,16 +133,17 @@ class PageController extends Controller
 
 
     public function cmsPagePreview(string $slug)
-    {   
-        dump(Auth::user()->role);
-        if (!Auth::check()) {
+    { 
+        if (Auth::user()->role === 'admin') {
+            $page = PageCms::findOrFail($slug);
+            if (!$page) {
+                abort(404);
+            }
+            return view('pages.dynamic-page', compact('page')); 
+        }else{
             abort(403);
         }
-        $page = PageCms::findOrFail($slug);
-        if (!$page) {
-            abort(404);
-        }
-        return view('pages.dynamic-page', compact('page'));
+        
     }
 
     public function privacy()
