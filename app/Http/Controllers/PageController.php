@@ -133,7 +133,10 @@ class PageController extends Controller
 
 
     public function cmsPagePreview(string $slug)
-    {
+    {   
+        if (!Auth::check()) {
+            abort(403);
+        }
         $page = PageCms::findOrFail($slug);
         if (!$page) {
             abort(404);
