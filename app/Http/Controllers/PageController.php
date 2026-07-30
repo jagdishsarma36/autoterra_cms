@@ -134,7 +134,7 @@ class PageController extends Controller
 
     public function cmsPagePreview(string $slug)
     {
-        $page = PageCms::::findOrFail($slug);
+        $page = PageCms::findOrFail($slug);
         dump($page);
         //dump($page);
         if (!$page) {
