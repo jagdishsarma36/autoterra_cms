@@ -122,6 +122,7 @@ class PageController extends Controller
     public function cmsPage(string $slug)
     {
         $page = PageCms::where('slug', $slug)->first();
+        dump($page);
         //dump($page);
         if (!$page) {
             abort(404);
