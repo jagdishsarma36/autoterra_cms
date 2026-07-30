@@ -103,7 +103,11 @@ Route::get('/admin/logout', function (Request $request) {
     return redirect('/admin/login');
 })->name('admin.logout.get');
 
-
+//Preview page in Edit page
+Route::get('/preview/{page}', [PageController::class, 'preview'])
+    ->middleware('auth')
+    ->name('pages.preview');
+    
 // CMS pages at root: /{slug} — MUST be last (catch-all)
 Route::get('/{slug}', [PageController::class, 'cmsPage'])
     ->where('slug', '.*')
