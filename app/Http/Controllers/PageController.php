@@ -141,7 +141,7 @@ class PageController extends Controller
             }
             return view('pages.dynamic-page', compact('page')); 
         }else{
-            abort(403);
+            abort(403,'Unauthorized. Admin access only.');
         }
         
     }
