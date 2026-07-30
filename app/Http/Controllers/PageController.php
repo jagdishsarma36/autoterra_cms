@@ -134,7 +134,7 @@ class PageController extends Controller
 
     public function cmsPagePreview(string $slug)
     {   
-        dump(Auth::user()->hasRole('admin'));
+        dump(Auth::user());
         if (!Auth::check()) {
             abort(403);
         }
