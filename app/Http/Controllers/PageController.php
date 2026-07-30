@@ -135,14 +135,14 @@ class PageController extends Controller
     public function cmsPagePreview(string $slug)
     {
         $page = PageCms::findOrFail($slug);
-        dump($page);
+       
         //dump($page);
         if (!$page) {
             abort(404);
         }
-        if (!$page->is_published || ($page->published_at && $page->published_at->isFuture())) {
-            abort(404);
-        }
+        //if (!$page->is_published || ($page->published_at && $page->published_at->isFuture())) {
+            //abort(404);
+        //}
         return view('pages.dynamic-page', compact('page'));
     }
 
