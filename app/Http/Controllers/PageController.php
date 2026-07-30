@@ -134,8 +134,8 @@ class PageController extends Controller
 
     public function cmsPagePreview(string $slug)
     {
-        $page = PageCms::where('slug', $slug)->first();
-        dump($slug);
+        $page = PageCms::::findOrFail($slug);
+        dump($page);
         //dump($page);
         if (!$page) {
             abort(404);
