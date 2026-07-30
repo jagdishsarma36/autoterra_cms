@@ -108,7 +108,6 @@ class PageController extends Controller
 
     public function dynamicPage(PageCms $page)
     {
-        dump($page);
         if (!$page->is_published || ($page->published_at && $page->published_at->isFuture())) {
             abort(404);
         }
