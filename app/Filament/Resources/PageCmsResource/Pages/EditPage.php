@@ -20,6 +20,9 @@ class EditPage extends EditRecord
                 ->icon('heroicon-o-eye')
                 ->url(fn () => '/' . $this->record->slug)
                 ->openUrlInNewTab(),
+            Actions\Action::make('preview')
+                ->url(fn () => route('pages.preview', $this->record))
+                ->openUrlInNewTab(),
         ];
     }
 
