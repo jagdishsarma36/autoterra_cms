@@ -106,7 +106,7 @@ class OrderResource extends Resource
                             ->options(['pending' => 'Pending', 'paid' => 'Paid', 'failed' => 'Failed', 'refunded' => 'Refunded'])
                             ->required(),
                         \Filament\Forms\Components\Select::make('billing_mode')
-                            ->options(['upfront' => 'Upfront', 'monthly' => 'Monthly']),
+                            ->options(['upfront' => 'Upfront', 'monthly' => 'Monthly','Half-yearly'=>'Half-yearly','Daily'=>'Daily']),
                     ]),
                 ]),
             Section::make('Payment Details')
