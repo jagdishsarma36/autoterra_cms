@@ -3,6 +3,8 @@ namespace App\Filament\Resources\OrderResource\Pages;
 
 use App\Filament\Resources\OrderResource;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmation;
 
 class CreateOrder extends CreateRecord
 {
