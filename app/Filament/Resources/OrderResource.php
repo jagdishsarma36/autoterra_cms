@@ -128,6 +128,7 @@ class OrderResource extends Resource
             'index' => \App\Filament\Resources\OrderResource\Pages\ListOrders::route('/'),
             'view' => \App\Filament\Resources\OrderResource\Pages\ViewOrder::route('/{record}'),
             'edit' => \App\Filament\Resources\OrderResource\Pages\EditOrder::route('/{record}/edit'),
+            'create' => \App\Filament\Resources\OrderResource\Pages\Pages\CreateOrder::route('/create'),
         ];
     }
 }
