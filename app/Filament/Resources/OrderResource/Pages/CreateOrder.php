@@ -12,6 +12,6 @@ class CreateOrder extends CreateRecord
     
     protected function afterCreate(): void
     {
-        Mail::to('shas.sarma@gmail.com')->send(new OrderConfirmation());
+        Mail::to('shas.sarma@gmail.com')->send(new OrderConfirmation($this->record));
     }
 }
