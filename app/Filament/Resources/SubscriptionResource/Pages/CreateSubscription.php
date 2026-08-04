@@ -9,4 +9,9 @@ use App\Mail\SubscriptionConfirmation;
 class CreateSubscription extends CreateRecord
 {
     protected static string $resource = SubscriptionResource::class;
+
+    protected function afterCreate(): void
+    {
+        Mail::to($this->record->user->email)->send(new SubscriptionConfirmation($this->record));
+    }
 }
