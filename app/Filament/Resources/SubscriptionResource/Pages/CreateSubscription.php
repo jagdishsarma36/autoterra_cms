@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SubscriptionResource\Pages;
 
+use Illuminate\Support\Facades\Mail;
 use App\Filament\Resources\SubscriptionResource;
 use Filament\Resources\Pages\CreateRecord;
 use App\Mail\SubscriptionConfirmation;
