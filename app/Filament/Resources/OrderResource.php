@@ -92,14 +92,14 @@ class OrderResource extends Resource
                             ->options(['INR' => 'INR', 'USD' => 'USD'])
                             ->required(),
                         \Filament\Forms\Components\TextInput::make('amount')
-                            ->label('Amount (paise/cents)')
+                            ->label('Amount')
                             ->numeric()
                             ->required(),
                         \Filament\Forms\Components\TextInput::make('gst_amount')
-                            ->label('GST (paise)')
+                            ->label('GST')
                             ->numeric(),
                         \Filament\Forms\Components\TextInput::make('total_amount')
-                            ->label('Total (paise/cents)')
+                            ->label('Total')
                             ->numeric()
                             ->required(),
                         \Filament\Forms\Components\Select::make('status')
