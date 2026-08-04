@@ -122,6 +122,7 @@ class SubscriptionResource extends Resource
     {
         return [
             'index' => \App\Filament\Resources\SubscriptionResource\Pages\ListSubscriptions::route('/'),
+            'create' => \App\Filament\Resources\SubscriptionResource\Pages\CreateSubscription::route('/create'),
             'view' => \App\Filament\Resources\SubscriptionResource\Pages\ViewSubscription::route('/{record}'),
             'edit' => \App\Filament\Resources\SubscriptionResource\Pages\EditSubscription::route('/{record}/edit'),
         ];
