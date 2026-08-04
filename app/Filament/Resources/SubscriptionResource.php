@@ -101,7 +101,7 @@ class SubscriptionResource extends Resource
                             ->options(['active' => 'Active', 'cancelled' => 'Cancelled', 'expired' => 'Expired', 'paused' => 'Paused'])
                             ->required(),
                         TextInput::make('amount')
-                            ->label('Amount (paise/cents)')
+                            ->label('Amount')
                             ->numeric()
                             ->required(),
                         TextInput::make('currency')
