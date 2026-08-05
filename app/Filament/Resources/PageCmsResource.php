@@ -170,7 +170,13 @@ class PageCmsResource extends Resource
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => $get('type') === 'html_inline')
                                     ->helperText('Inline HTML tags: <br>, <span>, <strong>, <em>, <a>, <sup>, <sub> — renders as-is.'),
-                                RichEditor::make('value')
+                                Textarea::make('value')
+                                    ->label('HTML Content')
+                                    ->rows(4)
+                                    ->columnSpanFull()
+                                    ->visible(fn ($get) => $get('type') === 'richtext')
+                                    ->helperText('Inline HTML tags: <br>, <span>, <strong>, <em>, <a>, <sup>, <sub> — renders as-is.'),
+                                /*RichEditor::make('value')
                                     ->label('Rich Text Content')
                                     ->columnSpanFull()
                                     ->toolbarButtons([
@@ -189,7 +195,7 @@ class PageCmsResource extends Resource
                                         'underline',
                                         'undo',
                                     ])
-                                    ->visible(fn ($get) => $get('type') === 'richtext'),
+                                    ->visible(fn ($get) => $get('type') === 'richtext'),*/
                                 Textarea::make('value')
                                     ->label('JSON Value')
                                     ->rows(8)
