@@ -171,6 +171,26 @@ class PageCmsResource extends Resource
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => $get('type') === 'richtext')
                                     ->helperText('Use HTML tags: h2, h3, p, strong, em, ul, li, a, blockquote'),
+                                RichEditor::make('value')
+                                    ->label('Rich Text Content')
+                                    ->columnSpanFull()
+                                    ->toolbarButtons([
+                                        'attachFiles',
+                                        'blockquote',
+                                        'bold',
+                                        'bulletList',
+                                        'codeBlock',
+                                        'h2',
+                                        'h3',
+                                        'italic',
+                                        'link',
+                                        'orderedList',
+                                        'redo',
+                                        'strike',
+                                        'underline',
+                                        'undo',
+                                    ])
+                                    ->visible(fn ($get) => $get('type') === 'richtext'),
                                 Textarea::make('value')
                                     ->label('JSON Value')
                                     ->rows(8)
