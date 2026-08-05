@@ -142,7 +142,7 @@ class PageCmsResource extends Resource
                                         ->live()
                                         ->afterStateUpdated(function ($state, $old, $set) {
                                                 if ($state !== $old) {
-                                                    $set('value', '');
+                                                    //$set('value', '');
                                                 }
                                             })
                                         ->columnSpan(2),
