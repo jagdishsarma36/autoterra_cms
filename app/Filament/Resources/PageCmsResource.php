@@ -172,10 +172,10 @@ class PageCmsResource extends Resource
                                     ->helperText('Inline HTML tags: <br>, <span>, <strong>, <em>, <a>, <sup>, <sub> — renders as-is.'),
                                 Textarea::make('value')
                                     ->label('HTML Content')
-                                    ->rows(4)
+                                    ->rows(8)
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => $get('type') === 'richtext')
-                                    ->helperText('Inline HTML tags: <br>, <span>, <strong>, <em>, <a>, <sup>, <sub> — renders as-is.'),
+                                    ->helperText('Use HTML tags: h2, h3, p, strong, em, ul, li, a, blockquote'),
                                 /*RichEditor::make('value')
                                     ->label('Rich Text Content')
                                     ->columnSpanFull()
