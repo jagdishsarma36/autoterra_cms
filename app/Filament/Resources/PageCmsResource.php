@@ -140,6 +140,11 @@ class PageCmsResource extends Resource
                                         ->required()
                                         ->default('richtext')
                                         ->live()
+                                        ->afterStateUpdated(function ($state, $old, $set) {
+                                                if ($state !== $old) {
+                                                    $set('value', '');
+                                                }
+                                            })
                                         ->columnSpan(2),
                                     Placeholder::make('exists_badge')
                                         ->label(' ')
