@@ -136,6 +136,7 @@ class PageController extends Controller
     { 
         if (Auth::user()->role === 'admin') {
             $page = PageCms::findOrFail($slug);
+            dump($page);
             if (!$page) {
                 abort(404);
             }
