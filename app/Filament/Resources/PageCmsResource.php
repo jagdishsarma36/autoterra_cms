@@ -176,7 +176,7 @@ class PageCmsResource extends Resource
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => $get('type') === 'richtext')
                                     ->helperText('Use HTML tags: h2, h3, p, strong, em, ul, li, a, blockquote'),
-                                /*RichEditor::make('value')
+                                RichEditor::make('value')
                                     ->label('Rich Text Content')
                                     ->columnSpanFull()
                                     ->toolbarButtons([
@@ -195,7 +195,7 @@ class PageCmsResource extends Resource
                                         'underline',
                                         'undo',
                                     ])
-                                    ->visible(fn ($get) => $get('type') === 'richtext'),*/
+                                    ->visible(fn ($get) => $get('type') === 'richtext'),
                                 Textarea::make('value')
                                     ->label('JSON Value')
                                     ->rows(8)
