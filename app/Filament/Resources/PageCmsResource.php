@@ -178,7 +178,7 @@ class PageCmsResource extends Resource
                                     ->label('HTML Content')
                                     ->rows(8)
                                     ->columnSpanFull()
-                                    ->visible(fn ($get) => $get('type') === 'html_inline')
+                                    ->visible(fn ($get) => $get('type') === 'richtext')
                                     ->helperText('Use HTML tags: h2, h3, p, strong, em, ul, li, a, blockquote'),
                                 /*RichEditor::make('value')
                                     ->label('Rich Text Content')
