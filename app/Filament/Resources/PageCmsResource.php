@@ -170,7 +170,7 @@ class PageCmsResource extends Resource
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => $get('type') === 'html_inline')
                                     ->helperText('Inline HTML tags: <br>, <span>, <strong>, <em>, <a>, <sup>, <sub> — renders as-is.'),
-                                */
+                                
                                 Textarea::make('value')
                                     ->label('HTML Content')
                                     ->rows(8)
@@ -196,7 +196,7 @@ class PageCmsResource extends Resource
                                         'underline',
                                         'undo',
                                     ])
-                                    ->visible(fn ($get) => $get('type') === 'richtext'),
+                                    ->visible(fn ($get) => $get('type') === 'richtext'),*/
                                 /*Textarea::make('value')
                                     ->label('JSON Value')
                                     ->rows(8)
@@ -215,6 +215,25 @@ class PageCmsResource extends Resource
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => str_starts_with((string) $get('type'), 'html_section'))
                                     ->helperText('Paste raw HTML. Wraps in a <section> tag with the class you choose below.'),*/
+                                Group::make()
+                                        ->schema(function (Get $get): array {
+                                            return match ($get('type')) {
+
+                                                'richtext' => [
+                                                    RichEditor::make('value')
+                                                        ->label('Rich Text Content')
+                                                        ->columnSpanFull(),
+                                                ],
+
+                                                default => [
+                                                    Textarea::make('value')
+                                                        ->label('Content')
+                                                        ->rows(8)
+                                                        ->columnSpanFull(),
+                                                ],
+                                            };
+                                        }),
+                                
                                 Select::make('section_class')
                                     ->label('Section Class')
                                     ->options([
