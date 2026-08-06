@@ -3,7 +3,7 @@
 @section('meta_description', $page->meta_description ?: 'AutoTerra delivers advanced LiDAR processing, terrain modeling, CAD integration, and spatial analysis software for surveying, mapping, and engineering professionals.')
 @section('body')
 @include('partials.nav')
-
+{{ \Composer\InstalledVersions::getPrettyVersion('filament/filament') }}
 @if($page->featured_image)
 <img src="{{ $page->featured_image }}" alt="{{ $page->title }}" style="width:100%;max-height:400px;object-fit:cover;">
 @endif
