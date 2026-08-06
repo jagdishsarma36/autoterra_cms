@@ -162,7 +162,7 @@ class PageCmsResource extends Resource
                                         })
                                         ->columnSpan(5),
                                 ]),
-                                /*Textarea::make('value')
+                                Textarea::make('value')
                                     ->label('Value')
                                     ->rows(3)
                                     ->columnSpanFull()
@@ -180,7 +180,7 @@ class PageCmsResource extends Resource
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => $get('type') === 'html_inline')
                                     ->helperText('Use HTML tags: h2, h3, p, strong, em, ul, li, a, blockquote'),
-                                RichEditor::make('value')
+                                /*RichEditor::make('value')
                                     ->label('Rich Text Content')
                                     ->columnSpanFull()
                                     ->toolbarButtons([
@@ -200,7 +200,7 @@ class PageCmsResource extends Resource
                                         'undo',
                                     ])
                                     ->visible(fn ($get) => $get('type') === 'richtext'),*/
-                                /*Textarea::make('value')
+                                Textarea::make('value')
                                     ->label('JSON Value')
                                     ->rows(8)
                                     ->columnSpanFull()
@@ -217,8 +217,8 @@ class PageCmsResource extends Resource
                                     ->rows(12)
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => str_starts_with((string) $get('type'), 'html_section'))
-                                    ->helperText('Paste raw HTML. Wraps in a <section> tag with the class you choose below.'),*/
-                                Group::make()
+                                    ->helperText('Paste raw HTML. Wraps in a <section> tag with the class you choose below.'),
+                                /*Group::make()
                                         ->schema(function (Get $get): array {
                                             return match ($get('type')) {
 
@@ -235,7 +235,7 @@ class PageCmsResource extends Resource
                                                         ->columnSpanFull(),
                                                 ],
                                             };
-                                        }),
+                                        }),*/
                                 
                                 Select::make('section_class')
                                     ->label('Section Class')
