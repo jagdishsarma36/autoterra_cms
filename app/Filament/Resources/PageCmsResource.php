@@ -162,7 +162,7 @@ class PageCmsResource extends Resource
                                         })
                                         ->columnSpan(5),
                                 ]),
-                                Textarea::make('text_value')
+                                Textarea::make('value')
                                     ->label('Value')
                                     ->rows(3)
                                     ->columnSpanFull()
