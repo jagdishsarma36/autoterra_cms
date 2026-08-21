@@ -246,7 +246,7 @@
         $key=str_replace(".","-",$rKey);
       
       @endphp
-     <div class="page-content"><div class="{{$slug}} {{$key}}">{!! $rValue !!}</div></div>
+     <div class="page-content"><div class="{{ 'page-'.$slug}} {{'con-'.$key}}">{!! $rValue !!}</div></div>
     @elseif(str_starts_with($rType, 'html_section'))
     @php $sectionClass = substr($rType, 13) ?: 'section-white'; @endphp
     <section class="section {{ $sectionClass }}">
