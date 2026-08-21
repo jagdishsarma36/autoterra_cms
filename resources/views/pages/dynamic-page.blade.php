@@ -242,7 +242,7 @@
       {!! $rValue !!}
     @elseif($rType === 'html_inline' || $rType === 'richtext')
       @php $slug=str_replace("/","-",request()->route('slug')); @endphp
-     <div class="page-content"><div class="$slug">{!! $rValue !!}</div></div>
+     <div class="page-content"><div class="{{$slug}}">{!! $rValue !!}</div></div>
     @elseif(str_starts_with($rType, 'html_section'))
     @php $sectionClass = substr($rType, 13) ?: 'section-white'; @endphp
     <section class="section {{ $sectionClass }}">
