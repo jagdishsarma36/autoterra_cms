@@ -241,7 +241,7 @@
     @if($rType === 'html')
       {!! $rValue !!}
     @elseif($rType === 'html_inline' || $rType === 'richtext')
-      <div class="page-content">{!! $rValue !!}</div>
+     <section class="section section-light"> <div class="page-content">{!! $rValue !!}</div> </section>
     @elseif(str_starts_with($rType, 'html_section'))
     @php $sectionClass = substr($rType, 13) ?: 'section-white'; @endphp
     <section class="section {{ $sectionClass }}">
