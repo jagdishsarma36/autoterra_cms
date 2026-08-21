@@ -3085,7 +3085,7 @@ span.field-hint {
     color: var(--body);
 }
 .feat-section, .abt-values, .pro-hero-content, .ps-carousel-wrap, .specs-wrap, .upgrade-wrap, .cta-band, .abt-story, .abt-team {
-    padding: 72px 60px;
+    padding: 71px 60px;
 }
 .feat-grid-lr {
     display: grid;
