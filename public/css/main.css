@@ -4683,8 +4683,6 @@ section:has(>.legal-wrap).reveal.show {
     }
 }
 
-div.body {
-    padding: 64px 60px;
-}
+
 
 @keyframes spin { to { transform: rotate(360deg); } }
