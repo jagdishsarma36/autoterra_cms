@@ -103,16 +103,6 @@ class PageCmsResource extends Resource
                             Toggle::make('is_published')->default(true),
                             DatePicker::make('published_at'),
                             TextInput::make('sort_order')->numeric()->default(0),
-                            Select::make('template')
-                                ->label('Page Template')
-                                ->options([
-                                    'default' => 'Default Page',
-                                    'home' => 'Home Page',
-                                    'about' => 'About Page',
-                                    'landing' => 'Landing Page',
-                                ])
-                                ->default('default')
-                                ->required(),
                         ]),
                         TextInput::make('featured_image')
                             ->label('Featured Image URL')
