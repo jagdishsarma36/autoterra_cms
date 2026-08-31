@@ -58,6 +58,7 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('sku')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\TextColumn::make('tier')
@@ -93,6 +94,12 @@ class ProductResource extends Resource
                             ->required()
                             ->unique(Product::class, 'slug', ignoreRecord: true)
                             ->maxLength(255),
+                        TextInput::make('sku')
+                            ->label('SKU')
+                            ->required()
+                            ->unique(Product::class, 'sku', ignoreRecord: true)
+                            ->maxLength(50)
+                            ->helperText('e.g. VIEW, STD, PRO_SPATIAL'),
                         Select::make('tier')
                             ->options([
                                 'basic' => 'Basic',

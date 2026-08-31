@@ -25,6 +25,7 @@ class PricingController extends Controller
                 ];
             }
             $data[$product->slug] = [
+                'sku' => $product->sku,
                 'name' => $product->name,
                 'tier' => $product->tier,
                 'prices' => $prices,
