@@ -91,7 +91,7 @@ class RazorpayService
     /**
      * Create a Razorpay Plan for subscriptions.
      */
-    public function createPlan(int $amountInPaise, string $currency, string $period, int $interval, string $name, string $description = ''): array
+    public function createPlan(int $amountInPaise, string $currency, string $period, int $interval, string $name, string $description = '', array $notes = []): array
     {
         return $this->request('POST', '/plans', [
             'period' => $period,
@@ -102,19 +102,21 @@ class RazorpayService
                 'currency' => $currency,
                 'description' => $description,
             ],
+            'notes' => $notes,
         ]);
     }
 
     /**
      * Create a Razorpay Subscription.
      */
-    public function createSubscription(string $planId, int $totalCount = 12): array
+    public function createSubscription(string $planId, int $totalCount = 12, array $notes = []): array
     {
         return $this->request('POST', '/subscriptions', [
             'plan_id' => $planId,
             'total_count' => $totalCount,
             'quantity' => 1,
             'customer_notify' => 1,
+            'notes' => $notes,
         ]);
     }
 

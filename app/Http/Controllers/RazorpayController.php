@@ -35,10 +35,17 @@ class RazorpayController extends Controller
 
         $product = Product::where('slug', $request->product_slug)->firstOrFail();
 
+        $notes = [
+            'sku' => $product->sku ?? '',
+            'term_months' => (string) termMonths($request->term),
+            'customer_name' => Auth::user()->name ?? '',
+            'customer_email' => Auth::user()->email ?? '',
+        ];
+
         $order = $this->razorpay->createOrder(
             $request->amount,
             $request->currency,
-            ['product_name' => $product->name, 'term' => $request->term]
+            $notes
         );
 
         if (isset($order['error'])) {
@@ -94,7 +101,9 @@ class RazorpayController extends Controller
         ]);
 
         // Issue license key
-        $this->issueLicenseKey($order);
+        // Disabled — license keys are now issued by the external license server
+        // (https://license.infyterra.net) via Razorpay webhooks (payment.captured).
+        // $this->issueLicenseKey($order);
 
         // Send confirmation email
         try {
@@ -167,6 +176,13 @@ class RazorpayController extends Controller
         ];
         $billing = $periodMap[$request->term] ?? ['period' => 'monthly', 'interval' => 1];
 
+        $notes = [
+            'sku' => $product->sku ?? '',
+            'term_months' => (string) termMonths($request->term),
+            'customer_name' => Auth::user()->name ?? '',
+            'customer_email' => Auth::user()->email ?? '',
+        ];
+
         // Create plan
         $planResult = $this->razorpay->createPlan(
             toPaise($request->amount),
@@ -174,15 +190,20 @@ class RazorpayController extends Controller
             $billing['period'],
             $billing['interval'],
             $product->name . ' — ' . termLabel($request->term),
-            'AutoTerra ' . $product->name . ' subscription'
+            'AutoTerra ' . $product->name . ' subscription',
+            $notes
         );
 
         if (isset($planResult['error'])) {
             return response()->json(['error' => $planResult['error']], 500);
         }
 
+        // Calculate total subscription count from term
+        $totalMonths = termMonths($request->term);
+        $totalCount = max(1, $totalMonths);
+
         // Create subscription using the plan
-        $subResult = $this->razorpay->createSubscription($planResult['id']);
+        $subResult = $this->razorpay->createSubscription($planResult['id'], $totalCount, $notes);
 
         if (isset($subResult['error'])) {
             return response()->json(['error' => $subResult['error']], 500);
@@ -309,7 +330,9 @@ class RazorpayController extends Controller
                 $order = Order::where('razorpay_order_id', $orderId)->first();
                 if ($order && $order->status !== 'paid') {
                     $order->update(['razorpay_payment_id' => $paymentId, 'status' => 'paid']);
-                    $this->issueLicenseKey($order);
+                    // Disabled — license keys are now issued by the external license server
+                    // (https://license.infyterra.net) via Razorpay webhooks.
+                    // $this->issueLicenseKey($order);
                 }
                 break;
 
