@@ -113,3 +113,5 @@ Route::get('/{slug}', [PageController::class, 'cmsPage'])
     ->where('slug', '.*')
     ->name('cms.show');
 
+Route('filament.admin.pages.cart');
+
