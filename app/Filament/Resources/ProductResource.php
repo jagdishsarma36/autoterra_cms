@@ -61,20 +61,10 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('sku')
-                    ->searchable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('name')
-                    ->sortable()
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
-
+                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('sku')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\TextColumn::make('tier')
                     ->badge(fn (string $state): string => match ($state) {
                         'basic' => 'gray',
@@ -82,108 +72,19 @@ class ProductResource extends Resource
                         'advanced' => 'success',
                         default => 'gray',
                     }),
-
-                Tables\Columns\TextColumn::make('sort_order')
-                    ->sortable(),
-
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
-
-                Tables\Columns\TextColumn::make('prices_count')
-                    ->counts('prices')
-                    ->label('Prices'),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('M j, Y'),
+                Tables\Columns\TextColumn::make('sort_order')->sortable(),
+                Tables\Columns\IconColumn::make('is_active')->boolean(),
+                Tables\Columns\TextColumn::make('prices_count')->counts('prices')->label('Prices'),
+                Tables\Columns\TextColumn::make('created_at')->dateTime('M j, Y'),
             ])
-
             ->defaultSort('sort_order')
-
             ->filters([
                 Tables\Filters\SelectFilter::make('tier')
-                    ->options([
-                        'basic' => 'Basic',
-                        'pro' => 'Professional',
-                        'advanced' => 'Advanced',
-                    ]),
-
+                    ->options(['basic' => 'Basic', 'pro' => 'Professional', 'advanced' => 'Advanced']),
                 Tables\Filters\TernaryFilter::make('is_active'),
-            ])
-
-            ->recordActions([
-
-                Action::make('addToCart')
-                    ->label('Add to Cart')
-                    ->icon('heroicon-o-shopping-cart')
-                    ->color('success')
-
-                    ->schema(function (Product $record): array {
-
-                        $prices = $record->prices()
-                            ->where('is_active', true)
-                            ->get();
-
-                        $options = [];
-
-                        foreach ($prices as $price) {
-
-                            $amount = ((int) $price->price_inr) / 100;
-
-                            $options[$price->id] =
-                                ucfirst($price->term)
-                                . ' — ₹'
-                                . number_format($amount, 2);
-                        }
-
-                        return [
-
-                            Radio::make('price_id')
-                                ->label('Select Subscription Term')
-                                ->options($options)
-                                ->required()
-                                ->default($prices->first()?->id),
-
-                            TextInput::make('quantity')
-                                ->label('Quantity')
-                                ->numeric()
-                                ->integer()
-                                ->minValue(1)
-                                ->default(1)
-                                ->required(),
-                        ];
-                    })
-
-                    ->modalHeading(
-                        fn (Product $record) =>
-                            'Add ' . $record->name . ' to Cart'
-                    )
-
-                    ->modalSubmitActionLabel('Add to Cart')
-
-                    ->action(function (
-                        Product $record,
-                        array $data
-                    ): void {
-
-                        app(CartService::class)->add(
-                            product: $record,
-                            priceId: (int) $data['price_id'],
-                            quantity: (int) $data['quantity'],
-                            currency: 'INR',
-                        );
-
-                        Notification::make()
-                            ->title('Added to Cart')
-                            ->body(
-                                $record->name .
-                                ' has been added to your cart.'
-                            )
-                            ->success()
-                            ->send();
-                    }),
-
             ]);
     }
+
 
     public static function form(Schema $schema): Schema
     {
