@@ -14,6 +14,14 @@ class ListProducts extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Action::make('cart')
+                ->label(fn () =>
+                    'Cart (' . app(CartService::class)->count() . ')'
+                )
+                ->icon('heroicon-o-shopping-cart')
+                ->url(
+                    fn () => route('filament.admin.pages.cart')
+                ),
         ];
     }
 }
