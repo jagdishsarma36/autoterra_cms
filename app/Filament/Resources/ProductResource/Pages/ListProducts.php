@@ -13,15 +13,8 @@ class ListProducts extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            //Actions\CreateAction::make(),
-            Actions\CreateAction::make('cart')
-                ->label(fn () =>
-                    'Cart (' . app(CartService::class)->count() . ')'
-                )
-                ->icon('heroicon-o-shopping-cart')
-                ->url(
-                    fn () => route('filament.admin.pages.cart')
-                ),
+            Actions\CreateAction::make(),
+            
         ];
     }
 }
