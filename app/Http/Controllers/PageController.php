@@ -111,6 +111,9 @@ class PageController extends Controller
         if (!$page->is_published || ($page->published_at && $page->published_at->isFuture())) {
             abort(404);
         }
+        if ($response = $this->ensurePageAccess($page)) {
+            return $response;
+        }
         return view('pages.dynamic-page', compact('page'));
     }
 
@@ -128,7 +131,28 @@ class PageController extends Controller
         if (!$page->is_published || ($page->published_at && $page->published_at->isFuture())) {
             abort(404);
         }
+        if ($response = $this->ensurePageAccess($page)) {
+            return $response;
+        }
         return view('pages.dynamic-page', compact('page'));
+    }
+
+    /**
+     * Enforce page visibility. Returns a redirect to login for guests,
+     * aborts 404 for logged-in users who are not on the allowed list.
+     */
+    protected function ensurePageAccess(PageCms $page): ?\Symfony\Component\HttpFoundation\Response
+    {
+        if ($page->isVisibleTo(Auth::user())) {
+            return null;
+        }
+
+        if (! Auth::check()) {
+            redirect()->setIntendedUrl(request()->fullUrl());
+            return redirect()->route('login');
+        }
+
+        abort(404);
     }
 
 

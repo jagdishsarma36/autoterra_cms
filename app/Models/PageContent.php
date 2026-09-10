@@ -22,8 +22,8 @@ class PageContent extends Model
         if ($this->type === 'json') {
             return json_decode($this->value, true) ?? [];
         }
-        // For richtext, convert tiptap JSON to HTML for frontend rendering
-        if ($this->type === 'richtext' && !empty($this->value)) {
+        // For richtext/wysiwyg, convert tiptap JSON to HTML for frontend rendering
+        if (in_array($this->type, ['richtext', 'wysiwyg'], true) && !empty($this->value)) {
             $decoded = json_decode($this->value, true);
             if (is_array($decoded) && isset($decoded['type'])) {
                 try {
