@@ -156,25 +156,41 @@
         </tr>
       </thead>
       <tbody>
+        @if($order->orderItems->count())
+          @foreach($order->orderItems as $item)
+          <tr>
+            <td>
+              <div class="item-name">{{ $item->product->name ?? 'Product' }}</div>
+              <div class="item-desc">AutoTerra software license — {{ termLabel($item->term) }} subscription{{ $item->quantity > 1 ? ' × ' . $item->quantity : '' }}</div>
+            </td>
+            <td>{{ termLabel($item->term) }}</td>
+            <td>{{ $order->currency === 'INR' ? formatINR($item->total_amount) : formatUSD($item->total_amount) }}</td>
+          </tr>
+          @endforeach
+        @else
         <tr>
           <td>
             <div class="item-name">{{ $order->product->name ?? 'Product' }}</div>
             <div class="item-desc">AutoTerra software license — {{ termLabel($order->term) }} subscription</div>
           </td>
           <td>{{ termLabel($order->term) }}</td>
-          <td>{{ $order->currency === 'INR' ? '₹' . number_format($order->amount, 0) : '$' . number_format($order->amount, 2) }}</td>
+          <td>{{ $order->currency === 'INR' ? formatINR($order->amount) : formatUSD($order->amount) }}</td>
         </tr>
+        @endif
       </tbody>
     </table>
 
     <div class="invoice-totals">
       <table class="totals-table">
-        <tr><td>Subtotal</td><td>{{ $order->currency === 'INR' ? '₹' . number_format($order->amount, 0) : '$' . number_format($order->amount, 2) }}</td></tr>
+        <tr><td>Subtotal</td><td>{{ $order->currency === 'INR' ? formatINR($order->amount) : formatUSD($order->amount) }}</td></tr>
         @if($order->gst_amount > 0)
-        <tr><td>GST (18%)</td><td>₹{{ number_format($order->gst_amount, 0) }}</td></tr>
+        <tr><td>GST (18%)</td><td>{{ formatINR($order->gst_amount) }}</td></tr>
+        @endif
+        @if($order->discount_amount > 0)
+        <tr style="color:#065F46;"><td>Discount{{ $order->coupon_code ? ' (' . $order->coupon_code . ')' : '' }}</td><td>−{{ $order->currency === 'INR' ? formatINR($order->discount_amount) : formatUSD($order->discount_amount) }}</td></tr>
         @endif
         <tr class="divider"><td></td><td></td></tr>
-        <tr class="total"><td>Total</td><td>{{ $order->currency === 'INR' ? '₹' . number_format($order->total_amount, 0) : '$' . number_format($order->total_amount, 2) }}</td></tr>
+        <tr class="total"><td>Total</td><td>{{ $order->currency === 'INR' ? formatINR($order->total_amount) : formatUSD($order->total_amount) }}</td></tr>
       </table>
     </div>
 

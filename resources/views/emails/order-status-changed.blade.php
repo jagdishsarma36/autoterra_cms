@@ -44,9 +44,13 @@
       <div class="details">
         <table>
           <tr><td>Order ID</td><td>#{{ $order->id }}</td></tr>
-          <tr><td>Product</td><td>{{ $order->product->name }}</td></tr>
+          @if($order->orderItems->count())
+          <tr><td>Items</td><td>{{ $order->orderItems->count() }} product{{ $order->orderItems->count() !== 1 ? 's' : '' }}</td></tr>
+          @else
+          <tr><td>Product</td><td>{{ $order->product?->name ?? 'AutoTerra License' }}</td></tr>
           <tr><td>Term</td><td>{{ termLabel($order->term) }}</td></tr>
-          <tr><td>Total</td><td>{{ $order->currency === 'INR' ? '₹' . number_format($order->total_amount, 0) : '$' . number_format($order->total_amount, 2) }}</td></tr>
+          @endif
+          <tr><td>Total</td><td>{{ $order->currency === 'INR' ? formatINR($order->total_amount) : formatUSD($order->total_amount) }}</td></tr>
         </table>
       </div>
 

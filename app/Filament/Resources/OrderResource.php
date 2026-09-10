@@ -48,9 +48,10 @@ class OrderResource extends Resource
                     ->label('Total')
                     ->formatStateUsing(fn ($state, $record) =>
                         $record->currency === 'INR'
-                            ? '₹' . number_format($state, 0)
-                            : '$' . number_format($state, 2)
+                            ? '₹' . number_format($state / 100, 0)
+                            : '$' . number_format($state / 100, 2)
                     ),
+                Tables\Columns\TextColumn::make('coupon_code')->label('Coupon'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge(fn (string $state): string => match ($state) {
                         'paid' => 'success',
@@ -85,23 +86,30 @@ class OrderResource extends Resource
                         \Filament\Forms\Components\Select::make('product_id')
                             ->label('Product')
                             ->relationship('product', 'name')
-                            ->required(),
+                            ->nullable(),
                         \Filament\Forms\Components\TextInput::make('term')
                             ->required(),
                         \Filament\Forms\Components\Select::make('currency')
                             ->options(['INR' => 'INR', 'USD' => 'USD'])
                             ->required(),
                         \Filament\Forms\Components\TextInput::make('amount')
-                            ->label('Amount')
+                            ->label('Amount (paise)')
                             ->numeric()
                             ->required(),
                         \Filament\Forms\Components\TextInput::make('gst_amount')
-                            ->label('GST')
+                            ->label('GST (paise)')
                             ->numeric(),
                         \Filament\Forms\Components\TextInput::make('total_amount')
-                            ->label('Total')
+                            ->label('Total (paise)')
                             ->numeric()
                             ->required(),
+                        \Filament\Forms\Components\TextInput::make('discount_amount')
+                            ->label('Discount (paise)')
+                            ->numeric()
+                            ->default(0),
+                        \Filament\Forms\Components\TextInput::make('coupon_code')
+                            ->label('Coupon Code')
+                            ->nullable(),
                         \Filament\Forms\Components\Select::make('status')
                             ->options(['pending' => 'Pending', 'paid' => 'Paid', 'failed' => 'Failed', 'refunded' => 'Refunded'])
                             ->required(),

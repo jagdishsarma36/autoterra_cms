@@ -17,9 +17,9 @@
     @forelse($orders as $order)
     <tr style="border-bottom:1px solid var(--border);cursor:pointer;" onclick="window.location='/dashboard/orders/{{ $order->id }}'">
       <td style="padding:12px 14px;font-size:13px;">{{ $order->created_at->format('M j, Y') }}</td>
-      <td style="padding:12px 14px;font-size:13px;font-weight:700;">{{ $order->product->name ?? 'N/A' }}</td>
+      <td style="padding:12px 14px;font-size:13px;font-weight:700;">{{ $order->product->name ?? ($order->orderItems->count() . ' item' . ($order->orderItems->count() !== 1 ? 's' : '')) }}</td>
       <td style="padding:12px 14px;font-size:13px;">{{ termLabel($order->term) }}</td>
-      <td style="padding:12px 14px;font-size:13px;">{{ $order->currency === 'INR' ? '₹' . number_format($order->total_amount, 0, '.', ',') : '$' . number_format($order->total_amount, 2, '.', ',') }}</td>
+      <td style="padding:12px 14px;font-size:13px;">{{ $order->currency === 'INR' ? formatINR($order->total_amount) : formatUSD($order->total_amount) }}</td>
       <td style="padding:12px 14px;"><span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:{{ $order->status === 'paid' ? '#D1FAE2' : ($order->status === 'failed' ? '#FEE2E2' : '#FEF3C7') }};color:{{ $order->status === 'paid' ? '#065F46' : ($order->status === 'failed' ? '#991B1B' : '#92400E') }};">{{ ucfirst($order->status) }}</span></td>
     </tr>
     @empty

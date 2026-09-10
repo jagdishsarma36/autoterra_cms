@@ -172,7 +172,7 @@ class PageController extends Controller
         if (!Auth::check()) {
             abort(403);
         }
-        $order->load(['product', 'licenseKeys', 'user']);
+        $order->load(['product', 'licenseKeys', 'orderItems.product', 'user']);
         return view('admin.invoice-print', compact('order'));
     }
 

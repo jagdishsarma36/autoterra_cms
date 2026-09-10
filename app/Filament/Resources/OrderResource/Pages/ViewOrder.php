@@ -17,6 +17,12 @@ class ViewOrder extends ViewRecord
 {
     protected static string $resource = OrderResource::class;
 
+    protected function mountRecord(int|string $recordId): void
+    {
+        parent::mountRecord($recordId);
+        $this->record->load(['orderItems.product']);
+    }
+
     protected function getHeaderActions(): array
     {
         return [

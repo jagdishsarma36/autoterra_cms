@@ -32,54 +32,70 @@
 .term-tab.term-disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;text-decoration:line-through;}
 .term-tab .badge-pop{background:var(--cyan);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;letter-spacing:0.3px;}
 .term-tab .badge-val{background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;}
-.buy-layout{display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start;margin-top:28px;}
+.buy-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start;margin-top:28px;}
 .tier-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin:20px 0 10px;display:flex;align-items:center;gap:8px;}
 .tier-label::after{content:'';flex:1;height:1px;background:var(--border);}
 .tier-label.basic{color:var(--muted);}
 .tier-label.professional{color:var(--blue);}
 .tier-label.advanced{color:var(--cyan);}
 .buy-product-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;}
-.buy-card{border:2px solid var(--border);border-radius:12px;padding:18px;background:#fff;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s,transform 0.15s;position:relative;}
+.buy-card{border:2px solid var(--border);border-radius:12px;padding:18px;background:#fff;transition:border-color 0.2s,box-shadow 0.2s,transform 0.15s;position:relative;}
 .buy-card:hover{border-color:var(--cyan);transform:translateY(-1px);}
-.buy-card.selected{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,168,248,0.20);background:var(--cyan-lt);}
 .buy-card-badge{position:absolute;top:-1px;right:16px;background:var(--cyan);color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:0 0 6px 6px;letter-spacing:0.5px;text-transform:uppercase;}
 .buy-card-name{font-size:13px;font-weight:800;color:var(--body);margin-bottom:6px;}
-.buy-card.selected .buy-card-name{color:var(--blue);}
 .buy-card-price-wrap{margin-bottom:10px;}
 .buy-card-per-mo{font-size:22px;font-weight:800;color:var(--body);letter-spacing:-0.5px;line-height:1;}
-.buy-card.selected .buy-card-per-mo{color:var(--blue);}
 .buy-card-per-mo-label{font-size:11px;color:var(--muted);font-weight:500;}
 .buy-card-total{font-size:11px;color:var(--muted);margin-top:2px;}
-.buy-card-saving{display:inline-block;font-size:10px;font-weight:700;background:var(--green-lt);color:#0B6A48;border-radius:4px;padding:2px 7px;margin-top:3px;}
 .buy-card-na{font-size:12px;color:var(--muted);font-style:italic;}
 .buy-card-features{border-top:1px solid var(--border);margin-top:10px;padding-top:10px;display:flex;flex-direction:column;gap:4px;}
-.buy-card.selected .buy-card-features{border-top-color:rgba(0,168,248,0.20);}
 .buy-card-feat{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;line-height:1.4;}
 .buy-card-feat i{font-size:12px;color:var(--cyan);flex-shrink:0;}
-.buy-card-select-ring{display:none;position:absolute;top:12px;right:12px;width:18px;height:18px;border-radius:50%;background:var(--cyan);color:#fff;align-items:center;justify-content:center;font-size:11px;}
-.buy-card.selected .buy-card-select-ring{display:flex;}
+.buy-card-actions{display:flex;gap:6px;margin-top:12px;}
+.btn-add-cart{flex:1;padding:8px 0;background:var(--navy);color:#fff;border:none;border-radius:7px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-add-cart:hover{background:var(--cyan);}
+.btn-add-cart.added{background:var(--green);pointer-events:none;}
 .buy-sidebar{position:sticky;top:72px;}
 .order-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;}
-.order-head{background:var(--navy);padding:14px 20px;}
-.order-head h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;}
-.order-head p{font-size:11px;color:rgba(210,230,248,0.40);}
-.order-body{padding:18px 20px;}
+.order-head{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+.order-head h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:0;}
+.order-head .cart-count{background:var(--cyan);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.order-head p{font-size:11px;color:rgba(210,230,248,0.40);margin:0;}
+.order-body{padding:18px 20px;max-height:400px;overflow-y:auto;}
 .order-empty{text-align:center;padding:28px 0;color:var(--muted);font-size:13px;}
 .order-empty i{font-size:32px;display:block;margin-bottom:8px;}
-.order-item{display:none;}
-.order-item.visible{display:block;}
-.order-product-name{font-size:14px;font-weight:800;color:var(--body);margin-bottom:2px;}
-.order-term-label{font-size:11px;color:var(--muted);margin-bottom:14px;}
+.cart-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.cart-item:last-child{border-bottom:none;}
+.cart-item-info{flex:1;min-width:0;}
+.cart-item-name{font-size:12px;font-weight:700;color:var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cart-item-term{font-size:10px;color:var(--muted);margin-top:1px;}
+.cart-item-price{font-size:11px;font-weight:600;color:var(--body);margin-top:3px;}
+.cart-item-qty{display:flex;align-items:center;gap:4px;margin-top:4px;}
+.cart-item-qty button{width:20px;height:20px;border:1px solid var(--border);border-radius:4px;background:#fff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--body);}
+.cart-item-qty button:hover{border-color:var(--cyan);color:var(--cyan);}
+.cart-item-qty span{font-size:11px;font-weight:600;min-width:16px;text-align:center;}
+.cart-item-remove{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;font-size:14px;flex-shrink:0;}
+.cart-item-remove:hover{color:#EF4444;}
+.cart-divider{height:1px;background:var(--border);margin:12px 0;}
+.cart-coupon{padding:0 20px 14px;}
+.cart-coupon label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px;}
+.cart-coupon-row{display:flex;gap:6px;}
+.cart-coupon-row input{flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:12px;color:var(--body);outline:none;}
+.cart-coupon-row input:focus{border-color:var(--cyan);}
+.cart-coupon-row button{padding:8px 14px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.cart-coupon-row button:hover{background:var(--cyan);}
+.cart-coupon-applied{display:flex;align-items:center;justify-content:space-between;background:#F0FFF8;border:1px solid #6EE7B7;border-radius:6px;padding:6px 10px;font-size:11px;color:#065F46;font-weight:600;}
+.cart-coupon-applied button{background:none;border:none;color:#991B1B;cursor:pointer;font-size:13px;padding:0 2px;}
+.order-summary{padding:0 20px 18px;}
 .order-price-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
 .order-price-label{font-size:12px;color:var(--muted);}
 .order-price-val{font-size:12px;font-weight:600;color:var(--body);}
+.order-discount-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;color:#065F46;}
+.order-discount-row .order-price-val{color:#065F46;}
 .order-divider{height:1px;background:var(--border);margin:12px 0;}
 .order-total-row{display:flex;justify-content:space-between;align-items:baseline;}
 .order-total-label{font-size:13px;font-weight:700;color:var(--body);}
 .order-total-val{font-size:20px;font-weight:800;color:var(--body);letter-spacing:-0.3px;}
-.order-saving-row{display:flex;justify-content:space-between;align-items:center;margin-top:6px;}
-.order-saving-badge{font-size:11px;font-weight:700;background:var(--green-lt);color:#0B6A48;border-radius:4px;padding:3px 8px;}
-.order-saving-amt{font-size:11px;color:var(--green);font-weight:700;}
 .order-cta{padding:0 20px 20px;}
 .btn-buy{width:100%;padding:13px 0;background:var(--cyan);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;}
 .btn-buy:hover{background:var(--cyan-dk);}
@@ -94,8 +110,6 @@
 .order-help a{color:var(--cyan);font-weight:700;}
 .tax-note{font-size:11px;color:var(--muted);margin-top:20px;padding:10px 14px;background:var(--off);border-radius:6px;border:1px solid var(--border);}
 .tax-note i{color:var(--cyan);font-size:13px;vertical-align:-2px;}
-.form-control-q{width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:7px;font-family:inherit;font-size:13px;color:var(--body);background:#fff;outline:none;transition:border-color 0.15s;}
-.form-control-q:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,168,248,0.10);}
 @media(max-width:900px){.geo-banner,.buy-hero,.india-section,.intl-section{padding-left:24px;padding-right:24px;}.buy-layout{grid-template-columns:1fr;}.buy-sidebar{position:static;}.buy-product-grid{grid-template-columns:1fr;}}
 </style>
 @endsection
@@ -133,38 +147,41 @@
     <div class="buy-sidebar">
       <div class="order-card">
         <div class="order-head">
-          <h4>Your order</h4>
-          <p>Select a product to continue</p>
+          <div><h4>Shopping Cart</h4><p id="cartSubtitle">Add products to get started</p></div>
+          <span class="cart-count" id="cartCount" style="display:none;">0</span>
         </div>
-        <div class="order-body">
-          <div class="order-empty" id="orderEmpty">
+        <div class="order-body" id="cartBody">
+          <div class="order-empty" id="cartEmpty">
             <i class="ti ti-shopping-cart"></i>
-            Select a plan from the left to see your order summary
+            Your cart is empty.<br>Add products from the left.
           </div>
-          <div class="order-item" id="orderItem">
-            <div class="order-product-name" id="orderProductName"></div>
-            <div class="order-term-label" id="orderTermLabel"></div>
-            <div class="order-price-row">
-              <span class="order-price-label">Per month (equiv.)</span>
-              <span class="order-price-val" id="orderPerMo"></span>
-            </div>
-            <div class="order-price-row">
-              <span class="order-price-label">Subtotal (excl. GST)</span>
-              <span class="order-price-val" id="orderSubtotal"></span>
-            </div>
-            <div class="order-price-row">
-              <span class="order-price-label">GST (18%)</span>
-              <span class="order-price-val" id="orderGst"></span>
-            </div>
-            <div class="order-divider"></div>
-            <div class="order-total-row">
-              <span class="order-total-label">Total</span>
-              <span class="order-total-val" id="orderTotal"></span>
-            </div>
-            <div class="order-saving-row" id="orderSavingRow" style="display:none;">
-              <span class="order-saving-badge" id="orderSavingPct"></span>
-              <span class="order-saving-amt" id="orderSavingAmt"></span>
-            </div>
+          <div id="cartItems"></div>
+        </div>
+        <div class="cart-coupon" id="couponSection" style="display:none;">
+          <label>Coupon Code</label>
+          <div id="couponInput" class="cart-coupon-row">
+            <input type="text" id="couponCode" placeholder="Enter code" maxlength="50">
+            <button onclick="applyCoupon()">Apply</button>
+          </div>
+          <div id="couponApplied" style="display:none;"></div>
+        </div>
+        <div class="order-summary" id="orderSummary" style="display:none;">
+          <div class="order-price-row">
+            <span class="order-price-label">Subtotal (excl. GST)</span>
+            <span class="order-price-val" id="cartSubtotal"></span>
+          </div>
+          <div class="order-price-row">
+            <span class="order-price-label">GST (18%)</span>
+            <span class="order-price-val" id="cartGst"></span>
+          </div>
+          <div class="order-discount-row" id="cartDiscountRow" style="display:none;">
+            <span class="order-price-label">Discount</span>
+            <span class="order-price-val" id="cartDiscount"></span>
+          </div>
+          <div class="order-divider"></div>
+          <div class="order-total-row">
+            <span class="order-total-label">Total</span>
+            <span class="order-total-val" id="cartTotal"></span>
           </div>
         </div>
         <div class="order-cta">
@@ -206,15 +223,15 @@
 <script>
 const RZP_KEY = '{{ config("razorpay.key_id") }}';
 const IS_LOGGED_IN = {{ Auth::check() ? 'true' : 'false' }};
+const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').content;
 let PRICING = {};
-let selectedProduct = null;
 let selectedTerm = '1yr';
 let billingMode = 'upfront';
 let currency = 'INR';
-let pendingSubscriptionId = null;
 let pendingOrderId = null;
+let pendingSubscriptionId = null;
+let cartData = null;
 const ALL_TERMS = ['daily','weekly','3mo','6mo','1yr','3yr','5yr'];
-const TERM_DAYS = {'daily':1,'weekly':7,'3mo':90,'6mo':180,'1yr':365,'3yr':1095,'5yr':1825};
 const TERM_LABELS = {'daily':'Daily','weekly':'Weekly','3mo':'3-Month','6mo':'6-Month','1yr':'1-Year','3yr':'3-Year','5yr':'5-Year'};
 const GST_RATE = 0.18;
 
@@ -229,12 +246,16 @@ const PRODUCT_FEATURES = {
 
 function fmt(n) {
   if (n == null) return '—';
-  if (currency === 'INR') return '₹' + Number(n).toLocaleString('en-IN', {minimumFractionDigits: n % 1 === 0 ? 0 : 2, maximumFractionDigits: 2});
-  return '$' + Number(n).toLocaleString('en-US', {minimumFractionDigits: n % 1 === 0 ? 0 : 2, maximumFractionDigits: 2});
+  return '₹' + Number(n).toLocaleString('en-IN', {minimumFractionDigits: n % 1 === 0 ? 0 : 2, maximumFractionDigits: 2});
 }
 
-function toPaise(amount) {
-  return Math.round(amount * 100);
+async function api(url, data) {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN, 'Accept': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
 }
 
 async function loadPricing() {
@@ -243,13 +264,13 @@ async function loadPricing() {
     const data = await res.json();
     PRICING = data.products;
     renderAll();
+    loadCart();
   } catch(e) { console.error('Pricing load failed', e); }
 }
 
 function renderAll() {
   renderTermTabs();
   renderCards();
-  if (selectedProduct) updateOrder();
 }
 
 function renderTermTabs() {
@@ -259,8 +280,7 @@ function renderTermTabs() {
     const hasProduct = Object.values(PRICING).some(p => p.prices[t] != null);
     if (!hasProduct) return;
     const btn = document.createElement('button');
-    btn.className = 'term-tab' + (t === selectedTerm ? ' active' : '') + (t === 'daily' ? ' daily' : '') + (t === 'weekly' ? ' weekly' : '');
-    // btn.className = 'term-tab' + (t === selectedTerm ? ' active' : '');
+    btn.className = 'term-tab' + (t === selectedTerm ? ' active' : '');
     btn.dataset.term = t;
     btn.innerHTML = TERM_LABELS[t] + (t === '1yr' ? ' <span class="badge-pop">Popular</span>' : '') + (t === '3yr' ? ' <span class="badge-val">Best value</span>' : '');
     btn.onclick = function() { setTerm(t); };
@@ -273,10 +293,11 @@ function renderTermTabs() {
   }
 }
 
-function getPrice(slug) {
+function getPrice(slug, term) {
+  term = term || selectedTerm;
   const p = PRICING[slug];
-  if (!p || !p.prices[selectedTerm]) return null;
-  const v = p.prices[selectedTerm];
+  if (!p || !p.prices[term]) return null;
+  const v = p.prices[term];
   return typeof v === 'object' ? v.amount : v;
 }
 
@@ -293,30 +314,31 @@ function renderCards() {
       const price = getPrice(slug);
       const isPopular = slug === 'prospatial';
       const features = PRODUCT_FEATURES[slug] || [];
-      html += `<div class="buy-card${slug === selectedProduct ? ' selected' : ''}${isPopular ? ' popular-card' : ''}" id="card-${slug}" onclick="selectProduct('${slug}')">
+      const inCart = isItemInCart(slug, selectedTerm);
+      html += `<div class="buy-card${isPopular ? ' popular-card' : ''}" id="card-${slug}">
         ${isPopular ? '<div class="buy-card-badge hot">Most Popular</div>' : ''}
-        <div class="buy-card-select-ring"><i class="ti ti-check" style="font-size:10px;"></i></div>
         <div class="buy-card-name">${product.name}</div>
         <div class="buy-card-price-wrap" id="price-${slug}">
-          ${price != null ? renderPriceHTML(price) : '<div class="buy-card-na">Contact for pricing</div>'}
+          ${price != null ? renderPriceHTML(price, slug) : '<div class="buy-card-na">Contact for pricing</div>'}
         </div>
         <div class="buy-card-features">
           ${features.map(f => `<div class="buy-card-feat"><i class="ti ti-check"></i> ${f}</div>`).join('')}
         </div>
+        ${price != null ? `<div class="buy-card-actions">
+          <button class="btn-add-cart${inCart ? ' added' : ''}" id="addBtn-${slug}" onclick="event.stopPropagation();addToCart('${slug}')">
+            <i class="ti ti-${inCart ? 'check' : 'shopping-cart-plus'}"></i> ${inCart ? 'Added' : 'Add to Cart'}
+          </button>
+        </div>` : ''}
       </div>`;
     });
     html += '</div>';
   });
-  if (currency === 'INR') {
-    html += `<div class="tax-note"><i class="ti ti-info-circle"></i> Prices are in Indian Rupees (₹) and <strong>exclusive of GST (18%)</strong>. GST will be added at checkout.</div>`;
-  } else {
-    html += `<div class="tax-note"><i class="ti ti-info-circle"></i> Prices are in USD. Tax will be calculated at checkout based on your location.</div>`;
-  }
+  html += `<div class="tax-note"><i class="ti ti-info-circle"></i> Prices are in Indian Rupees (₹) and <strong>exclusive of GST (18%)</strong>. GST will be added at checkout. Add multiple products to purchase together.</div>`;
   col.innerHTML = html;
 }
 
-function renderPriceHTML(price) {
-  const days = TERM_DAYS[selectedTerm];
+function renderPriceHTML(price, slug) {
+  const days = {'daily':1,'weekly':7,'3mo':90,'6mo':180,'1yr':365,'3yr':1095,'5yr':1825}[selectedTerm] || 365;
   if (selectedTerm === 'daily') {
     return `<div class="buy-card-per-mo">${fmt(price)}<span class="buy-card-per-mo-label">/day</span></div>
       <div class="buy-card-total">${fmt(price * 30)} est. monthly</div>`;
@@ -331,15 +353,6 @@ function renderPriceHTML(price) {
     <div class="buy-card-total">${fmt(price)} total for ${TERM_LABELS[selectedTerm].toLowerCase()}</div>`;
 }
 
-function selectProduct(slug) {
-  if (!PRICING[slug] || !PRICING[slug].prices[selectedTerm]) {
-    const availableTerms = ALL_TERMS.filter(t => PRICING[slug]?.prices[t] != null);
-    selectedTerm = availableTerms.length ? availableTerms[Math.min(2, availableTerms.length - 1)] : '1yr';
-  }
-  selectedProduct = slug;
-  renderAll();
-}
-
 function setTerm(term) {
   selectedTerm = term;
   renderAll();
@@ -349,98 +362,248 @@ function setBillingMode(mode) {
   billingMode = mode;
   document.getElementById('tabUpfront').classList.toggle('active', mode === 'upfront');
   document.getElementById('tabMonthly').classList.toggle('active', mode === 'monthly');
-  if (selectedProduct) updateOrder();
 }
 
-function updateOrder() {
-  if (!selectedProduct || !PRICING[selectedProduct]) return;
-  const price = getPrice(selectedProduct);
-  if (price == null) return;
-  const days = TERM_DAYS[selectedTerm];
-  const gst = currency === 'INR' ? Math.round(price * GST_RATE) : 0;
-  const total = price + gst;
+function isItemInCart(slug, term) {
+  if (!cartData || !cartData.items) return false;
+  return cartData.items.some(i => i.product_slug === slug && i.term === term);
+}
 
-  let perUnitLabel = '/mo';
-  let perUnit = price;
-  if (selectedTerm === 'daily') { perUnitLabel = '/day'; perUnit = price; }
-  else if (selectedTerm === 'weekly') { perUnitLabel = '/week'; perUnit = price; }
-  else {
-    const months = Math.round(days / 30);
-    perUnit = Math.round(price / months * 100) / 100;
+async function addToCart(slug) {
+  if (!IS_LOGGED_IN) { window.location.href = '/login?redirect=/buy'; return; }
+
+  const price = getPrice(slug);
+  if (!price) { alert('Price not available for this term.'); return; }
+
+  const btn = document.getElementById('addBtn-' + slug);
+  if (btn) { btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite;"></i>'; btn.disabled = true; }
+
+  const data = await api('/api/cart/add', { product_slug: slug, term: selectedTerm, quantity: 1 });
+  if (data.error) { alert(data.error); if (btn) { btn.innerHTML = '<i class="ti ti-shopping-cart-plus"></i> Add to Cart'; btn.disabled = false; } return; }
+
+  cartData = { items: data.contents.items, subtotal: data.contents.subtotal, gst: data.contents.gst, discount: data.contents.discount, total: data.contents.total, coupon_code: data.contents.coupon_code, item_count: data.item_count };
+  renderCart();
+  renderCards();
+}
+
+async function removeFromCart(slug, term) {
+  const data = await api('/api/cart/remove', { product_slug: slug, term: term });
+  if (data.contents) {
+    cartData = { items: data.contents.items, subtotal: data.contents.subtotal, gst: data.contents.gst, discount: data.contents.discount, total: data.contents.total, coupon_code: data.contents.coupon_code, item_count: data.item_count };
+  }
+  renderCart();
+  renderCards();
+}
+
+async function updateQty(slug, term, qty) {
+  if (qty <= 0) { removeFromCart(slug, term); return; }
+  const data = await api('/api/cart/update', { product_slug: slug, term: term, quantity: qty });
+  if (data.contents) {
+    cartData = { items: data.contents.items, subtotal: data.contents.subtotal, gst: data.contents.gst, discount: data.contents.discount, total: data.contents.total, coupon_code: data.contents.coupon_code, item_count: data.item_count };
+  }
+  renderCart();
+}
+
+async function applyCoupon() {
+  const code = document.getElementById('couponCode').value.trim();
+  if (!code) return;
+
+  const data = await api('/api/cart/coupon/apply', { code: code });
+  if (data.error) { alert(data.error); return; }
+
+  cartData.coupon_code = data.coupon_code;
+  cartData.subtotal = data.contents.subtotal;
+  cartData.gst = data.contents.gst;
+  cartData.discount = data.contents.discount;
+  cartData.total = data.contents.total;
+  renderCart();
+}
+
+async function removeCoupon() {
+  const data = await api('/api/cart/coupon/remove', {});
+  if (data.contents) {
+    cartData.coupon_code = null;
+    cartData.subtotal = data.contents.subtotal;
+    cartData.gst = data.contents.gst;
+    cartData.discount = data.contents.discount;
+    cartData.total = data.contents.total;
+  }
+  renderCart();
+}
+
+async function loadCart() {
+  if (!IS_LOGGED_IN) return;
+  try {
+    const res = await fetch('/api/cart');
+    const data = await res.json();
+    cartData = data;
+    renderCart();
+  } catch(e) { console.error('Cart load failed', e); }
+}
+
+function renderCart() {
+  const items = cartData?.items || [];
+  const count = cartData?.item_count || 0;
+  const hasItems = items.length > 0;
+
+  document.getElementById('cartEmpty').style.display = hasItems ? 'none' : 'block';
+  document.getElementById('cartItems').style.display = hasItems ? 'block' : 'none';
+  document.getElementById('couponSection').style.display = hasItems ? 'block' : 'none';
+  document.getElementById('orderSummary').style.display = hasItems ? 'block' : 'none';
+  document.getElementById('checkoutBtn').disabled = !hasItems;
+  document.getElementById('cartSubtitle').textContent = hasItems ? count + ' item' + (count !== 1 ? 's' : '') + ' in cart' : 'Add products to get started';
+
+  const countBadge = document.getElementById('cartCount');
+  if (count > 0) { countBadge.style.display = 'inline'; countBadge.textContent = count; }
+  else { countBadge.style.display = 'none'; }
+
+  let html = '';
+  items.forEach(item => {
+    html += `<div class="cart-item">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.product_name}</div>
+        <div class="cart-item-term">${item.term_label}</div>
+        <div class="cart-item-price">${fmt(item.unit_price * item.quantity)}</div>
+        <div class="cart-item-qty">
+          <button onclick="updateQty('${item.product_slug}','${item.term}',${item.quantity - 1})">−</button>
+          <span>${item.quantity}</span>
+          <button onclick="updateQty('${item.product_slug}','${item.term}',${item.quantity + 1})">+</button>
+        </div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart('${item.product_slug}','${item.term}')" title="Remove"><i class="ti ti-x"></i></button>
+    </div>`;
+  });
+  document.getElementById('cartItems').innerHTML = html;
+
+  const couponSection = document.getElementById('couponInput');
+  const appliedSection = document.getElementById('couponApplied');
+  if (cartData?.coupon_code) {
+    couponSection.style.display = 'none';
+    appliedSection.style.display = 'flex';
+    appliedSection.innerHTML = `<span><i class="ti ti-ticket"></i> ${cartData.coupon_code}</span><button onclick="removeCoupon()" title="Remove coupon"><i class="ti ti-x"></i></button>`;
+  } else {
+    couponSection.style.display = 'flex';
+    appliedSection.style.display = 'none';
   }
 
-  const isSub = billingMode === 'monthly';
+  document.getElementById('cartSubtotal').textContent = fmt(cartData?.subtotal || 0);
+  document.getElementById('cartGst').textContent = fmt(cartData?.gst || 0);
 
-  document.getElementById('orderEmpty').style.display = 'none';
-  document.getElementById('orderItem').classList.add('visible');
-  document.getElementById('checkoutBtn').disabled = false;
-  document.getElementById('orderProductName').textContent = PRICING[selectedProduct].name;
-  document.getElementById('orderTermLabel').textContent = TERM_LABELS[selectedTerm] + (isSub ? ' subscription (recurring)' : ' one-time');
-  document.getElementById('orderPerMo').textContent = fmt(perUnit) + perUnitLabel;
-  document.getElementById('orderSubtotal').textContent = fmt(price);
-  document.getElementById('orderGst').textContent = currency === 'INR' ? fmt(gst) : '—';
-  document.getElementById('orderTotal').textContent = fmt(total);
-
-  const btn = document.getElementById('checkoutBtn');
-  if (isSub) {
-    btn.innerHTML = '<i class="ti ti-refresh"></i> Subscribe now';
+  const discountRow = document.getElementById('cartDiscountRow');
+  if ((cartData?.discount || 0) > 0) {
+    discountRow.style.display = 'flex';
+    document.getElementById('cartDiscount').textContent = '−' + fmt(cartData.discount);
   } else {
-    btn.innerHTML = '<i class="ti ti-lock"></i> Proceed to checkout';
+    discountRow.style.display = 'none';
+  }
+
+  document.getElementById('cartTotal').textContent = fmt(cartData?.total || 0);
+
+  updateNavCartBadge(count);
+}
+
+function updateNavCartBadge(count) {
+  let badge = document.getElementById('navCartBadge');
+  if (count > 0) {
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.id = 'navCartBadge';
+      badge.style.cssText = 'background:var(--cyan);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;';
+      const cartLink = document.querySelector('a[href="/buy"]');
+      if (cartLink) cartLink.appendChild(badge);
+    }
+    badge.textContent = count;
+  } else if (badge) {
+    badge.remove();
   }
 }
 
 async function handleCheckout() {
-  if (!selectedProduct) { alert('Please select a product first.'); return; }
-  const price = getPrice(selectedProduct);
-  if (!price) { alert('Price not available.'); return; }
+  const items = cartData?.items || [];
+  if (!items.length) { alert('Your cart is empty.'); return; }
 
-  if (!IS_LOGGED_IN) {
-    window.location.href = '/login?redirect=/buy';
-    return;
-  }
+  if (!IS_LOGGED_IN) { window.location.href = '/login?redirect=/buy'; return; }
 
   const btn = document.getElementById('checkoutBtn');
   btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite;"></i> Processing…';
   btn.disabled = true;
 
-  if (billingMode === 'monthly') {
-    await handleSubscriptionCheckout(price);
+  if (billingMode === 'monthly' && items.length === 1) {
+    await handleSubscriptionCheckout(items[0]);
   } else {
-    await handleOneTimeCheckout(price);
+    await handleCartCheckout();
   }
 }
 
-async function handleOneTimeCheckout(price) {
-  const gst = currency === 'INR' ? Math.round(price * GST_RATE) : 0;
-  const totalAmount = price + gst;
-  const amountForRazorpay = toPaise(totalAmount);
+async function handleSubscriptionCheckout(item) {
+  const totalAmount = cartData?.total || item.line_total;
 
   try {
-    const res = await fetch('/api/razorpay/create-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
-      body: JSON.stringify({ product_slug: selectedProduct, term: selectedTerm, amount: amountForRazorpay, currency: currency })
+    const data = await api('/api/razorpay/create-plan', {
+      product_slug: item.product_slug,
+      term: item.term,
+      amount: totalAmount,
+      currency: currency
     });
-    const order = await res.json();
-    if (order.error) { alert('Error: ' + order.error); resetBtn(); return; }
+    if (data.error) { alert('Error: ' + data.error); resetBtn(); return; }
 
-    pendingOrderId = order.db_order_id;
+    pendingSubscriptionId = data.subscription_id;
 
     const rzp = new Razorpay({
       key: RZP_KEY,
-      amount: order.amount,
-      currency: order.currency,
+      subscription_id: data.subscription_id,
       name: 'AutoTerra',
-      description: PRICING[selectedProduct].name + ' — ' + TERM_LABELS[selectedTerm],
-      order_id: order.id,
+      description: item.product_name + ' — ' + item.term_label + ' subscription',
+      handler: async function(response) {
+        pendingSubscriptionId = null;
+        const vData = await api('/api/razorpay/verify-subscription', {
+          razorpay_subscription_id: response.razorpay_subscription_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature
+        });
+        if (vData.success) {
+          await api('/api/cart/remove', { product_slug: item.product_slug, term: item.term });
+          window.location.href = '/dashboard?success=subscription';
+        } else {
+          alert('Subscription verification failed.'); resetBtn();
+        }
+      },
+      modal: { ondismiss: () => { resetBtn(); } },
+      prefill: { name: '{{ Auth::user()->name ?? "" }}', email: '{{ Auth::user()->email ?? "" }}' },
+      theme: { color: '#00A8F8' }
+    });
+    rzp.open();
+  } catch(e) {
+    alert('Subscription failed. Please try again.'); resetBtn();
+  }
+}
+
+async function handleCartCheckout() {
+  const totalPaise = Math.round((cartData?.total || 0) * 100);
+
+  try {
+    const data = await api('/api/razorpay/create-cart-order', {
+      amount: totalPaise,
+      currency: currency,
+      coupon_code: cartData?.coupon_code || null
+    });
+    if (data.error) { alert('Error: ' + data.error); resetBtn(); return; }
+
+    pendingOrderId = data.db_order_id;
+
+    const rzp = new Razorpay({
+      key: RZP_KEY,
+      amount: data.amount,
+      currency: data.currency,
+      name: 'AutoTerra',
+      description: 'AutoTerra — ' + (cartData?.item_count || 1) + ' product' + ((cartData?.item_count || 1) !== 1 ? 's' : ''),
+      order_id: data.id,
       handler: async function(response) {
         pendingOrderId = null;
-        const vRes = await fetch('/api/razorpay/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
-          body: JSON.stringify({ ...response, db_order_id: order.db_order_id })
+        const vData = await api('/api/razorpay/verify', {
+          ...response,
+          db_order_id: data.db_order_id
         });
-        const vData = await vRes.json();
         if (vData.success) {
           window.location.href = '/dashboard?success=payment';
         } else {
@@ -457,83 +620,18 @@ async function handleOneTimeCheckout(price) {
   }
 }
 
-async function handleSubscriptionCheckout(price) {
-  const gst = currency === 'INR' ? Math.round(price * GST_RATE) : 0;
-  const totalAmount = price + gst;
-
-  try {
-    const res = await fetch('/api/razorpay/create-plan', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
-      body: JSON.stringify({
-        product_slug: selectedProduct,
-        term: selectedTerm,
-        amount: totalAmount,
-        currency: currency
-      })
-    });
-    const data = await res.json();
-    if (data.error) { alert('Error: ' + data.error); resetBtn(); return; }
-
-    pendingSubscriptionId = data.subscription_id;
-
-    const rzp = new Razorpay({
-      key: RZP_KEY,
-      subscription_id: data.subscription_id,
-      name: 'AutoTerra',
-      description: PRICING[selectedProduct].name + ' — ' + TERM_LABELS[selectedTerm] + ' subscription',
-      handler: async function(response) {
-        pendingSubscriptionId = null;
-        const vRes = await fetch('/api/razorpay/verify-subscription', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
-          body: JSON.stringify({
-            razorpay_subscription_id: response.razorpay_subscription_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature
-          })
-        });
-        const vData = await vRes.json();
-        if (vData.success) {
-          window.location.href = '/dashboard?success=subscription';
-        } else {
-          alert('Subscription verification failed.'); resetBtn();
-        }
-      },
-      modal: { ondismiss: () => { resetBtn(); } },
-      prefill: { name: '{{ Auth::user()->name ?? "" }}', email: '{{ Auth::user()->email ?? "" }}' },
-      theme: { color: '#00A8F8' }
-    });
-    rzp.open();
-  } catch(e) {
-    alert('Subscription failed. Please try again.'); resetBtn();
-  }
-}
-
 function resetBtn() {
   if (pendingSubscriptionId) {
-    fetch('/api/razorpay/cancel-pending-subscription', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
-      body: JSON.stringify({ subscription_id: pendingSubscriptionId })
-    }).catch(function() {});
+    api('/api/razorpay/cancel-pending-subscription', { subscription_id: pendingSubscriptionId }).catch(function() {});
     pendingSubscriptionId = null;
   }
   if (pendingOrderId) {
-    fetch('/api/razorpay/cancel-pending-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
-      body: JSON.stringify({ order_id: pendingOrderId })
-    }).catch(function() {});
+    api('/api/razorpay/cancel-pending-order', { order_id: pendingOrderId }).catch(function() {});
     pendingOrderId = null;
   }
   const btn = document.getElementById('checkoutBtn');
-  if (billingMode === 'monthly') {
-    btn.innerHTML = '<i class="ti ti-refresh"></i> Subscribe now';
-  } else {
-    btn.innerHTML = '<i class="ti ti-lock"></i> Proceed to checkout';
-  }
-  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-lock"></i> Proceed to checkout';
+  btn.disabled = !(cartData?.items?.length > 0);
 }
 
 function detectGeo() {
@@ -567,8 +665,6 @@ function detectGeo() {
 }
 
 window.addEventListener('DOMContentLoaded', function() {
-  const p = new URLSearchParams(window.location.search);
-  if (p.get('product')) selectedProduct = p.get('product');
   detectGeo();
 });
 

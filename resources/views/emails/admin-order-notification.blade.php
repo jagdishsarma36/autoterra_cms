@@ -52,19 +52,26 @@
         <table>
           <tr><td>Order ID</td><td>#{{ $order->id }}</td></tr>
           <tr><td>Customer</td><td>{{ $order->user->name }} ({{ $order->user->email }})</td></tr>
-          <tr><td>Product</td><td>{{ $order->product->name }}</td></tr>
-          <tr><td>Term</td><td>{{ termLabel($order->term) }}</td></tr>
+          @if($order->orderItems->count())
+          <tr><td>Items</td><td>{{ $order->orderItems->count() }} product{{ $order->orderItems->count() !== 1 ? 's' : '' }}: {{ $order->orderItems->pluck('product.name')->implode(', ') }}</td></tr>
+          @else
+          <tr><td>Product</td><td>{{ $order->product?->name ?? 'AutoTerra License' }}</td></tr>
+          @endif
+          <tr><td>Term</td><td>{{ $order->orderItems->count() ? $order->orderItems->pluck('term')->unique()->map(fn($t) => termLabel($t))->implode(', ') : termLabel($order->term) }}</td></tr>
           <tr><td>Payment Method</td><td>{{ strtoupper($order->currency) }}</td></tr>
           <tr><td>Status</td><td>{{ ucfirst($order->status) }}</td></tr>
           @if($order->razorpay_payment_id)
           <tr><td>Payment ID</td><td>{{ $order->razorpay_payment_id }}</td></tr>
           @endif
           <tr class="divider"><td colspan="2"><div class="divider"></div></td></tr>
-          <tr><td>Subtotal</td><td>{{ $order->currency === 'INR' ? '₹' . number_format($order->amount, 0) : '$' . number_format($order->amount, 2) }}</td></tr>
+          <tr><td>Subtotal</td><td>{{ $order->currency === 'INR' ? formatINR($order->amount) : formatUSD($order->amount) }}</td></tr>
           @if($order->gst_amount > 0)
-          <tr><td>GST (18%)</td><td>{{ '₹' . number_format($order->gst_amount, 0) }}</td></tr>
+          <tr><td>GST (18%)</td><td>{{ formatINR($order->gst_amount) }}</td></tr>
           @endif
-          <tr class="total-row"><td>Total</td><td>{{ $order->currency === 'INR' ? '₹' . number_format($order->total_amount, 0) : '$' . number_format($order->total_amount, 2) }}</td></tr>
+          <tr class="total-row"><td>Total</td><td>{{ $order->currency === 'INR' ? formatINR($order->total_amount) : formatUSD($order->total_amount) }}</td></tr>
+          @if($order->discount_amount > 0)
+          <tr><td>Discount{{ $order->coupon_code ? ' (' . $order->coupon_code . ')' : '' }}</td><td style="color:#065F46;">−{{ $order->currency === 'INR' ? formatINR($order->discount_amount) : formatUSD($order->discount_amount) }}</td></tr>
+          @endif
         </table>
       </div>
 
