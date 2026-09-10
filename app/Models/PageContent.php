@@ -24,16 +24,20 @@ class PageContent extends Model
         }
         // For richtext/wysiwyg, convert tiptap JSON to HTML for frontend rendering
         if (in_array($this->type, ['richtext', 'wysiwyg'], true) && !empty($this->value)) {
-            $decoded = json_decode($this->value, true);
-            if (is_array($decoded) && isset($decoded['type'])) {
+            $normalized = \App\Models\PageCms::normalizeRichContent($this->value);
+            if ($normalized === null) {
+                return $this->value;
+            }
+            $decoded = json_decode($normalized, true);
+            if (is_array($decoded) && isset($decoded['content'])) {
                 try {
                     $editor = new \Tiptap\Editor([new \Tiptap\Extensions\StarterKit()]);
                     return $editor->setContent($decoded)->getHtml();
                 } catch (\Exception $e) {
-                    return $this->value;
+                    return $normalized;
                 }
             }
-            return $this->value;
+            return $normalized;
         }
         return $this->value;
     }
