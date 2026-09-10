@@ -102,6 +102,44 @@ class PageCms extends Model
         return true;
     }
 
+    /**
+     * Normalize a rich-content value into a valid Tiptap document (JSON string).
+     * Plain HTML/text passes through untouched; fragmented JSON nodes are
+     * wrapped into a proper doc so Filament's RichEditor and the renderer
+     * never choke on legacy or malformed payloads.
+     */
+    public static function normalizeRichContent(?string $value): ?string
+    {
+        if (blank($value)) {
+            return null;
+        }
+
+        $trimmed = trim($value);
+        if (! str_starts_with($trimmed, '{') && ! str_starts_with($trimmed, '[')) {
+            return $value;
+        }
+
+        $decoded = json_decode($trimmed, true);
+        if (! is_array($decoded)) {
+            return $value;
+        }
+
+        if (($decoded['type'] ?? null) === 'doc'
+            && isset($decoded['content'])
+            && is_array($decoded['content'])) {
+            return json_encode($decoded);
+        }
+
+        $content = array_is_list($decoded) ? $decoded : [$decoded];
+        try {
+            return json_encode((new \Tiptap\Editor([new \Tiptap\Extensions\StarterKit()]))
+                ->setContent(['type' => 'doc', 'content' => $content])
+                ->getDocument());
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
     public function getRouteKeyName(): string
     {
        // return 'slug';

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PageCmsResource\Pages;
 
 use App\Filament\Resources\PageCmsResource;
+use App\Models\PageCms;
 use App\Models\PageContent;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
@@ -44,7 +45,9 @@ class EditPage extends EditRecord
                 return [
                     'key' => $block->key,
                     'type' => $type,
-                    'value' => $block->value,
+                    'value' => in_array($type, ['richtext', 'wysiwyg'], true)
+                        ? (PageCms::normalizeRichContent($block->value) ?? '')
+                        : $block->value,
                     'section_class' => $sectionClass,
                     'section_class_custom' => null,
                 ];

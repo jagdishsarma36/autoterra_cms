@@ -167,7 +167,11 @@ class PageCmsResource extends Resource
                                             $existing = PageContent::where('key', $state)->first();
                                             if ($existing && !$get('value')) {
                                                 $set('type', $existing->type);
-                                                $set('value', $existing->value);
+                                                $value = $existing->value;
+                                                if (in_array($existing->type, ['richtext', 'wysiwyg'], true)) {
+                                                    $value = \App\Models\PageCms::normalizeRichContent($value) ?? '';
+                                                }
+                                                $set('value', $value);
                                             }
                                         })
                                         ->columnSpan(5),
