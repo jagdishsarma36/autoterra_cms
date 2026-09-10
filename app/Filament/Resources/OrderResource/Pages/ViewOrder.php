@@ -4,14 +4,16 @@ namespace App\Filament\Resources\OrderResource\Pages;
 
 use App\Filament\Resources\OrderResource;
 use App\Models\LicenseKey;
+use App\Models\Order;
 use App\Models\Setting;
 use Filament\Actions;
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Illuminate\Support\Collection;
 
 class ViewOrder extends ViewRecord
 {
@@ -36,34 +38,66 @@ class ViewOrder extends ViewRecord
         ];
     }
 
+    protected function orderProducts(Order $record): Collection
+    {
+        if ($record->orderItems->isNotEmpty()) {
+            return $record->orderItems
+                ->pluck('product')
+                ->filter()
+                ->unique('id')
+                ->values();
+        }
+
+        return $record->product ? collect([$record->product]) : collect();
+    }
+
     protected function getLicenseKeyAction(): Actions\Action
     {
         $record = $this->record;
-        $license = LicenseKey::where('order_id', $record->id)->first();
+        $products = $this->orderProducts($record);
+        $existing = LicenseKey::where('order_id', $record->id)->get()->keyBy('product_id');
 
         return Actions\Action::make('manageLicenseKey')
-            ->label($license ? 'Edit License Key' : 'Add License Key')
-            ->icon($license ? 'heroicon-o-key' : 'heroicon-o-plus-circle')
-            ->color($license ? 'warning' : 'success')
-            ->modalHeading($license ? 'Edit License Key' : 'Add License Key')
-            ->modalSubmitActionLabel($license ? 'Update' : 'Save')
+            ->label('License Keys')
+            ->icon('heroicon-o-key')
+            ->color('warning')
+            ->modalHeading('Manage License Keys')
+            ->modalSubmitActionLabel('Save License Keys')
             ->form([
-                Section::make('License Key Details')
+                Repeater::make('licenses')
+                    ->label('License Keys')
                     ->schema([
-                        Grid::make(2)->schema([
-                            TextInput::make('license_key')
-                                ->label('License Key')
-                                ->required()
-                                ->maxLength(255)
-                                ->default($license?->license_key),
-                            DatePicker::make('expires_at')
-                                ->label('Expiry Date')
-                                ->required()
-                                ->default($license?->expires_at),
-                        ]),
-                    ]),
+                        Hidden::make('product_id'),
+                        TextInput::make('product_name')
+                            ->label('Product')
+                            ->disabled()
+                            ->dehydrated(false),
+                        TextInput::make('license_key')
+                            ->label('License Key')
+                            ->required()
+                            ->maxLength(255),
+                        DatePicker::make('expires_at')
+                            ->label('Expiry Date')
+                            ->required(),
+                        TextInput::make('max_activations')
+                            ->label('Max Activations')
+                            ->numeric()
+                            ->default(1)
+                            ->minValue(1),
+                    ])
+                    ->columns(2)
+                    ->addable(false)
+                    ->reorderable(false)
+                    ->deletable(true)
+                    ->default(fn () => $products->map(fn ($product) => [
+                        'product_id' => $product->id,
+                        'product_name' => $product->name,
+                        'license_key' => $existing->get($product->id)?->license_key ?? '',
+                        'expires_at' => $existing->get($product->id)?->expires_at?->format('Y-m-d'),
+                        'max_activations' => (string) ($existing->get($product->id)?->max_activations ?? 1),
+                    ])->all()),
             ])
-            ->action(function (array $data) use ($record, $license): void {
+            ->action(function (array $data) use ($record): void {
                 if (Setting::get('license_key_mode', 'auto') !== 'manual') {
                     Notification::make()
                         ->title('License key generation is set to automatic')
@@ -72,30 +106,47 @@ class ViewOrder extends ViewRecord
                     return;
                 }
 
-                if ($license) {
-                    $license->update([
-                        'license_key' => $data['license_key'],
-                        'expires_at' => $data['expires_at'],
-                    ]);
-                } else {
-                    LicenseKey::create([
-                        'user_id' => $record->user_id,
-                        'product_id' => $record->product_id,
-                        'order_id' => $record->id,
-                        'license_key' => $data['license_key'],
-                        'activated_at' => now(),
-                        'expires_at' => $data['expires_at'],
-                        'is_active' => true,
-                        'max_activations' => 1,
-                    ]);
+                $rows = $data['licenses'] ?? [];
+                $updated = 0;
+                $created = 0;
+
+                foreach ($rows as $row) {
+                    $productId = (int) ($row['product_id'] ?? 0);
+                    if (! $productId) {
+                        continue;
+                    }
+
+                    $license = LicenseKey::where('order_id', $record->id)
+                        ->where('product_id', $productId)
+                        ->first();
+
+                    if ($license) {
+                        $license->update([
+                            'license_key' => $row['license_key'],
+                            'expires_at' => $row['expires_at'],
+                            'max_activations' => (int) ($row['max_activations'] ?? 1),
+                        ]);
+                        $updated++;
+                    } else {
+                        LicenseKey::create([
+                            'user_id' => $record->user_id,
+                            'product_id' => $productId,
+                            'order_id' => $record->id,
+                            'license_key' => $row['license_key'],
+                            'activated_at' => now(),
+                            'expires_at' => $row['expires_at'],
+                            'is_active' => true,
+                            'max_activations' => (int) ($row['max_activations'] ?? 1),
+                        ]);
+                        $created++;
+                    }
                 }
 
                 Notification::make()
-                    ->title('License key saved')
+                    ->title("{$created} license key" . ($created === 1 ? '' : 's') . ' created, ' .
+                        "{$updated} updated")
                     ->success()
                     ->send();
-
-                $this->refreshFormData(['licenseKeys']);
             });
     }
 }

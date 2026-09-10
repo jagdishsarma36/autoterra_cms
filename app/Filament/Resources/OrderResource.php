@@ -41,7 +41,19 @@ class OrderResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('user.name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('product.name')->sortable(),
+                Tables\Columns\TextColumn::make('products')
+                    ->label('Products')
+                    ->state(fn (Order $record): string =>
+                        $record->orderItems->isNotEmpty()
+                            ? $record->orderItems
+                                ->filter(fn ($item) => (bool) $item->product)
+                                ->map(fn ($item) => $item->product->name . ($item->quantity > 1 ? ' ×' . $item->quantity : ''))
+                                ->unique()
+                                ->implode(', ')
+                            : ($record->product?->name ?? '—')
+                    )
+                    ->wrap()
+                    ->placeholder('—'),
                 Tables\Columns\TextColumn::make('term')->label('Term'),
                 Tables\Columns\TextColumn::make('currency'),
                 Tables\Columns\TextColumn::make('total_amount')
@@ -64,6 +76,7 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')->dateTime('M j, Y'),
             ])
             ->defaultSort('id', 'desc')
+            ->modifyQueryUsing(fn ($query) => $query->with(['product', 'orderItems.product']))
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options(['pending' => 'Pending', 'paid' => 'Paid', 'failed' => 'Failed', 'refunded' => 'Refunded']),
@@ -143,7 +156,10 @@ class OrderResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            \App\Filament\Resources\OrderResource\RelationManagers\OrderItemsRelationManager::class,
+            \App\Filament\Resources\OrderResource\RelationManagers\LicenseKeysRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
