@@ -113,13 +113,32 @@ class SiteSettings extends Page implements HasForms
                                     ->maxLength(255)
                                     ->placeholder('/products')
                                     ->columnSpan(1),
+                                Forms\Components\Repeater::make('children')
+                                    ->label('Sub Menu Items')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('label')
+                                            ->label('Label')
+                                            ->required()
+                                            ->maxLength(100),
+                                        Forms\Components\TextInput::make('url')
+                                            ->label('URL')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->placeholder('/pricing'),
+                                    ])
+                                    ->columns(2)
+                                    ->defaultItems(0)
+                                    ->collapsible()
+                                    ->collapsed()
+                                    ->addActionLabel('Add sub menu item')
+                                    ->columnSpanFull(),
                             ])
                             ->columns(2)
                             ->defaultItems(5)
                             ->addActionLabel('Add link')
                             ->reorderable()
                             ->columnSpanFull()
-                            ->helperText('Dashboard link is added automatically when the user is logged in.'),
+                            ->helperText('Dashboard link is added automatically when the user is logged in. Add children on a link to create a drop-down sub menu.'),
                         \Filament\Schemas\Components\Grid::make(3)->schema([
                             Forms\Components\TextInput::make('header_login_text')
                                 ->label('Login Button Text')

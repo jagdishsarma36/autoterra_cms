@@ -16,7 +16,6 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Group;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -58,6 +57,18 @@ class PageCmsResource extends Resource
                 Tables\Columns\TextColumn::make('title')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\IconColumn::make('is_published')->boolean(),
+                Tables\Columns\TextColumn::make('visibility')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'logged_in' => 'info',
+                        'specific_users' => 'warning',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'logged_in' => 'Logged in',
+                        'specific_users' => 'Specific users',
+                        default => 'Public',
+                    }),
                 Tables\Columns\TextColumn::make('published_at')->dateTime('M j, Y')->sortable(),
                 Tables\Columns\TextColumn::make('sort_order')->sortable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('M j, Y'),
@@ -65,6 +76,12 @@ class PageCmsResource extends Resource
             ->defaultSort('sort_order')
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_published'),
+                Tables\Filters\SelectFilter::make('visibility')
+                    ->options([
+                        'public' => 'Public',
+                        'logged_in' => 'Logged-in users only',
+                        'specific_users' => 'Specific users only',
+                    ]),
             ])
             ->actions([
                 \Filament\Actions\EditAction::make(),
@@ -110,6 +127,29 @@ class PageCmsResource extends Resource
                         Textarea::make('excerpt')->rows(3)->columnSpanFull(),
                     ]),
 
+                Section::make('Visibility')
+                    ->description('Control who can view this page on the public site. Admin preview is always available.')
+                    ->schema([
+                        Select::make('visibility')
+                            ->label('Visibility')
+                            ->options([
+                                'public' => 'Public',
+                                'logged_in' => 'Logged-in users only',
+                                'specific_users' => 'Specific users only',
+                            ])
+                            ->default('public')
+                            ->required()
+                            ->live(),
+                        Select::make('visible_user_ids')
+                            ->label('Visible to these users')
+                            ->multiple()
+                            ->searchable()
+                            ->options(fn () => \App\Models\User::orderBy('email')->pluck('email', 'id'))
+                            ->visible(fn ($get) => $get('visibility') === 'specific_users')
+                            ->columnSpanFull()
+                            ->helperText('Only these logged-in users will be able to view the page.'),
+                    ]),
+
                 Section::make('Content Blocks')
                     ->description('Type any key that exists on other pages (e.g. hero.heading, hero.button_primary_text) — it will auto-fill from the existing value. Or create new blocks manually.')
                     ->schema([
@@ -136,6 +176,7 @@ class PageCmsResource extends Resource
                                             'text' => 'Text',
                                             'html_inline' => 'HTML (inline)',
                                             'richtext' => 'Rich Text',
+                                            'wysiwyg' => 'WYSIWYG Editor',
                                             'json' => 'JSON',
                                             'html' => 'HTML Block',
                                             'html_section' => 'HTML Block + Section',
@@ -180,11 +221,10 @@ class PageCmsResource extends Resource
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => $get('type') === 'richtext')
                                     ->helperText('Use HTML tags: h2, h3, p, strong, em, ul, li, a, blockquote'),
-                                /*RichEditor::make('value')
-                                    ->label('Rich Text Content')
+                                RichEditor::make('value')
+                                    ->label('WYSIWYG Content')
                                     ->columnSpanFull()
                                     ->toolbarButtons([
-                                        'attachFiles',
                                         'blockquote',
                                         'bold',
                                         'bulletList',
@@ -199,7 +239,8 @@ class PageCmsResource extends Resource
                                         'underline',
                                         'undo',
                                     ])
-                                    ->visible(fn ($get) => $get('type') === 'richtext'),*/
+                                    ->visible(fn ($get) => $get('type') === 'wysiwyg')
+                                    ->helperText('WYSIWYG editor — saved as Tiptap JSON, rendered as HTML.'),
                                 Textarea::make('value')
                                     ->label('JSON Value')
                                     ->rows(8)
@@ -218,25 +259,7 @@ class PageCmsResource extends Resource
                                     ->columnSpanFull()
                                     ->visible(fn ($get) => str_starts_with((string) $get('type'), 'html_section'))
                                     ->helperText('Paste raw HTML. Wraps in a <section> tag with the class you choose below.'),
-                                /*Group::make()
-                                        ->schema(function (Get $get): array {
-                                            return match ($get('type')) {
 
-                                                'richtext' => [
-                                                    RichEditor::make('value')
-                                                        ->label('Rich Text Content')
-                                                        ->columnSpanFull(),
-                                                ],
-
-                                                default => [
-                                                    Textarea::make('value')
-                                                        ->label('Content')
-                                                        ->rows(8)
-                                                        ->columnSpanFull(),
-                                                ],
-                                            };
-                                        }),*/
-                                
                                 Select::make('section_class')
                                     ->label('Section Class')
                                     ->options([

@@ -13,12 +13,14 @@ class PageCms extends Model
     protected $fillable = [
         'title', 'slug', 'content', 'excerpt', 'meta_title',
         'meta_description', 'featured_image', 'is_published',
-        'published_at', 'sort_order',
+        'published_at', 'sort_order', 'visibility', 'visible_user_ids',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
         'published_at' => 'datetime',
+        'visibility' => 'string',
+        'visible_user_ids' => 'array',
     ];
 
     protected static function booted(): void
@@ -76,6 +78,28 @@ class PageCms extends Model
     {
         return $query->where('is_published', true)
             ->where('published_at', '<=', now());
+    }
+
+    public function isVisibleTo(?User $user): bool
+    {
+        if ($this->visibility === 'public' || empty($this->visibility)) {
+            return true;
+        }
+
+        if (! $user) {
+            return false;
+        }
+
+        if ($this->visibility === 'logged_in') {
+            return true;
+        }
+
+        if ($this->visibility === 'specific_users') {
+            $ids = $this->visible_user_ids ?? [];
+            return in_array($user->id, $ids, true);
+        }
+
+        return true;
     }
 
     public function getRouteKeyName(): string

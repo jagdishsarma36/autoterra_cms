@@ -26,10 +26,31 @@
   </div>--}}
   <div class="nav-links">
     @foreach($navLinks as $link)
-    <a href="{{ $link['url'] }}"
-       class="{{ request()->path() == trim($link['url'], '/') ? 'active' : '' }}">
+      @php
+        $children = collect($link['children'] ?? [])->filter(fn ($c) => filled($c['label'] ?? null) && filled($c['url'] ?? null))->values();
+        $isActive = request()->path() == trim($link['url'], '/');
+      @endphp
+      @if($children->isNotEmpty())
+      <div class="nav-item has-sub">
+        <a href="{{ $link['url'] }}" class="{{ $isActive ? 'active' : '' }}">
+          {{ $link['label'] }} <i class="ti ti-chevron-down nav-caret"></i>
+        </a>
+        <ul class="nav-dropdown">
+          @foreach($children as $child)
+          <li>
+            <a href="{{ $child['url'] }}" class="{{ request()->path() == trim($child['url'], '/') ? 'active' : '' }}">
+              {{ $child['label'] }}
+            </a>
+          </li>
+          @endforeach
+        </ul>
+      </div>
+      @else
+      <a href="{{ $link['url'] }}"
+         class="{{ $isActive ? 'active' : '' }}">
         {{ $link['label'] }}
-    </a>
+      </a>
+      @endif
     @endforeach
 
     @if($isLoggedIn)

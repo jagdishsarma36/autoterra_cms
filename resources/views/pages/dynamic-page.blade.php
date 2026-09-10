@@ -240,7 +240,7 @@
     @php $rType = $blockTypes[$rKey] ?? 'text'; @endphp
     @if($rType === 'html')
       {!! $rValue !!}
-    @elseif($rType === 'html_inline' || $rType === 'richtext')
+    @elseif($rType === 'html_inline' || $rType === 'richtext' || $rType === 'wysiwyg')
       @php 
         $slug=str_replace("/","-",request()->route('slug')); 
         $key=str_replace(".","-",$rKey);
