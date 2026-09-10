@@ -129,13 +129,13 @@ class ProductResource extends Resource
                                     ->required()
                                     ->native(false),
                                 TextInput::make('price_inr')
-                                    ->label('Price INR (paise)')
+                                    ->label('Price INR (₹ per term)')
                                     ->numeric()
-                                    ->helperText('e.g. 600000 = ₹6,000'),
+                                    ->helperText('e.g. 4000 = ₹4,000'),
                                 TextInput::make('price_usd')
-                                    ->label('Price USD (cents)')
+                                    ->label('Price USD ($ per term)')
                                     ->numeric()
-                                    ->helperText('e.g. 8800 = $88'),
+                                    ->helperText('e.g. 59 = $59'),
                                 Toggle::make('is_active')
                                     ->default(true),
                             ]),

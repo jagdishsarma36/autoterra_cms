@@ -28,6 +28,17 @@ class CartController extends Controller
         ]);
     }
 
+    public function showCartPage()
+    {
+        $contents = $this->cart->getContents('INR');
+
+        return view('pages.cart', [
+            'contents' => $contents,
+            'item_count' => $this->cart->getItemCount(),
+            'coupon_code' => $contents['coupon_code'],
+        ]);
+    }
+
     public function add(Request $request): JsonResponse
     {
         $request->validate([

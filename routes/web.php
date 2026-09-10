@@ -68,6 +68,9 @@ Route::middleware('auth')->prefix('api/cart')->group(function () {
     Route::post('/coupon/remove', [CartController::class, 'removeCoupon'])->name('cart.coupon.remove');
 });
 
+// Cart page (authenticated)
+Route::middleware('auth')->get('/cart', [CartController::class, 'showCartPage'])->name('cart.page');
+
 // Dashboard (authenticated)
 Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
