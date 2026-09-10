@@ -208,6 +208,16 @@ img { max-width: 100%; display: block; }
   transition: color 0.15s;
 }
 .nav-login:hover { color: var(--cyan); }
+.nav-cart {
+  color: rgba(210,230,248,0.55); font-size: 16px; position: relative;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.15s;
+}
+.nav-cart:hover { color: var(--cyan); }
+.nav-cart-badge {
+  background: var(--cyan); color: #fff; font-size: 10px; font-weight: 700;
+  padding: 1px 6px; border-radius: 10px; line-height: 1.4;
+}
 .nav-demo {
   background: var(--cyan); color: #fff; border: none;
   border-radius: 6px; padding: 9px 20px; font-size: 13px; font-weight: 700;

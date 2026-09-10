@@ -420,12 +420,15 @@ window.addEventListener('DOMContentLoaded', function() {
   detectGeo();
 });
 
-document.getElementById('menuToggle').addEventListener('click', function() {
-  const links = document.querySelector('.nav-links');
-  if (!links.style.display || links.style.display === 'none') {
-    links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:var(--navy);padding:16px 24px;gap:14px;border-bottom:1px solid rgba(0,168,248,0.12);z-index:99;';
-  } else { links.style.display = 'none'; }
-});
+const menuToggle = document.getElementById('menuToggle');
+if (menuToggle) {
+  menuToggle.addEventListener('click', function() {
+    const links = document.querySelector('.nav-links');
+    if (!links.style.display || links.style.display === 'none') {
+      links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:var(--navy);padding:16px 24px;gap:14px;border-bottom:1px solid rgba(0,168,248,0.12);z-index:99;';
+    } else { links.style.display = 'none'; }
+  });
+}
 </script>
 @include('partials.cart-js')
 @endsection

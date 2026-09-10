@@ -45,6 +45,13 @@
     @else
       <a href="{{ route('login') }}" class="nav-login"><i class="ti ti-user" style="font-size:15px;"></i> {{ $loginText }}</a>
     @endif
+    @if($isLoggedIn)
+      @php $navCartCount = app(\App\Services\CartService::class)->getItemCount(); @endphp
+      <a href="{{ route('cart.page') }}" class="nav-cart" title="Shopping cart" aria-label="Shopping cart">
+        <i class="ti ti-shopping-cart"></i>
+        <span class="nav-cart-badge" id="navCartBadge" style="{{ $navCartCount > 0 ? '' : 'display:none;' }}">{{ $navCartCount }}</span>
+      </a>
+    @endif
     <a href="{{ $ctaUrl }}" class="btn-cyan" style="padding:10px 22px;font-size:13px;font-weight:700;border-radius:7px;">{{ $ctaText }}</a>
     <button class="hamburger" aria-label="Open menu">
       <i class="ti ti-menu-2"></i>
