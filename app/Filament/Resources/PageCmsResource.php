@@ -150,7 +150,18 @@ class PageCmsResource extends Resource
                             ->helperText('Only these logged-in users will be able to view the page.'),
                     ]),
 
+                Section::make('SEO')
+                    ->schema([
+                        TextInput::make('meta_title')
+                            ->label('Meta Title')
+                            ->maxLength(255),
+                        Textarea::make('meta_description')
+                            ->label('Meta Description')
+                            ->rows(2),
+                    ]),
+
                 Section::make('Content Blocks')
+                    ->columnSpanFull()
                     ->description('Type any key that exists on other pages (e.g. hero.heading, hero.button_primary_text) — it will auto-fill from the existing value. Or create new blocks manually.')
                     ->schema([
                         Repeater::make('content_blocks')
@@ -286,16 +297,6 @@ class PageCmsResource extends Resource
                             ->addActionLabel('Add block')
                             ->defaultItems(0)
                             ->reorderable(),
-                    ]),
-
-                Section::make('SEO')
-                    ->schema([
-                        TextInput::make('meta_title')
-                            ->label('Meta Title')
-                            ->maxLength(255),
-                        Textarea::make('meta_description')
-                            ->label('Meta Description')
-                            ->rows(2),
                     ]),
             ]);
     }
