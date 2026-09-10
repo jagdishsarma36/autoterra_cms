@@ -27,7 +27,7 @@ class LicenseWebhookController extends Controller
             'razorpay_order_id' => 'nullable|string',
             'order_id' => 'nullable|integer',
             'license_keys' => 'required|array|min:1',
-            'license_keys.*.product_slug' => 'required|string',
+            'license_keys.*.sku' => 'required|string',
             'license_keys.*.license_key' => 'required|string',
             'license_keys.*.expires_at' => 'nullable|date_format:Y-m-d',
             'license_keys.*.max_activations' => 'nullable|integer|min:1',
@@ -55,7 +55,8 @@ class LicenseWebhookController extends Controller
         $isMultiItem = $orderItems->isNotEmpty();
 
         foreach ($request->license_keys as $keyData) {
-            $product = Product::where('slug', $keyData['product_slug'])->first();
+            $sku = strtoupper(trim($keyData['sku']));
+            $product = Product::where('sku', $sku)->first();
             if (!$product) {
                 continue;
             }
@@ -68,7 +69,7 @@ class LicenseWebhookController extends Controller
 
             if ($existing) {
                 $created[] = [
-                    'product_slug' => $keyData['product_slug'],
+                    'sku' => $sku,
                     'license_key_id' => $existing->id,
                     'status' => 'already_exists',
                 ];
@@ -98,7 +99,7 @@ class LicenseWebhookController extends Controller
             ]);
 
             $created[] = [
-                'product_slug' => $keyData['product_slug'],
+                'sku' => $sku,
                 'license_key_id' => $license->id,
                 'status' => 'created',
             ];

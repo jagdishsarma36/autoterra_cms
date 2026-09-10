@@ -93,20 +93,36 @@ class OrderResource extends Resource
                             ->options(['INR' => 'INR', 'USD' => 'USD'])
                             ->required(),
                         \Filament\Forms\Components\TextInput::make('amount')
-                            ->label('Amount (paise)')
+                            ->label('Amount')
+                            ->prefix(fn (\Filament\Forms\Components\TextInput $component) => ($component->getRecord()?->currency ?? 'INR') === 'INR' ? '₹' : chr(36))
+                            ->formatStateUsing(fn (string $state): float => round((float) $state / 100, 2))
+                            ->dehydrateStateUsing(fn (string $state): int => (int) round((float) $state * 100))
                             ->numeric()
-                            ->required(),
+                            ->required()
+                            ->helperText('Enter amount in rupees. Stored as paise (multiply by 100).'),
                         \Filament\Forms\Components\TextInput::make('gst_amount')
-                            ->label('GST (paise)')
-                            ->numeric(),
+                            ->label('GST')
+                            ->prefix(fn (\Filament\Forms\Components\TextInput $component) => ($component->getRecord()?->currency ?? 'INR') === 'INR' ? '₹' : chr(36))
+                            ->formatStateUsing(fn (string $state): float => round((float) $state / 100, 2))
+                            ->dehydrateStateUsing(fn (string $state): int => (int) round((float) $state * 100))
+                            ->numeric()
+                            ->helperText('Enter GST in rupees. Stored as paise (multiply by 100).'),
                         \Filament\Forms\Components\TextInput::make('total_amount')
-                            ->label('Total (paise)')
+                            ->label('Total')
+                            ->prefix(fn (\Filament\Forms\Components\TextInput $component) => ($component->getRecord()?->currency ?? 'INR') === 'INR' ? '₹' : chr(36))
+                            ->formatStateUsing(fn (string $state): float => round((float) $state / 100, 2))
+                            ->dehydrateStateUsing(fn (string $state): int => (int) round((float) $state * 100))
                             ->numeric()
-                            ->required(),
+                            ->required()
+                            ->helperText('Enter total in rupees. Stored as paise (multiply by 100).'),
                         \Filament\Forms\Components\TextInput::make('discount_amount')
-                            ->label('Discount (paise)')
+                            ->label('Discount')
+                            ->prefix(fn (\Filament\Forms\Components\TextInput $component) => ($component->getRecord()?->currency ?? 'INR') === 'INR' ? '₹' : chr(36))
+                            ->formatStateUsing(fn (string $state): float => round((float) $state / 100, 2))
+                            ->dehydrateStateUsing(fn (string $state): int => (int) round((float) $state * 100))
                             ->numeric()
-                            ->default(0),
+                            ->default(0)
+                            ->helperText('Enter discount in rupees. Stored as paise (multiply by 100).'),
                         \Filament\Forms\Components\TextInput::make('coupon_code')
                             ->label('Coupon Code')
                             ->nullable(),

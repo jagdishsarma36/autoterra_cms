@@ -12,7 +12,7 @@ Request Format
     "order_id": 123,
     "license_keys": [
         {
-            "product_slug": "atx-classic",
+            "sku": "PRO_SPATIAL",
             "license_key": "AT-XXXX-XXXX-XXXX",
             "expires_at": "2027-09-10",
             "max_activations": 1
@@ -23,7 +23,7 @@ Request Format
 Fields:
 - razorpay_order_id OR order_id (at least one required to match the order)
 - license_keys: array of license key objects
-  - product_slug (required) — the product slug the license belongs to
+  - sku (required) — the product SKU the license belongs to (case-insensitive, e.g. PRO_SPATIAL)
   - license_key (required)
   - expires_at (optional, Y-m-d format; defaults to order term length)
   - max_activations (optional, defaults to 1)
