@@ -188,6 +188,9 @@
           <button class="btn-buy" id="checkoutBtn" disabled onclick="handleCheckout()">
             <i class="ti ti-lock"></i> Proceed to checkout
           </button>
+          <a href="/cart" class="btn-buy-ghost">
+            <i class="ti ti-shopping-cart"></i> Go to cart
+          </a>
           <a href="/quote" class="btn-buy-ghost">
             <i class="ti ti-file-text"></i> Need a formal quote instead?
           </a>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Casts\AsProductIds;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -19,7 +20,7 @@ class Coupon extends Model
             'min_order_amount' => 'integer',
             'max_uses' => 'integer',
             'used_count' => 'integer',
-            'product_ids' => 'array',
+            'product_ids' => AsProductIds::class,
             'is_active' => 'boolean',
             'starts_at' => 'datetime',
             'expires_at' => 'datetime',
@@ -61,7 +62,7 @@ class Coupon extends Model
             }
         }
 
-        if ($this->product_ids !== null && count($this->product_ids) > 0) {
+        if (!empty($this->product_ids)) {
             $applicableProducts = Product::whereIn('id', $this->product_ids)->pluck('slug')->toArray();
             $overlapping = array_intersect($productSlugs, $applicableProducts);
             if (empty($overlapping)) {
