@@ -12,7 +12,7 @@ class Order extends Model
     protected $fillable = [
         'user_id', 'product_id', 'term', 'currency', 'amount',
         'gst_amount', 'total_amount', 'razorpay_order_id', 'razorpay_payment_id',
-        'status', 'billing_mode',
+        'status', 'billing_mode', 'coupon_code', 'discount_amount',
     ];
 
     protected function casts(): array
@@ -21,6 +21,7 @@ class Order extends Model
             'amount' => 'integer',
             'gst_amount' => 'integer',
             'total_amount' => 'integer',
+            'discount_amount' => 'integer',
         ];
     }
 
@@ -67,5 +68,15 @@ class Order extends Model
     public function licenseKeys()
     {
         return $this->hasMany(LicenseKey::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function orderCoupon()
+    {
+        return $this->hasOne(OrderCoupon::class);
     }
 }

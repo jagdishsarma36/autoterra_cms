@@ -1,0 +1,46 @@
+License Webhook Endpoint
+========================
+
+Endpoint: POST /webhook/license
+Authentication: X-License-Secret header
+CSRF: Exempt
+
+Request Format
+--------------
+{
+    "razorpay_order_id": "order_xxx",
+    "order_id": 123,
+    "license_keys": [
+        {
+            "product_slug": "atx-classic",
+            "license_key": "AT-XXXX-XXXX-XXXX",
+            "expires_at": "2027-09-10",
+            "max_activations": 1
+        }
+    ]
+}
+
+Fields:
+- razorpay_order_id OR order_id (at least one required to match the order)
+- license_keys: array of license key objects
+  - product_slug (required) — the product slug the license belongs to
+  - license_key (required)
+  - expires_at (optional, Y-m-d format; defaults to order term length)
+  - max_activations (optional, defaults to 1)
+
+Response:
+- 200: {"success": true, "order_id": 123, "licenses_created": 2}
+- 401: Missing or invalid X-License-Secret header
+- 400: Missing order identifier or license_keys array
+- 404: Order not found
+- 422: Invalid payload
+
+Config
+------
+Set the webhook secret in config/razorpay.php -> license_webhook_secret
+or via env: RAZORPAY_LICENSE_WEBHOOK_SECRET
+
+Idempotent
+----------
+If license keys already exist for the order, the endpoint skips creation
+and returns the existing order ID.

@@ -8,6 +8,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\LicenseWebhookController;
 use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\FormController;
 use Illuminate\Http\Request;
@@ -56,6 +58,16 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendPassword'
 Route::get('/api/pricing', [PricingController::class, 'index'])->name('api.pricing');
 Route::post('/api/quote', [QuoteController::class, 'store'])->name('api.quote');
 
+// Cart (authenticated)
+Route::middleware('auth')->prefix('api/cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/update', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/coupon/apply', [CartController::class, 'applyCoupon'])->name('cart.coupon.apply');
+    Route::post('/coupon/remove', [CartController::class, 'removeCoupon'])->name('cart.coupon.remove');
+});
+
 // Dashboard (authenticated)
 Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -76,6 +88,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
 // Razorpay
 Route::middleware('auth')->prefix('api/razorpay')->group(function () {
     Route::post('/create-order', [RazorpayController::class, 'createOrder'])->name('razorpay.create-order');
+    Route::post('/create-cart-order', [RazorpayController::class, 'createCartOrder'])->name('razorpay.create-cart-order');
     Route::post('/verify', [RazorpayController::class, 'verifyPayment'])->name('razorpay.verify');
     Route::post('/create-subscription', [RazorpayController::class, 'createSubscription'])->name('razorpay.create-subscription');
     Route::post('/create-plan', [RazorpayController::class, 'createPlanAndSubscription'])->name('razorpay.create-plan');
@@ -86,6 +99,9 @@ Route::middleware('auth')->prefix('api/razorpay')->group(function () {
 
 // Razorpay webhook (no auth, no CSRF)
 Route::post('/webhook/razorpay', [RazorpayController::class, 'webhook'])->name('razorpay.webhook');
+
+// License webhook (no auth, no CSRF — uses X-License-Secret header)
+Route::post('/webhook/license', [LicenseWebhookController::class, 'handle'])->name('license.webhook');
 
 // Filament admin
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('filament.')->group(function () {

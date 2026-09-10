@@ -18,7 +18,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         $activeSubscriptions = $user->subscriptions()->where('status', 'active')->with('product')->get();
         $activeLicenses = $user->licenseKeys()->where('is_active', true)->with('product')->get();
-        $recentOrders = $user->orders()->with('product')->latest()->take(5)->get();
+        $recentOrders = $user->orders()->with(['product', 'orderItems.product'])->latest()->take(5)->get();
 
         return view('dashboard.index', compact('activeSubscriptions', 'activeLicenses', 'recentOrders'));
     }
@@ -176,7 +176,7 @@ class DashboardController extends Controller
 
     public function orders()
     {
-        $orders = Auth::user()->orders()->with('product')->latest()->get();
+        $orders = Auth::user()->orders()->with(['product', 'orderItems.product'])->latest()->get();
         return view('dashboard.orders', compact('orders'));
     }
 
@@ -185,7 +185,7 @@ class DashboardController extends Controller
         if ($order->user_id !== Auth::id()) {
             abort(403);
         }
-        $order->load(['product', 'licenseKeys']);
+        $order->load(['product', 'licenseKeys', 'orderItems.product']);
         return view('dashboard.order-detail', compact('order'));
     }
 
@@ -194,7 +194,7 @@ class DashboardController extends Controller
         if ($order->user_id !== Auth::id()) {
             abort(403);
         }
-        $order->load(['product', 'licenseKeys', 'user']);
+        $order->load(['product', 'licenseKeys', 'orderItems.product', 'user']);
         return view('dashboard.order-print', compact('order'));
     }
 

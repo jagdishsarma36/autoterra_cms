@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\OrderCoupon;
 use App\Models\Subscription;
 use App\Models\LicenseKey;
 use App\Models\Product;
 use App\Models\Setting;
+use App\Services\CartService;
 use App\Services\RazorpayService;
 use App\Mail\OrderConfirmation;
 use App\Mail\SubscriptionConfirmation;
@@ -65,6 +68,114 @@ class RazorpayController extends Controller
             'status' => 'pending',
             'billing_mode' => 'upfront',
         ]);
+
+        return response()->json([
+            'id' => $order['id'],
+            'amount' => $order['amount'],
+            'currency' => $order['currency'],
+            'db_order_id' => $dbOrder->id,
+        ]);
+    }
+
+    /**
+     * Create a Razorpay order from the shopping cart (multi-item checkout).
+     */
+    public function createCartOrder(Request $request)
+    {
+        $request->validate([
+            'amount' => 'required|integer|min:100',
+            'currency' => 'required|string|size:3',
+            'coupon_code' => 'nullable|string|max:50',
+        ]);
+
+        $cart = app(CartService::class);
+        $contents = $cart->getContents('INR');
+
+        if (empty($contents['items'])) {
+            return response()->json(['error' => 'Cart is empty.'], 422);
+        }
+
+        $notes = [
+            'items' => count($contents['items']),
+            'customer_name' => Auth::user()->name ?? '',
+            'customer_email' => Auth::user()->email ?? '',
+        ];
+
+        if ($contents['coupon_code']) {
+            $notes['coupon'] = $contents['coupon_code'];
+        }
+
+        $order = $this->razorpay->createOrder(
+            $request->amount,
+            $request->currency,
+            $notes
+        );
+
+        if (isset($order['error'])) {
+            return response()->json(['error' => $order['error']], 500);
+        }
+
+        $firstItem = $contents['items'][0];
+        $discountPaise = (int) round($contents['discount'] * 100);
+        $gstPaise = (int) round($contents['gst'] * 100);
+        $subtotalPaise = (int) round($contents['subtotal'] * 100);
+        $totalPaise = $request->amount;
+
+        // Determine the most common term for the order record
+        $termCounts = array_count_values(array_column($contents['items'], 'term'));
+        arsort($termCounts);
+        $dominantTerm = array_key_first($termCounts);
+
+        $dbOrder = Order::create([
+            'user_id' => Auth::id(),
+            'product_id' => null,
+            'term' => $dominantTerm,
+            'currency' => $request->currency,
+            'amount' => $subtotalPaise,
+            'gst_amount' => $gstPaise,
+            'total_amount' => $totalPaise,
+            'razorpay_order_id' => $order['id'],
+            'status' => 'pending',
+            'billing_mode' => 'upfront',
+            'coupon_code' => $contents['coupon_code'],
+            'discount_amount' => $discountPaise,
+        ]);
+
+        // Create order items
+        foreach ($contents['items'] as $item) {
+            $product = Product::where('slug', $item['product_slug'])->first();
+            if (!$product) continue;
+
+            $unitPricePaise = (int) round($item['unit_price'] * 100);
+            $itemGstPaise = (int) round($item['gst'] * 100);
+            $itemTotalPaise = (int) round($item['line_total'] * 100);
+
+            OrderItem::create([
+                'order_id' => $dbOrder->id,
+                'product_id' => $product->id,
+                'term' => $item['term'],
+                'quantity' => $item['quantity'],
+                'unit_price_inr' => $unitPricePaise,
+                'gst_amount' => $itemGstPaise,
+                'total_amount' => $itemTotalPaise,
+            ]);
+        }
+
+        // Record coupon usage
+        if ($contents['coupon_code'] && $discountPaise > 0) {
+            $coupon = \App\Models\Coupon::where('code', $contents['coupon_code'])->first();
+            if ($coupon) {
+                OrderCoupon::create([
+                    'order_id' => $dbOrder->id,
+                    'coupon_id' => $coupon->id,
+                    'discount' => $discountPaise,
+                ]);
+                $coupon->incrementUsage();
+            }
+        }
+
+        // Clear the cart
+        $cart->clear();
 
         return response()->json([
             'id' => $order['id'],

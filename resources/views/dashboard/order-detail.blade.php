@@ -23,8 +23,8 @@
     <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;">
       <h3 style="font-size:14px;font-weight:800;margin-bottom:16px;">Order Details</h3>
       <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);width:40%;">Product</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ $order->product->name ?? 'N/A' }}</td></tr>
-        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Term</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ termLabel($order->term) }}</td></tr>
+        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);width:40%;">Product</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ $order->product->name ?? ($order->orderItems->count() . ' item' . ($order->orderItems->count() !== 1 ? 's' : '')) }}</td></tr>
+        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Term</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ $order->orderItems->count() ? $order->orderItems->pluck('term')->unique()->map(fn($t) => termLabel($t))->implode(', ') : termLabel($order->term) }}</td></tr>
         <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Status</td><td style="padding:8px 0;font-size:13px;font-weight:700;color:{{ $order->status === 'paid' ? '#065F46' : ($order->status === 'failed' ? '#991B1B' : '#92400E') }};">{{ ucfirst($order->status) }}</td></tr>
         <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Date</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ $order->created_at->format('M j, Y g:i A') }}</td></tr>
         <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Billing Mode</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ ucfirst($order->billing_mode ?? 'N/A') }}</td></tr>
@@ -34,11 +34,14 @@
     <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;">
       <h3 style="font-size:14px;font-weight:800;margin-bottom:16px;">Payment Details</h3>
       <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);width:40%;">Amount</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ $order->currency === 'INR' ? '₹' . number_format($order->amount, 0) : '$' . number_format($order->amount, 2) }}</td></tr>
+        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);width:40%;">Amount</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ $order->currency === 'INR' ? formatINR($order->amount) : formatUSD($order->amount) }}</td></tr>
         @if($order->gst_amount > 0)
-        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">GST (18%)</td><td style="padding:8px 0;font-size:13px;font-weight:700;">₹{{ number_format($order->gst_amount, 0) }}</td></tr>
+        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">GST (18%)</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ formatINR($order->gst_amount) }}</td></tr>
         @endif
-        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Total</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ $order->currency === 'INR' ? '₹' . number_format($order->total_amount, 0) : '$' . number_format($order->total_amount, 2) }}</td></tr>
+        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Total</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ $order->currency === 'INR' ? formatINR($order->total_amount) : formatUSD($order->total_amount) }}</td></tr>
+        @if($order->discount_amount > 0)
+        <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Discount</td><td style="padding:8px 0;font-size:13px;font-weight:700;color:#065F46;">{{ $order->currency === 'INR' ? '−' . formatINR($order->discount_amount) : '−' . formatUSD($order->discount_amount) }}@if($order->coupon_code) ({{ $order->coupon_code }})@endif</td></tr>
+        @endif
         <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Currency</td><td style="padding:8px 0;font-size:13px;font-weight:700;">{{ $order->currency }}</td></tr>
         @if($order->razorpay_order_id)
         <tr><td style="padding:8px 0;font-size:13px;color:var(--muted);">Razorpay Order ID</td><td style="padding:8px 0;font-size:11px;font-weight:600;word-break:break-all;">{{ $order->razorpay_order_id }}</td></tr>
@@ -49,6 +52,28 @@
       </table>
     </div>
   </div>
+
+  @if($order->orderItems->count())
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;margin-top:24px;">
+    <h3 style="font-size:14px;font-weight:800;margin-bottom:16px;">Order Items</h3>
+    <table style="width:100%;border-collapse:collapse;">
+      <tr style="background:var(--off);border-bottom:1px solid var(--border);">
+        <th style="padding:10px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Product</th>
+        <th style="padding:10px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Term</th>
+        <th style="padding:10px 14px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Qty</th>
+        <th style="padding:10px 14px;text-align:right;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Amount</th>
+      </tr>
+      @foreach($order->orderItems as $item)
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:12px 14px;font-size:13px;font-weight:700;">{{ $item->product->name ?? 'Product' }}</td>
+        <td style="padding:12px 14px;font-size:13px;">{{ termLabel($item->term) }}</td>
+        <td style="padding:12px 14px;font-size:13px;text-align:center;">{{ $item->quantity }}</td>
+        <td style="padding:12px 14px;font-size:13px;text-align:right;font-weight:600;">{{ $order->currency === 'INR' ? formatINR($item->total_amount) : formatUSD($item->total_amount) }}</td>
+      </tr>
+      @endforeach
+    </table>
+  </div>
+  @endif
 
   @if($order->licenseKeys->count())
   <div style="background:#F0FAFF;border:1.5px solid #B3E0FF;border-radius:12px;padding:24px;margin-top:24px;">

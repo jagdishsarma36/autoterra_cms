@@ -36,6 +36,11 @@ class Product extends Model
         return $this->hasMany(LicenseKey::class);
     }
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function getPriceForTerm(string $term, string $currency = 'INR'): ?int
     {
         $price = $this->prices()->where('term', $term)->where('is_active', true)->first();
