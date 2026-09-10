@@ -121,18 +121,13 @@ function renderCart() {
 }
 
 function updateNavCartBadge(count) {
-  let badge = document.getElementById('navCartBadge');
+  const badge = document.getElementById('navCartBadge');
+  if (!badge) return;
   if (count > 0) {
-    if (!badge) {
-      badge = document.createElement('span');
-      badge.id = 'navCartBadge';
-      badge.style.cssText = 'background:var(--cyan);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;';
-      const cartLink = document.querySelector('a[href="/buy"]');
-      if (cartLink) cartLink.appendChild(badge);
-    }
     badge.textContent = count;
-  } else if (badge) {
-    badge.remove();
+    badge.style.display = '';
+  } else {
+    badge.style.display = 'none';
   }
 }
 
