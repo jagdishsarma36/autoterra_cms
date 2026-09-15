@@ -206,7 +206,7 @@ img { max-width: 100%; display: block; }
 .nav-caret { font-size: 11px; margin-left: 4px; transition: transform 0.15s; }
 .nav-item.has-sub:hover .nav-caret { transform: rotate(180deg); }
 .nav-dropdown {
-  display: none; position: absolute; top: calc(100% + 10px); left: -16px;
+  display: none; position: absolute; top: calc(100% + 0px); left: -16px;
   min-width: 210px; padding: 8px; border-radius: 10px;
   background: #0B1522; border: 1px solid rgba(0,168,248,0.18);
   box-shadow: 0 14px 34px rgba(0,0,0,0.45); list-style: none; z-index: 999;
