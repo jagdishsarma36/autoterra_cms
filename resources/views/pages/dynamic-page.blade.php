@@ -297,7 +297,7 @@
     </section>
     @elseif(is_array($rValue))
     <section class="section section-white">
-      <div style="max-width:860px;margin:0 auto;">
+      <div style="margin:0 auto;">
         @foreach($rValue as $item)
           @if(is_array($item))
           <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;margin-bottom:16px;">
