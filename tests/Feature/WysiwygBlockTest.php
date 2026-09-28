@@ -441,4 +441,111 @@ class WysiwygBlockTest extends TestCase
 
         $this->assertSame('html_section:section-dark', PageContent::where('key', 'band')->value('type'));
     }
+
+    public function test_wysiwyg_block_with_section_class_keeps_the_class_suffix(): void
+    {
+        $this->actingAs($this->admin());
+
+        $uuid = (string) Str::uuid();
+
+        Livewire::test(CreatePage::class)
+            ->fillForm([
+                'title' => 'Wysiwyg sections',
+                'slug' => 'wysiwyg-sections',
+                'content_blocks' => [
+                    $uuid => [
+                        'key' => 'band',
+                        'type' => 'wysiwyg',
+                        'wysiwyg_value' => $this->doc(),
+                        'section_class' => 'section-dark',
+                    ],
+                ],
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $block = PageContent::where('key', 'band')->first();
+
+        $this->assertNotNull($block, 'The content block was not saved at all.');
+        $this->assertSame('wysiwyg:section-dark', $block->type);
+        $this->assertStringContainsString('<u>Underlined</u>', $block->value);
+    }
+
+    public function test_wysiwyg_block_without_a_section_class_stays_bare(): void
+    {
+        $this->actingAs($this->admin());
+
+        $uuid = (string) Str::uuid();
+
+        Livewire::test(CreatePage::class)
+            ->fillForm([
+                'title' => 'Bare wysiwyg',
+                'slug' => 'bare-wysiwyg',
+                'content_blocks' => [
+                    $uuid => $this->block('hero.body', 'wysiwyg', $this->doc()),
+                ],
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame(
+            'wysiwyg',
+            PageContent::where('key', 'hero.body')->value('type'),
+            'A WYSIWYG block with no section class must keep the bare type so existing pages render unchanged.',
+        );
+    }
+
+    public function test_wysiwyg_section_class_renders_a_section_and_reopens_in_the_form(): void
+    {
+        $page = PageCms::create(['title' => 'Sectioned', 'slug' => 'sectioned']);
+        $page->update(['is_published' => true, 'published_at' => now()]);
+
+        PageContent::create([
+            'page' => 'cms:sectioned',
+            'key' => 'notes.body',
+            'type' => 'wysiwyg:section-dark',
+            'value' => '<p>Dark copy</p>',
+        ]);
+
+        $html = $this->get('/sectioned')->assertOk()->getContent();
+
+        $this->assertStringContainsString('<section class="section section-dark">', $html);
+        $this->assertStringContainsString('<p>Dark copy</p>', $html);
+
+        // Reopening the admin decodes `wysiwyg:section-dark` back into the
+        // base type plus the section class controls.
+        $state = Livewire::test(EditPage::class, ['record' => $page->getRouteKey()])
+            ->get('data.content_blocks');
+
+        $uuid = array_key_first($state);
+        $this->assertSame('wysiwyg', $state[$uuid]['type']);
+        $this->assertSame('section-dark', $state[$uuid]['section_class']);
+    }
+
+    public function test_wysiwyg_custom_section_class_round_trips(): void
+    {
+        $page = PageCms::create(['title' => 'Custom', 'slug' => 'custom-class']);
+        $page->update(['is_published' => true, 'published_at' => now()]);
+
+        PageContent::create([
+            'page' => 'cms:custom-class',
+            'key' => 'band',
+            'type' => 'wysiwyg:mega-band',
+            'value' => '<p>Wrapped copy</p>',
+        ]);
+
+        $state = Livewire::test(EditPage::class, ['record' => $page->getRouteKey()])
+            ->get('data.content_blocks');
+
+        $uuid = array_key_first($state);
+        $this->assertSame('wysiwyg', $state[$uuid]['type']);
+        $this->assertSame('custom', $state[$uuid]['section_class']);
+        $this->assertSame('mega-band', $state[$uuid]['section_class_custom']);
+        $this->assertSame('<p>Wrapped copy</p>', $state[$uuid]['wysiwyg_value']);
+
+        $html = $this->get('/custom-class')->assertOk()->getContent();
+
+        $this->assertStringContainsString('<section class="section mega-band">', $html);
+        $this->assertStringContainsString('<p>Wrapped copy</p>', $html);
+    }
 }

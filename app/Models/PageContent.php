@@ -27,7 +27,9 @@ class PageContent extends Model
         // For richtext/wysiwyg, Tiptap JSON is converted to HTML using the same
         // extension set the editor writes with, so underline, links, tables,
         // highlights etc. survive. Raw HTML is passed through untouched.
-        if (in_array($this->type, ['richtext', 'wysiwyg'], true) && filled($this->value)) {
+        // Prefix-matched because section-class blocks are stored as
+        // `wysiwyg:<class>`.
+        if ((str_starts_with($this->type, 'wysiwyg') || str_starts_with($this->type, 'richtext')) && filled($this->value)) {
             return PageCms::renderRichContent($this->value);
         }
 
@@ -112,7 +114,11 @@ class PageContent extends Model
 
     /**
      * The section class is packed into the `type` column as
-     * `html_section:<class>`, which is what the front end reads.
+     * `html_section:<class>` or `wysiwyg:<class>`, which is what the front end
+     * reads. A WYSIWYG block with no class keeps the bare `wysiwyg` type so
+     * existing blocks render exactly as before; html_section blocks always
+     * render as a wrapped section (the front end defaults bare ones to
+     * `section-white`).
      *
      * @param  array<string, mixed>  $block
      */
@@ -120,17 +126,23 @@ class PageContent extends Model
     {
         $type = (string) ($block['type'] ?? 'text');
 
-        if ($type !== 'html_section') {
+        if (! in_array($type, ['html_section', 'wysiwyg'], true)) {
             return $type;
         }
 
-        $class = $block['section_class'] ?? 'section-white';
+        $class = $block['section_class'] ?? null;
 
         if ($class === 'custom') {
-            $class = $block['section_class_custom'] ?: 'section-white';
+            $class = $block['section_class_custom'] ?? null;
         }
 
-        return 'html_section:' . $class;
+        $class = trim((string) $class);
+
+        if ($class === '') {
+            return $type;
+        }
+
+        return $type . ':' . $class;
     }
 
     /**

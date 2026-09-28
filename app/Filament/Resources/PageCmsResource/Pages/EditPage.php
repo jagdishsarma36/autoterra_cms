@@ -42,6 +42,11 @@ class EditPage extends EditRecord
                     $sectionClass = substr($type, 13); // after "html_section:"
                     $type = 'html_section';
                 }
+                // WYSIWYG blocks can carry a section class too.
+                if (str_starts_with($type, 'wysiwyg:')) {
+                    $sectionClass = substr($type, 8); // after "wysiwyg:"
+                    $type = 'wysiwyg';
+                }
                 $isWysiwyg = $type === 'wysiwyg';
 
                 return [

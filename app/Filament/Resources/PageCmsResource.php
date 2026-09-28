@@ -198,9 +198,34 @@ class PageCmsResource extends Resource
                                                 return;
                                             }
 
-                                            $set('type', $existing['type']);
+                                            // Section-class blocks are stored in
+                                            // the `type` column with a suffix
+                                            // (e.g. `wysiwyg:section-dark`), so
+                                            // split it back into the base type
+                                            // plus the class controls.
+                                            $existingType = $existing['type'];
+                                            $sectionClass = null;
 
-                                            if ($existing['type'] === 'wysiwyg') {
+                                            if (str_starts_with($existingType, 'wysiwyg:')) {
+                                                $sectionClass = substr($existingType, 8);
+                                                $existingType = 'wysiwyg';
+                                            } elseif (str_starts_with($existingType, 'html_section:')) {
+                                                $sectionClass = substr($existingType, 13);
+                                                $existingType = 'html_section';
+                                            }
+
+                                            $set('type', $existingType);
+
+                                            if ($sectionClass !== null) {
+                                                if (in_array($sectionClass, ['section-white', 'section-light', 'section-dark'], true)) {
+                                                    $set('section_class', $sectionClass);
+                                                } else {
+                                                    $set('section_class', 'custom');
+                                                    $set('section_class_custom', $sectionClass);
+                                                }
+                                            }
+
+                                            if ($existingType === 'wysiwyg') {
                                                 // The editor needs HTML, not a
                                                 // Tiptap JSON string — its JS
                                                 // parses strings as HTML and
@@ -248,6 +273,10 @@ class PageCmsResource extends Resource
 
                                             if (blank($get('value')) && filled($get('wysiwyg_value'))) {
                                                 $set('value', PageCms::renderRichContent($get('wysiwyg_value')));
+                                            }
+
+                                            if ($state === 'html_section' && blank($get('section_class'))) {
+                                                $set('section_class', 'section-white');
                                             }
                                         })
                                         ->columnSpan(2),
@@ -359,14 +388,19 @@ class PageCmsResource extends Resource
                                         'section-dark' => 'section-dark',
                                         'custom' => 'Custom...',
                                     ])
-                                    ->default('section-white')
+                                    // html_section always wraps in a <section>
+                                    // (section-white is its historical default);
+                                    // WYSIWYG blocks stay unwrapped unless a
+                                    // class is picked, so they default to none.
+                                    ->default(fn ($get): ?string => str_starts_with((string) $get('type'), 'html_section') ? 'section-white' : null)
+                                    ->helperText('Wraps the block in a <section class="section …">. WYSIWYG blocks render without a wrapper if no class is chosen.')
                                     ->live()
-                                    ->visible(fn ($get) => str_starts_with((string) $get('type'), 'html_section'))
+                                    ->visible(fn ($get) => str_starts_with((string) $get('type'), 'html_section') || $get('type') === 'wysiwyg')
                                     ->columnSpan(2),
                                 TextInput::make('section_class_custom')
                                     ->label('Custom Section Class')
                                     ->placeholder('e.g. section-white my-custom-class')
-                                    ->visible(fn ($get) => str_starts_with((string) $get('type'), 'html_section') && ($get('section_class') ?? '') === 'custom')
+                                    ->visible(fn ($get) => (str_starts_with((string) $get('type'), 'html_section') || $get('type') === 'wysiwyg') && ($get('section_class') ?? '') === 'custom')
                                     ->columnSpan(2),
                             ])
                             ->itemLabel(fn (array $state): ?string => filled($state['key'] ?? null)
