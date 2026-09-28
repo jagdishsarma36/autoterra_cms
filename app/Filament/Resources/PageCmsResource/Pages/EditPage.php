@@ -42,12 +42,18 @@ class EditPage extends EditRecord
                     $sectionClass = substr($type, 13); // after "html_section:"
                     $type = 'html_section';
                 }
+                $isWysiwyg = $type === 'wysiwyg';
+
                 return [
                     'key' => $block->key,
                     'type' => $type,
-                    'value' => in_array($type, ['richtext', 'wysiwyg'], true)
+                    // `wysiwyg_value` is a separate state path from `value` on
+                    // purpose — see the note on the RichEditor in the schema.
+                    'value' => $isWysiwyg ? null : $block->value,
+                    'wysiwyg_value' => $isWysiwyg
                         ? (PageCms::normalizeRichContent($block->value) ?? '')
-                        : $block->value,
+                        : null,
+                    'is_editing' => false,
                     'section_class' => $sectionClass,
                     'section_class_custom' => null,
                 ];
@@ -73,35 +79,9 @@ class EditPage extends EditRecord
 
     protected function saveBlocks(): void
     {
-        $pageKey = 'cms:' . $this->record->slug;
-        $blocks = $this->data['content_blocks'] ?? [];
-
-        PageContent::where('page', $pageKey)->delete();
-
-        foreach ($blocks as $block) {
-            if (empty($block['key'])) continue;
-            $value = $block['value'] ?? '';
-            // RichEditor returns array (tiptap JSON), store as JSON
-            if (is_array($value)) {
-                $value = json_encode($value);
-            }
-            $type = $block['type'] ?? 'text';
-            // Encode section class into type for html_section blocks
-            if ($type === 'html_section') {
-                $class = $block['section_class'] ?? 'section-white';
-                if ($class === 'custom') {
-                    $class = $block['section_class_custom'] ?: 'section-white';
-                }
-                $type = 'html_section:' . $class;
-            }
-            PageContent::create([
-                'page' => $pageKey,
-                'key' => $block['key'],
-                'value' => $value,
-                'type' => $type,
-            ]);
-        }
-
-        PageContent::clearCache($pageKey);
+        PageContent::syncForPage(
+            'cms:' . $this->record->slug,
+            $this->data['content_blocks'] ?? [],
+        );
     }
 }

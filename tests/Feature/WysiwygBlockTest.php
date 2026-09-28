@@ -1,0 +1,370 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Filament\Resources\PageCmsResource\Pages\CreatePage;
+use App\Filament\Resources\PageCmsResource\Pages\EditPage;
+use App\Models\PageContent;
+use App\Models\PageCms;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
+use Livewire\Livewire;
+use Livewire\Features\SupportTesting\Testable;
+use Tests\TestCase;
+
+class WysiwygBlockTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected function admin(): User
+    {
+        return User::factory()->create(['role' => 'admin']);
+    }
+
+    /**
+     * A document using the two marks a bare StarterKit schema cannot express.
+     */
+    protected function doc(): array
+    {
+        return [
+            'type' => 'doc',
+            'content' => [
+                [
+                    'type' => 'paragraph',
+                    'content' => [
+                        ['type' => 'text', 'marks' => [['type' => 'underline']], 'text' => 'Underlined'],
+                        ['type' => 'text', 'text' => ' and '],
+                        [
+                            'type' => 'text',
+                            'marks' => [['type' => 'link', 'attrs' => ['href' => 'https://example.com']]],
+                            'text' => 'linked',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    protected function block(string $key, string $type, mixed $value): array
+    {
+        $block = ['key' => $key, 'type' => $type];
+
+        if ($type === 'wysiwyg') {
+            $block['wysiwyg_value'] = $value;
+        } else {
+            $block['value'] = $value;
+        }
+
+        return $block;
+    }
+
+    /**
+     * `fillForm()` merges into the repeater instead of replacing it, so the
+     * blocks the page was mounted with have to be cleared first.
+     */
+    protected function replaceBlocks(Testable $page, array $blocks): Testable
+    {
+        return $page->set('data.content_blocks', [])->fillForm(['content_blocks' => $blocks]);
+    }
+
+    public function test_it_stores_and_reads_back_a_wysiwyg_block(): void
+    {
+        $this->actingAs($this->admin());
+
+        $uuid = (string) Str::uuid();
+
+        Livewire::test(CreatePage::class)
+            ->fillForm([
+                'title' => 'Wysiwyg Test',
+                'slug' => 'wysiwyg-test',
+                'content_blocks' => [
+                    $uuid => $this->block('hero.body', 'wysiwyg', $this->doc()),
+                ],
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $block = PageContent::where('key', 'hero.body')->first();
+
+        $this->assertNotNull($block, 'The content block was not saved at all.');
+        $this->assertSame('wysiwyg', $block->type);
+        $this->assertSame($this->doc(), json_decode($block->value, true));
+    }
+
+    public function test_underline_and_link_survive_the_render_round_trip(): void
+    {
+        $page = PageCms::create(['title' => 'RT', 'slug' => 'rt']);
+
+        PageContent::create([
+            'page' => 'cms:' . $page->slug,
+            'key' => 'hero.body',
+            'type' => 'wysiwyg',
+            'value' => json_encode($this->doc()),
+        ]);
+
+        $rendered = PageContent::get('cms:' . $page->slug, 'hero.body');
+
+        $this->assertStringContainsString('<u>', $rendered, 'Underline was stripped on render.');
+        $this->assertStringContainsString('href="https://example.com"', $rendered, 'Link was stripped on render.');
+    }
+
+    public function test_duplicate_keys_do_not_wipe_the_page(): void
+    {
+        $this->actingAs($this->admin());
+
+        $page = PageCms::create(['title' => 'Dupes', 'slug' => 'dupes']);
+
+        PageContent::create([
+            'page' => 'cms:dupes',
+            'key' => 'a.one',
+            'type' => 'text',
+            'value' => 'first',
+        ]);
+
+        $a = (string) Str::uuid();
+        $b = (string) Str::uuid();
+
+        $this->replaceBlocks(
+            Livewire::test(EditPage::class, ['record' => $page->getRouteKey()]),
+            [
+                $a => $this->block('a.one', 'text', 'first'),
+                $b => $this->block('a.one', 'text', 'second'),
+            ],
+        )
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $remaining = PageContent::where('page', 'cms:dupes')->get();
+
+        $this->assertCount(1, $remaining, 'Duplicate keys destroyed the page content.');
+        $this->assertSame('first', $remaining->first()->value);
+    }
+
+    public function test_blank_keys_are_skipped_instead_of_wiping_the_page(): void
+    {
+        PageContent::create([
+            'page' => 'cms:blanks',
+            'key' => 'keep.me',
+            'type' => 'text',
+            'value' => 'safe',
+        ]);
+
+        PageContent::syncForPage('cms:blanks', [
+            ['key' => '   ', 'type' => 'text', 'value' => 'junk'],
+            ['key' => 'keep.me', 'type' => 'text', 'value' => 'safe'],
+        ]);
+
+        $this->assertSame(1, PageContent::where('page', 'cms:blanks')->count());
+        $this->assertSame('safe', PageContent::where('key', 'keep.me')->value('value'));
+    }
+
+    public function test_a_failed_write_rolls_back_and_keeps_the_page(): void
+    {
+        PageContent::create([
+            'page' => 'cms:atomic',
+            'key' => 'keep.me',
+            'type' => 'text',
+            'value' => 'safe',
+        ]);
+
+        PageContent::saving(function (PageContent $block): void {
+            if ($block->key === 'explode') {
+                throw new \RuntimeException('simulated failure');
+            }
+        });
+
+        try {
+            PageContent::syncForPage('cms:atomic', [
+                ['key' => 'replacement', 'type' => 'text', 'value' => 'x'],
+                ['key' => 'explode', 'type' => 'text', 'value' => 'y'],
+            ]);
+
+            $this->fail('syncForPage() should have propagated the failure.');
+        } catch (\RuntimeException) {
+            // Expected.
+        }
+
+        $this->assertSame(1, PageContent::where('page', 'cms:atomic')->count());
+        $this->assertSame('safe', PageContent::where('key', 'keep.me')->value('value'));
+    }
+
+    /**
+     * Rendering a Tiptap editor for every block is what exhausted PHP's memory
+     * limit and hung the browser, so the editor must stay gated behind the
+     * per-block "Edit content" switch.
+     */
+    public function test_only_the_open_block_renders_a_rich_editor(): void
+    {
+        $this->actingAs($this->admin());
+
+        // Filament repeats the wrapper class across a single editor's markup,
+        // so the meaningful measurement is "none at all" versus "the same
+        // amount no matter how many blocks the page has".
+        $page = $this->replaceBlocks(Livewire::test(CreatePage::class), $this->wysiwygBlocks(3));
+
+        $this->assertSame(
+            0,
+            substr_count($page->html(), 'fi-fo-rich-editor'),
+            'A rich editor rendered for a block that is not open.',
+        );
+
+        $withThree = $this->openFirstBlock($page);
+        $withEight = $this->openFirstBlock(
+            $this->replaceBlocks(Livewire::test(CreatePage::class), $this->wysiwygBlocks(8)),
+        );
+
+        $this->assertGreaterThan(0, $withThree, 'Opening a block rendered no rich editor at all.');
+        $this->assertSame(
+            $withThree,
+            $withEight,
+            'The number of rendered editors grew with the number of blocks.',
+        );
+    }
+
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    protected function wysiwygBlocks(int $count): array
+    {
+        $blocks = [];
+
+        foreach (range(1, $count) as $i) {
+            $blocks[(string) Str::uuid()] = [
+                ...$this->block("block.{$i}", 'wysiwyg', $this->doc()),
+                'is_editing' => false,
+            ];
+        }
+
+        return $blocks;
+    }
+
+    protected function openFirstBlock(Testable $page): int
+    {
+        $index = 0;
+
+        $page->set('data.content_blocks', array_map(
+            function (array $block) use (&$index): array {
+                $block['is_editing'] = $index === 0;
+                $index++;
+
+                return $block;
+            },
+            $page->get('data.content_blocks'),
+        ));
+
+        return substr_count($page->html(), 'fi-fo-rich-editor');
+    }
+
+    public function test_editing_a_block_saves_its_content(): void
+    {
+        $this->actingAs($this->admin());
+
+        $page = PageCms::create(['title' => 'Edit Me', 'slug' => 'edit-me']);
+
+        PageContent::create([
+            'page' => 'cms:edit-me',
+            'key' => 'section.body',
+            'type' => 'wysiwyg',
+            'value' => json_encode($this->doc()),
+        ]);
+
+        $edited = [
+            'type' => 'doc',
+            'content' => [
+                ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'Brand new copy']]],
+            ],
+        ];
+
+        $uuid = (string) Str::uuid();
+
+        $this->replaceBlocks(
+            Livewire::test(EditPage::class, ['record' => $page->getRouteKey()]),
+            [$uuid => [...$this->block('section.body', 'wysiwyg', $edited), 'is_editing' => true]],
+        )
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $block = PageContent::where('page', 'cms:edit-me')->where('key', 'section.body')->first();
+
+        $this->assertNotNull($block, 'Saving wiped the block.');
+        $this->assertSame($edited, json_decode($block->value, true), 'The editor content did not reach the database.');
+    }
+
+    /**
+     * The editor used to share the `value` state path with the plain textarea,
+     * so merely opening a page rewrote every text/HTML block into a Tiptap
+     * document and saved it back.
+     */
+    public function test_opening_a_page_does_not_rewrite_plain_blocks(): void
+    {
+        $this->actingAs($this->admin());
+
+        $page = PageCms::create(['title' => 'Untouched', 'slug' => 'untouched']);
+
+        PageContent::create([
+            'page' => 'cms:untouched',
+            'key' => 'hero.heading',
+            'type' => 'text',
+            'value' => 'Plain <b>heading</b>',
+        ]);
+
+        $this->replaceBlocks(
+            Livewire::test(EditPage::class, ['record' => $page->getRouteKey()]),
+            [(string) Str::uuid() => $this->block('hero.heading', 'text', 'Plain <b>heading</b>')],
+        )
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame(
+            'Plain <b>heading</b>',
+            PageContent::where('key', 'hero.heading')->value('value'),
+            'A plain text block was rewritten into a Tiptap document.',
+        );
+    }
+
+    public function test_a_plain_text_block_is_not_turned_into_json(): void
+    {
+        $this->actingAs($this->admin());
+
+        $uuid = (string) Str::uuid();
+
+        Livewire::test(CreatePage::class)
+            ->fillForm([
+                'title' => 'Plain',
+                'slug' => 'plain',
+                'content_blocks' => [
+                    $uuid => $this->block('hero.heading', 'text', 'Hello <b>world</b>'),
+                ],
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame('Hello <b>world</b>', PageContent::where('key', 'hero.heading')->value('value'));
+    }
+
+    public function test_html_section_type_keeps_its_class_suffix(): void
+    {
+        $this->actingAs($this->admin());
+
+        $uuid = (string) Str::uuid();
+
+        Livewire::test(CreatePage::class)
+            ->fillForm([
+                'title' => 'Sections',
+                'slug' => 'sections',
+                'content_blocks' => [
+                    $uuid => [
+                        'key' => 'band',
+                        'type' => 'html_section',
+                        'value' => '<p>hi</p>',
+                        'section_class' => 'section-dark',
+                    ],
+                ],
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame('html_section:section-dark', PageContent::where('key', 'band')->value('type'));
+    }
+}

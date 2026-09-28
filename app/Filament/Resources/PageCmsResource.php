@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 
+use App\Filament\Forms\GatedRichEditor;
 use App\Models\PageCms;
 use App\Models\PageContent;
 use Filament\Schemas\Schema;
@@ -10,7 +11,6 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
@@ -28,6 +28,14 @@ class PageCmsResource extends Resource
     protected static ?string $recordTitleAttribute = 'title';
     protected static ?string $modelLabel = 'Page';
     protected static ?string $pluralModelLabel = 'Pages';
+
+    /**
+     * Every content block on the site, loaded at most once per request and
+     * used to resolve the "imported from another page" lookups.
+     *
+     * @var array<string, array{page: string, key: string, type: string, value: string}>|null
+     */
+    protected static ?array $blockIndex = null;
 
     public static function getNavigationItems(): array
     {
@@ -174,16 +182,32 @@ class PageCmsResource extends Resource
                                         ->placeholder('hero.heading')
                                         ->live(onBlur: true)
                                         ->afterStateUpdated(function ($state, $set, $get) {
-                                            if (!$state) return;
-                                            $existing = PageContent::where('key', $state)->first();
-                                            if ($existing && !$get('value')) {
-                                                $set('type', $existing->type);
-                                                $value = $existing->value;
-                                                if (in_array($existing->type, ['richtext', 'wysiwyg'], true)) {
-                                                    $value = \App\Models\PageCms::normalizeRichContent($value) ?? '';
-                                                }
-                                                $set('value', $value);
+                                            if (! $state) {
+                                                return;
                                             }
+
+                                            $existing = static::existingBlock($state);
+
+                                            if (! $existing) {
+                                                return;
+                                            }
+
+                                            // Never clobber content the user has
+                                            // already typed into this block.
+                                            if (filled($get('value')) || filled($get('wysiwyg_value'))) {
+                                                return;
+                                            }
+
+                                            $set('type', $existing['type']);
+
+                                            if ($existing['type'] === 'wysiwyg') {
+                                                $set('wysiwyg_value', PageCms::normalizeRichContent($existing['value']) ?? '');
+                                                $set('is_editing', true);
+
+                                                return;
+                                            }
+
+                                            $set('value', $existing['value']);
                                         })
                                         ->columnSpan(5),
                                     Select::make('type')
@@ -199,45 +223,112 @@ class PageCmsResource extends Resource
                                         ->required()
                                         ->default('richtext')
                                         ->live()
-                                        ->afterStateUpdated(function ($state, $old, $set) {
-                                                if ($state !== $old) {
-                                                    //$set('value', '');
+                                        ->afterStateUpdated(function ($state, $get, $set) {
+                                            // The editor and the plain textarea keep
+                                            // separate state, so carry the content
+                                            // across when the type changes instead
+                                            // of silently dropping it.
+                                            if ($state === 'wysiwyg') {
+                                                if (blank($get('wysiwyg_value')) && filled($get('value'))) {
+                                                    $set('wysiwyg_value', $get('value'));
                                                 }
-                                            })
+
+                                                // A block that already holds content
+                                                // opens its editor straight away; a
+                                                // blank one stays closed until "Edit
+                                                // content" is switched on.
+                                                $set('is_editing', filled($get('wysiwyg_value')));
+
+                                                return;
+                                            }
+
+                                            if (blank($get('value')) && filled($get('wysiwyg_value'))) {
+                                                $set('value', PageCms::renderRichContent($get('wysiwyg_value')));
+                                            }
+                                        })
                                         ->columnSpan(2),
                                     Placeholder::make('exists_badge')
                                         ->label(' ')
                                         ->content(function ($get) {
                                             $key = $get('key');
-                                            if (!$key) return '';
-                                            $existing = PageContent::where('key', $key)->first();
-                                            if ($existing) {
-                                                return "✓ Imported from: {$existing->page}";
+
+                                            if (! $key) {
+                                                return '+ New block';
                                             }
-                                            return '+ New block';
+
+                                            $existing = static::existingBlock($key);
+
+                                            return $existing
+                                                ? "✓ Imported from: {$existing['page']}"
+                                                : '+ New block';
                                         })
                                         ->columnSpan(5),
                                 ]),
+
+                                // One textarea for every non-WYSIWYG type. These used
+                                // to be six separate components per block that all
+                                // shared the `value` state path, which multiplied the
+                                // markup (and PHP work) of every page by six.
                                 Textarea::make('value')
-                                    ->label('Value')
-                                    ->rows(3)
-                                    ->columnSpanFull()
-                                    ->visible(fn ($get) => $get('type') === 'text'),
-                                Textarea::make('value')
-                                    ->label('HTML Content')
-                                    ->rows(4)
-                                    ->columnSpanFull()
-                                    ->visible(fn ($get) => $get('type') === 'html_inline')
-                                    ->helperText('Inline HTML tags: <br>, <span>, <strong>, <em>, <a>, <sup>, <sub> — renders as-is.'),
-                                
-                                Textarea::make('value')
-                                    ->label('HTML Content')
-                                    ->rows(8)
-                                    ->columnSpanFull()
-                                    ->visible(fn ($get) => $get('type') === 'richtext')
-                                    ->helperText('Use HTML tags: h2, h3, p, strong, em, ul, li, a, blockquote'),
-                                RichEditor::make('value')
+                                    ->label(fn ($get) => match ($get('type')) {
+                                        'html_inline' => 'HTML Content',
+                                        'richtext' => 'HTML Content',
+                                        'json' => 'JSON Value',
+                                        'html', 'html_section' => 'HTML Block',
+                                        default => 'Value',
+                                    })
+                                    ->rows(fn ($get) => match ($get('type')) {
+                                        'text' => 3,
+                                        'html_inline' => 4,
+                                        'richtext' => 8,
+                                        'json' => 8,
+                                        'html', 'html_section' => 12,
+                                        default => 4,
+                                    })
+                                    ->helperText(fn ($get) => match ($get('type')) {
+                                        'html_inline' => 'Inline HTML tags: <br>, <span>, <strong>, <em>, <a>, <sup>, <sub> — renders as-is.',
+                                        'richtext' => 'Use HTML tags: h2, h3, p, strong, em, ul, li, a, blockquote',
+                                        'json' => 'Valid JSON — arrays or objects',
+                                        'html' => 'Paste raw HTML. Renders as-is, no wrapper.',
+                                        'html_section' => 'Paste raw HTML. Wraps in a <section> tag with the class you choose below.',
+                                        default => null,
+                                    })
+                                    ->visible(fn ($get) => $get('type') !== 'wysiwyg')
+                                    ->dehydrated(fn ($get) => $get('type') !== 'wysiwyg')
+                                    ->columnSpanFull(),
+
+                                // The WYSIWYG editor is expensive: it ships a Tiptap
+                                // instance, a full toolbar, and runs a PHP Tiptap
+                                // parse on every render. Rendering one per block is
+                                // what made big pages exhaust PHP's memory limit and
+                                // hang the browser, so only the block whose switch is
+                                // on gets an editor; the rest show a text preview.
+                                Toggle::make('is_editing')
+                                    ->label('Edit content')
+                                    ->helperText('Turn this on to load the WYSIWYG editor for this block. Only one block needs it at a time.')
+                                    ->live()
+                                    ->default(false)
+                                    ->dehydrated(false)
+                                    ->visible(fn ($get) => $get('type') === 'wysiwyg')
+                                    ->columnSpanFull(),
+
+                                Placeholder::make('value_summary')
+                                    ->label('Content')
+                                    ->visible(fn ($get) => $get('type') === 'wysiwyg' && ! (bool) $get('is_editing'))
+                                    ->content(fn ($get) => static::summariseValue($get('wysiwyg_value')))
+                                    ->columnSpanFull(),
+
+                                // NOTE: this deliberately does NOT share the `value`
+                                // state path with the textarea above. A schema fill
+                                // runs every field's state cast, hidden or not, so a
+                                // RichEditor sitting on `value` rewrote every plain
+                                // text / HTML block into a Tiptap document every
+                                // time the page was opened, and saved it back.
+                                GatedRichEditor::make('wysiwyg_value')
                                     ->label('WYSIWYG Content')
+                                    ->visible(fn ($get) => $get('type') === 'wysiwyg' && (bool) $get('is_editing'))
+                                    ->dehydrated(fn ($get) => $get('type') === 'wysiwyg')
+                                    ->placeholder('Start typing…')
                                     ->columnSpanFull()
                                     ->toolbarButtons([
                                         'blockquote',
@@ -254,26 +345,7 @@ class PageCmsResource extends Resource
                                         'underline',
                                         'undo',
                                     ])
-                                    ->visible(fn ($get) => $get('type') === 'wysiwyg')
                                     ->helperText('WYSIWYG editor — saved as Tiptap JSON, rendered as HTML.'),
-                                Textarea::make('value')
-                                    ->label('JSON Value')
-                                    ->rows(8)
-                                    ->columnSpanFull()
-                                    ->visible(fn ($get) => $get('type') === 'json')
-                                    ->helperText('Valid JSON — arrays or objects'),
-                                Textarea::make('value')
-                                    ->label('HTML Block')
-                                    ->rows(12)
-                                    ->columnSpanFull()
-                                    ->visible(fn ($get) => $get('type') === 'html')
-                                    ->helperText('Paste raw HTML. Renders as-is, no wrapper.'),
-                                Textarea::make('value')
-                                    ->label('HTML Block')
-                                    ->rows(12)
-                                    ->columnSpanFull()
-                                    ->visible(fn ($get) => str_starts_with((string) $get('type'), 'html_section'))
-                                    ->helperText('Paste raw HTML. Wraps in a <section> tag with the class you choose below.'),
 
                                 Select::make('section_class')
                                     ->label('Section Class')
@@ -293,12 +365,88 @@ class PageCmsResource extends Resource
                                     ->visible(fn ($get) => str_starts_with((string) $get('type'), 'html_section') && ($get('section_class') ?? '') === 'custom')
                                     ->columnSpan(2),
                             ])
+                            ->itemLabel(fn (array $state): ?string => filled($state['key'] ?? null)
+                                ? $state['key'] . ($state['type'] ?? '' ? ' · ' . $state['type'] : '')
+                                : null)
                             ->columns(1)
                             ->addActionLabel('Add block')
                             ->defaultItems(0)
                             ->reorderable(),
                     ]),
             ]);
+    }
+
+    /**
+     * Look up an existing content block by key, memoised for the duration of a
+     * single render. The form used to run one query per block on every render,
+     * which is a lot of pointless round trips on a page with 50+ blocks.
+     *
+     * @return array{page: string, key: string, type: string, value: string}|null
+     */
+    protected static function existingBlock(string $key): ?array
+    {
+        $index = static::$blockIndex ??= PageContent::query()
+            ->get(['page', 'key', 'type', 'value'])
+            ->keyBy('key')
+            ->map(fn (PageContent $block): array => $block->only(['page', 'key', 'type', 'value']))
+            ->all();
+
+        return $index[$key] ?? null;
+    }
+
+    /**
+     * A short, plain-text preview of a block value, shown instead of the
+     * editor while a WYSIWYG block is closed. Understands both raw HTML and
+     * Tiptap JSON documents.
+     */
+    protected static function summariseValue(mixed $value): string
+    {
+        $text = static::plainText($value);
+
+        if ($text === '') {
+            return '<em>Empty — turn on “Edit content” to start writing.</em>';
+        }
+
+        return e(Str::limit($text, 140));
+    }
+
+    protected static function plainText(mixed $value): string
+    {
+        if (blank($value)) {
+            return '';
+        }
+
+        if (is_array($value)) {
+            $value = json_encode($value);
+        }
+
+        $trimmed = trim((string) $value);
+
+        if (str_starts_with($trimmed, '{') || str_starts_with($trimmed, '[')) {
+            $decoded = json_decode($trimmed, true);
+
+            if (is_array($decoded)) {
+                return static::collectNodeText($decoded);
+            }
+        }
+
+        return trim(html_entity_decode(strip_tags($trimmed)));
+    }
+
+    /**
+     * @param  array<mixed>  $node
+     */
+    protected static function collectNodeText(array $node): string
+    {
+        $text = isset($node['text']) && is_string($node['text']) ? $node['text'] . ' ' : '';
+
+        foreach ($node['content'] ?? [] as $child) {
+            if (is_array($child)) {
+                $text .= static::collectNodeText($child);
+            }
+        }
+
+        return trim((string) preg_replace('/\s+/', ' ', $text));
     }
 
     public static function getPages(): array
