@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class PageContent extends Model
 {
@@ -22,24 +23,105 @@ class PageContent extends Model
         if ($this->type === 'json') {
             return json_decode($this->value, true) ?? [];
         }
-        // For richtext/wysiwyg, convert tiptap JSON to HTML for frontend rendering
-        if (in_array($this->type, ['richtext', 'wysiwyg'], true) && !empty($this->value)) {
-            $normalized = \App\Models\PageCms::normalizeRichContent($this->value);
-            if ($normalized === null) {
-                return $this->value;
-            }
-            $decoded = json_decode($normalized, true);
-            if (is_array($decoded) && isset($decoded['content'])) {
-                try {
-                    $editor = new \Tiptap\Editor([new \Tiptap\Extensions\StarterKit()]);
-                    return $editor->setContent($decoded)->getHtml();
-                } catch (\Exception $e) {
-                    return $normalized;
-                }
-            }
-            return $normalized;
+
+        // For richtext/wysiwyg, Tiptap JSON is converted to HTML using the same
+        // extension set the editor writes with, so underline, links, tables,
+        // highlights etc. survive. Raw HTML is passed through untouched.
+        if (in_array($this->type, ['richtext', 'wysiwyg'], true) && filled($this->value)) {
+            return PageCms::renderRichContent($this->value);
         }
+
         return $this->value;
+    }
+
+    /**
+     * Replace every content block belonging to a page with the given set.
+     *
+     * `page` + `key` is unique, so this runs inside a transaction and skips
+     * duplicate/blank keys. Without both, one duplicated key aborted the
+     * insert halfway through and left the page with deleted or half-written
+     * content, which is what made saving look like it did nothing.
+     *
+     * @param  array<int|string, array<string, mixed>>  $blocks
+     */
+    public static function syncForPage(string $page, array $blocks): void
+    {
+        $rows = [];
+
+        foreach ($blocks as $block) {
+            if (! is_array($block)) {
+                continue;
+            }
+
+            $key = trim((string) ($block['key'] ?? ''));
+
+            if ($key === '' || array_key_exists($key, $rows)) {
+                continue;
+            }
+
+            // The WYSIWYG editor keeps its own state so that opening a page can
+            // never rewrite a plain text or HTML block into a Tiptap document.
+            $value = ($block['type'] ?? null) === 'wysiwyg'
+                ? ($block['wysiwyg_value'] ?? $block['value'] ?? null)
+                : ($block['value'] ?? null);
+
+            $rows[$key] = [
+                'page' => $page,
+                'key' => $key,
+                'value' => static::normalizeBlockValue($value),
+                'type' => static::normalizeBlockType($block),
+            ];
+        }
+
+        DB::transaction(function () use ($page, $rows): void {
+            static::where('page', $page)->delete();
+
+            foreach ($rows as $row) {
+                static::create($row);
+            }
+        });
+
+        static::clearCache($page);
+    }
+
+    /**
+     * The rich editor hands back an array on some paths and a string on
+     * others — normalise both to something the longText column can hold.
+     */
+    protected static function normalizeBlockValue(mixed $value): ?string
+    {
+        if (is_array($value)) {
+            return json_encode($value);
+        }
+
+        if ($value === null) {
+            return null;
+        }
+
+        return (string) $value;
+    }
+
+    /**
+     * The section class is packed into the `type` column as
+     * `html_section:<class>`, which is what the front end reads.
+     *
+     * @param  array<string, mixed>  $block
+     */
+    protected static function normalizeBlockType(array $block): string
+    {
+        $type = (string) ($block['type'] ?? 'text');
+
+        if ($type !== 'html_section') {
+            return $type;
+        }
+
+        $class = $block['section_class'] ?? 'section-white';
+
+        if ($class === 'custom') {
+            $class = $block['section_class_custom'] ?: 'section-white';
+        }
+
+        return 'html_section:' . $class;
     }
 
     /**

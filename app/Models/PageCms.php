@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Throwable;
 
 class PageCms extends Model
 {
@@ -107,6 +109,12 @@ class PageCms extends Model
      * Plain HTML/text passes through untouched; fragmented JSON nodes are
      * wrapped into a proper doc so Filament's RichEditor and the renderer
      * never choke on legacy or malformed payloads.
+     *
+     * The Tiptap schema comes from Filament's own RichContentRenderer so the
+     * full node/mark set is used. A bare StarterKit only knows about bold,
+     * italic, code and strike, so everything else the editor can produce
+     * (underline, links, highlights, tables, sub/superscript, text
+     * alignment, ...) would be silently dropped on every round trip.
      */
     public static function normalizeRichContent(?string $value): ?string
     {
@@ -115,11 +123,13 @@ class PageCms extends Model
         }
 
         $trimmed = trim($value);
+
         if (! str_starts_with($trimmed, '{') && ! str_starts_with($trimmed, '[')) {
             return $value;
         }
 
         $decoded = json_decode($trimmed, true);
+
         if (! is_array($decoded)) {
             return $value;
         }
@@ -127,16 +137,50 @@ class PageCms extends Model
         if (($decoded['type'] ?? null) === 'doc'
             && isset($decoded['content'])
             && is_array($decoded['content'])) {
-            return json_encode($decoded);
+            return $trimmed;
         }
 
         $content = array_is_list($decoded) ? $decoded : [$decoded];
+
         try {
-            return json_encode((new \Tiptap\Editor([new \Tiptap\Extensions\StarterKit()]))
-                ->setContent(['type' => 'doc', 'content' => $content])
-                ->getDocument());
-        } catch (\Throwable $e) {
+            $document = RichContentRenderer::make(['type' => 'doc', 'content' => $content])->toArray();
+        } catch (Throwable) {
             return null;
+        }
+
+        return blank($document) ? null : json_encode($document);
+    }
+
+    /**
+     * Turn a stored rich-content value into HTML for the front end.
+     *
+     * Tiptap documents are re-serialized with the editor's own extension set so
+     * no formatting is lost. Raw HTML (what the legacy `richtext` blocks and
+     * the `html*` blocks store) is returned untouched so existing pages keep
+     * rendering exactly as before.
+     */
+    public static function renderRichContent(?string $value): string
+    {
+        if (blank($value)) {
+            return '';
+        }
+
+        $trimmed = trim($value);
+
+        if (! str_starts_with($trimmed, '{') && ! str_starts_with($trimmed, '[')) {
+            return $value;
+        }
+
+        $normalized = static::normalizeRichContent($value);
+
+        if (blank($normalized)) {
+            return $value;
+        }
+
+        try {
+            return RichContentRenderer::make($normalized)->toUnsafeHtml();
+        } catch (Throwable) {
+            return $normalized;
         }
     }
 

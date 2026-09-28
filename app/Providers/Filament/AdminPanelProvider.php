@@ -42,10 +42,6 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Widgets\AccountHeaderWidget::class,
                 // FilamentInfoWidget::class,
             ])
-            ->renderHook(
-                'head.end',
-                fn () => '<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>'
-            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
