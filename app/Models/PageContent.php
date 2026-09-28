@@ -61,9 +61,18 @@ class PageContent extends Model
 
             // The WYSIWYG editor keeps its own state so that opening a page can
             // never rewrite a plain text or HTML block into a Tiptap document.
-            $value = ($block['type'] ?? null) === 'wysiwyg'
-                ? ($block['wysiwyg_value'] ?? $block['value'] ?? null)
-                : ($block['value'] ?? null);
+            // The editor's browser state is a Tiptap JSON object while a block
+            // is open, so the value is normalised to HTML here — one place,
+            // every path (create, edit, direct calls) ends up with HTML at rest.
+            if (($block['type'] ?? null) === 'wysiwyg') {
+                $value = $block['wysiwyg_value'] ?? $block['value'] ?? null;
+
+                if (filled($value)) {
+                    $value = PageCms::renderRichContent($value);
+                }
+            } else {
+                $value = $block['value'] ?? null;
+            }
 
             $rows[$key] = [
                 'page' => $page,
