@@ -89,7 +89,11 @@ class WysiwygBlockTest extends TestCase
 
         $this->assertNotNull($block, 'The content block was not saved at all.');
         $this->assertSame('wysiwyg', $block->type);
-        $this->assertSame($this->doc(), json_decode($block->value, true));
+        $this->assertSame(
+            '<p><u>Underlined</u> and <a href="https://example.com">linked</a></p>',
+            $block->value,
+            'A WYSIWYG block must be stored as HTML, not as Tiptap JSON.',
+        );
     }
 
     public function test_underline_and_link_survive_the_render_round_trip(): void
@@ -288,7 +292,77 @@ class WysiwygBlockTest extends TestCase
         $block = PageContent::where('page', 'cms:edit-me')->where('key', 'section.body')->first();
 
         $this->assertNotNull($block, 'Saving wiped the block.');
-        $this->assertSame($edited, json_decode($block->value, true), 'The editor content did not reach the database.');
+        $this->assertSame(
+            '<p>Brand new copy</p>',
+            $block->value,
+            'The editor content did not reach the database as HTML.',
+        );
+    }
+
+    /**
+     * The editor's JavaScript parses strings as HTML, so handing it a Tiptap
+     * JSON string (`{"type":"doc",...}`) makes it display the raw JSON as
+     * editable text — while the front end kept rendering proper HTML. Opening
+     * a block must therefore always fill the editor with HTML.
+     */
+    public function test_opening_a_json_block_feeds_the_editor_html(): void
+    {
+        $this->actingAs($this->admin());
+
+        $page = PageCms::create(['title' => 'Legacy JSON', 'slug' => 'legacy-json']);
+
+        PageContent::create([
+            'page' => 'cms:legacy-json',
+            'key' => 'section.body',
+            'type' => 'wysiwyg',
+            'value' => json_encode($this->doc()),
+        ]);
+
+        $blocks = Livewire::test(EditPage::class, ['record' => $page->getRouteKey()])
+            ->get('data.content_blocks');
+
+        $uuid = array_key_first($blocks);
+        $editorValue = $blocks[$uuid]['wysiwyg_value'] ?? null;
+
+        $this->assertIsString($editorValue, 'The editor state should be a string, not a Tiptap array.');
+        $this->assertStringStartsWith('<', $editorValue, 'The editor received raw JSON instead of HTML.');
+        $this->assertStringNotContainsString('"type":"doc"', (string) $editorValue);
+        $this->assertStringContainsString('<u>Underlined</u>', (string) $editorValue);
+        $this->assertStringContainsString('href="https://example.com"', (string) $editorValue);
+    }
+
+    /**
+     * Saving a page without opening the editor must not resurrect the raw
+     * JSON: the fill already converted it to HTML, and the dehydrated block
+     * value passes straight through unchanged.
+     */
+    public function test_saving_without_opening_the_editor_stores_html(): void
+    {
+        $this->actingAs($this->admin());
+
+        $page = PageCms::create(['title' => 'Closed Save', 'slug' => 'closed-save']);
+
+        PageContent::create([
+            'page' => 'cms:closed-save',
+            'key' => 'section.body',
+            'type' => 'wysiwyg',
+            'value' => json_encode($this->doc()),
+        ]);
+
+        $uuid = (string) Str::uuid();
+
+        $this->replaceBlocks(
+            Livewire::test(EditPage::class, ['record' => $page->getRouteKey()]),
+            [$uuid => [...$this->block('section.body', 'wysiwyg', '<p>Closed copy</p>'), 'is_editing' => false]],
+        )
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame(
+            '<p>Closed copy</p>',
+            PageContent::where('key', 'section.body')->value('value'),
+            'A closed WYSIWYG block was saved back as raw JSON.',
+        );
     }
 
     /**

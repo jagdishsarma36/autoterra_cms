@@ -152,16 +152,22 @@ class PageCms extends Model
     }
 
     /**
-     * Turn a stored rich-content value into HTML for the front end.
+     * Turn a stored rich-content value into HTML for the editor and the front
+     * end.
      *
-     * Tiptap documents are re-serialized with the editor's own extension set so
-     * no formatting is lost. Raw HTML (what the legacy `richtext` blocks and
-     * the `html*` blocks store) is returned untouched so existing pages keep
-     * rendering exactly as before.
+     * Tiptap documents (as JSON arrays or JSON strings — the editor's live
+     * state is an array while a block is being edited) are re-serialized with
+     * the editor's own extension set so no formatting is lost. Raw HTML (what
+     * the legacy `richtext` blocks and the `html*` blocks store) is returned
+     * untouched so existing pages keep rendering exactly as before.
      */
-    public static function renderRichContent(?string $value): string
+    public static function renderRichContent(mixed $value): string
     {
-        if (blank($value)) {
+        if (is_array($value)) {
+            $value = json_encode($value);
+        }
+
+        if (! is_string($value) || blank($value)) {
             return '';
         }
 

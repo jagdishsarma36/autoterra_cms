@@ -201,7 +201,11 @@ class PageCmsResource extends Resource
                                             $set('type', $existing['type']);
 
                                             if ($existing['type'] === 'wysiwyg') {
-                                                $set('wysiwyg_value', PageCms::normalizeRichContent($existing['value']) ?? '');
+                                                // The editor needs HTML, not a
+                                                // Tiptap JSON string — its JS
+                                                // parses strings as HTML and
+                                                // would show the raw JSON.
+                                                $set('wysiwyg_value', PageCms::renderRichContent($existing['value']));
                                                 $set('is_editing', true);
 
                                                 return;
@@ -230,7 +234,7 @@ class PageCmsResource extends Resource
                                             // of silently dropping it.
                                             if ($state === 'wysiwyg') {
                                                 if (blank($get('wysiwyg_value')) && filled($get('value'))) {
-                                                    $set('wysiwyg_value', $get('value'));
+                                                    $set('wysiwyg_value', PageCms::renderRichContent($get('value')));
                                                 }
 
                                                 // A block that already holds content
@@ -345,7 +349,7 @@ class PageCmsResource extends Resource
                                         'underline',
                                         'undo',
                                     ])
-                                    ->helperText('WYSIWYG editor — saved as Tiptap JSON, rendered as HTML.'),
+                                    ->helperText('WYSIWYG editor. Saved as HTML — legacy Tiptap JSON is converted to HTML when you open a block, so the editor never shows raw JSON.'),
 
                                 Select::make('section_class')
                                     ->label('Section Class')

@@ -50,8 +50,13 @@ class EditPage extends EditRecord
                     // `wysiwyg_value` is a separate state path from `value` on
                     // purpose — see the note on the RichEditor in the schema.
                     'value' => $isWysiwyg ? null : $block->value,
+                    // The editor only understands HTML here: its Tiptap JS
+                    // parses strings as HTML, so handing it a Tiptap JSON
+                    // string makes it display the raw JSON as text. Legacy
+                    // JSON blocks are converted once on open and thereafter
+                    // saved back as HTML.
                     'wysiwyg_value' => $isWysiwyg
-                        ? (PageCms::normalizeRichContent($block->value) ?? '')
+                        ? (PageCms::renderRichContent($block->value) ?: '')
                         : null,
                     'is_editing' => false,
                     'section_class' => $sectionClass,
