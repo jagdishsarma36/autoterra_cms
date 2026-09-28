@@ -8,6 +8,7 @@ use App\Models\PageContent;
 use App\Models\PageCms;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -132,5 +133,40 @@ class ContentBlockOrderTest extends TestCase
         $html = $this->pageHtml($page);
 
         $this->assertLessThan(strpos($html, 'value of note.second'), strpos($html, 'value of note.first'));
+    }
+
+    public function test_all_blocks_are_ordered_by_id_in_the_query(): void
+    {
+        $page = $this->makePublishedPage('order-query');
+        $this->insertBlock($page, 'zeta.last');
+        $this->insertBlock($page, 'alpha.first');
+
+        $sql = null;
+        DB::listen(function ($query) use (&$sql) {
+            if (str_contains($query->sql, 'from "page_contents"') && str_contains($query->sql, 'where')) {
+                $sql = strtolower($query->sql);
+            }
+        });
+
+        $page->allBlocks();
+
+        $this->assertNotNull($sql, 'allBlocks() should query page_contents.');
+        $this->assertStringContainsString('order by "id"', $sql);
+    }
+
+    public function test_blocks_render_in_id_order_not_key_alphabetical_order(): void
+    {
+        $page = $this->makePublishedPage('alpha-vs-id');
+
+        // On MySQL, `WHERE page = ?` can be served from the unique (page, key)
+        // index, which returns rows sorted by key. Without an explicit ORDER BY
+        // the page would render alpha.second before zeta.first no matter how the
+        // blocks are arranged in the CMS.
+        $this->insertBlock($page, 'zeta.first');
+        $this->insertBlock($page, 'alpha.second');
+
+        $html = $this->pageHtml($page);
+
+        $this->assertLessThan(strpos($html, 'value of alpha.second'), strpos($html, 'value of zeta.first'));
     }
 }

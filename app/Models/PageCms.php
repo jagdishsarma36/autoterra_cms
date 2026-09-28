@@ -41,7 +41,8 @@ class PageCms extends Model
     public function blocks()
     {
         return $this->hasMany(PageContent::class, 'page')
-            ->where('page', 'cms:' . $this->slug);
+            ->where('page', 'cms:' . $this->slug)
+            ->orderBy('id');
     }
 
     /**
@@ -68,7 +69,15 @@ class PageCms extends Model
     public function allBlocks(): array
     {
         $pageKey = 'cms:' . $this->slug;
-        $contents = PageContent::where('page', $pageKey)->get();
+        // Order must be explicit: the admin's edit form sorts blocks by `id`
+        // (that is the order `syncForPage` inserts them in, so it matches the
+        // order blocks are dragged to in the repeater). Without ORDER BY, MySQL
+        // can satisfy `WHERE page = ?` from the unique `(page, key)` index and
+        // return rows sorted by key instead, which made the page ignore the
+        // CMS block order (and MyISAM/InnoDB plans could even change per query).
+        $contents = PageContent::where('page', $pageKey)
+            ->orderBy('id')
+            ->get();
         $blocks = [];
         foreach ($contents as $content) {
             $blocks[$content->key] = $content->getContentValue();
