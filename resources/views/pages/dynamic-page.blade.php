@@ -16,27 +16,48 @@
 @if(count($blocks) > 0)
 
   @php
-    $consumedKeys = [];
-    $knownPrefixes = ['hero.', 'stats', 'section.', 'features', 'features.', 'faq', 'faq.', 'testimonials', 'testimonial', 'testimonials.', 'form', 'cta.'];
+    // Which named section a block belongs to. The page renders these sections
+    // in the same order the blocks are arranged in the CMS Content Blocks
+    // list — not in a hard-coded sequence — so dragging a block to a new
+    // position in the admin actually moves it on the rendered page. Blocks
+    // that belong to no named section are rendered individually below, also
+    // in CMS order.
+    $groupMatchers = [
+        'hero' => fn ($key) => str_starts_with($key, 'hero.'),
+        'stats' => fn ($key) => $key === 'stats',
+        'section' => fn ($key) => str_starts_with($key, 'section.'),
+        'features' => fn ($key) => $key === 'features' || str_starts_with($key, 'features.'),
+        'faq' => fn ($key) => $key === 'faq' || str_starts_with($key, 'faq.'),
+        'testimonials' => fn ($key) => in_array($key, ['testimonials', 'testimonial'], true) || str_starts_with($key, 'testimonials.'),
+        'form' => fn ($key) => $key === 'form',
+        'cta' => fn ($key) => str_starts_with($key, 'cta.'),
+    ];
 
-    function isConsumedKey(string $key, array $prefixes): bool {
-      foreach ($prefixes as $prefix) {
-        if ($key === $prefix || str_starts_with($key, $prefix)) {
-          return true;
-        }
-      }
-      return false;
-    }
-
+    $groupOrder = [];
     $remainingBlocks = [];
+
     foreach ($blocks as $key => $value) {
-      if (isConsumedKey($key, $knownPrefixes)) {
-        $consumedKeys[] = $key;
-      } else {
-        $remainingBlocks[$key] = $value;
-      }
+        $group = null;
+
+        foreach ($groupMatchers as $groupName => $matches) {
+            if ($matches($key)) {
+                $group = $groupName;
+                break;
+            }
+        }
+
+        if ($group && ! in_array($group, $groupOrder, true)) {
+            $groupOrder[] = $group;
+        }
+
+        if (! $group) {
+            $remainingBlocks[$key] = $value;
+        }
     }
   @endphp
+
+  @foreach ($groupOrder as $group)
+  @if ($group === 'hero')
 
   {{-- HERO SECTION --}}
   @if(isset($blocks['hero.heading']))
@@ -59,6 +80,8 @@
   </section>
   @endif
 
+  @elseif ($group === 'stats')
+
   {{-- STATS STRIP --}}
   @if(isset($blocks['stats']))
   @php $stats = is_array($blocks['stats']) ? $blocks['stats'] : json_decode($blocks['stats'], true) ?? []; @endphp
@@ -76,6 +99,8 @@
   @endif
   @endif
 
+  @elseif ($group === 'section')
+
   {{-- SECTION --}}
   @if(isset($blocks['section.heading']))
   <section class="section section-white">
@@ -88,6 +113,8 @@
     @endif
   </section>
   @endif
+
+  @elseif ($group === 'features')
 
   {{-- FEATURES --}}
   @if(isset($blocks['features']))
@@ -116,6 +143,8 @@
   @endif
   @endif
 
+  @elseif ($group === 'faq')
+
   {{-- FAQ --}}
   @if(isset($blocks['faq']))
   @php $faq = is_array($blocks['faq']) ? $blocks['faq'] : (json_decode($blocks['faq'], true) ?? []); @endphp
@@ -134,6 +163,8 @@
   </section>
   @endif
   @endif
+
+  @elseif ($group === 'testimonials')
 
   {{-- TESTIMONIALS --}}
   @if(isset($blocks['testimonials']) || isset($blocks['testimonial']))
@@ -158,6 +189,8 @@
   </section>
   @endif
   @endif
+
+  @elseif ($group === 'form')
 
   {{-- EMBEDDED FORM --}}
   @if(isset($blocks['form']))
@@ -214,6 +247,8 @@
   @endif
   @endif
 
+  @elseif ($group === 'cta')
+
   {{-- CTA BAND --}}
   @if(isset($blocks['cta.heading']))
   <section class="cta-band">
@@ -233,6 +268,9 @@
     </div>
   </section>
   @endif
+
+  @endif
+  @endforeach
 
   {{-- REMAINING BLOCKS (any blocks not rendered by the named sections above) --}}
   @if(count($remainingBlocks) > 0)
