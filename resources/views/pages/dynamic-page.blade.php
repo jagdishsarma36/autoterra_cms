@@ -290,6 +290,11 @@
     <section class="section {{ $sectionClass }}">
       {!! $rValue !!}
     </section>
+    @elseif(str_starts_with($rType, 'wysiwyg:'))
+    @php $sectionClass = substr($rType, 8) ?: 'section-white'; @endphp
+    <section class="section {{ $sectionClass }}">
+      {!! $rValue !!}
+    </section>
     @elseif(is_array($rValue))
     <section class="section section-white">
       <div style="max-width:860px;margin:0 auto;">
