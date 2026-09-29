@@ -1,24 +1,48 @@
 <script>
 /* Shared cart logic — requires these globals declared by the including page BEFORE this include:
-   RZP_KEY, IS_LOGGED_IN, CSRF_TOKEN, billingMode, currency, pendingOrderId,
-   pendingSubscriptionId, cartData, plus helpers fmt() and api().
+   RZP_KEY, IS_LOGGED_IN, CSRF_TOKEN, currency, cartData, plus helpers fmt() and api().
+   The buy page additionally declares billingMode / selectedTerm for its product cards.
    Also requires markup with IDs: cartEmpty, cartItems, couponSection, couponInput,
    couponApplied, couponCode, orderSummary, checkoutBtn, cartSubtitle, cartCount,
    cartSubtotal, cartGst, cartDiscountRow, cartDiscount, cartTotal. */
-async function removeFromCart(slug, term) {
-  const data = await api('/api/cart/remove', { product_slug: slug, term: term });
-  if (data.contents) {
-    cartData = { items: data.contents.items, subtotal: data.contents.subtotal, gst: data.contents.gst, discount: data.contents.discount, total: data.contents.total, coupon_code: data.contents.coupon_code, item_count: data.item_count };
-  }
+const CART_MODE_UPFRONT = 'upfront';
+const CART_MODE_SUBSCRIPTION = 'monthly';
+
+let pendingOrderId = null;
+let pendingSubscriptionIds = [];
+
+function applyCartPayload(data) {
+  if (!data) return;
+  // Mutation endpoints nest the contents under `contents`; GET /api/cart
+  // returns the same fields flat alongside `item_count`.
+  const c = data.contents || data;
+  if (!c || !c.items) return;
+  cartData = {
+    items: c.items,
+    subtotal: c.subtotal,
+    gst: c.gst,
+    discount: c.discount,
+    total: c.total,
+    coupon_code: c.coupon_code,
+    coupon_on_upfront_only: !!c.coupon_on_upfront_only,
+    item_count: data.item_count ?? c.item_count ?? 0,
+    billing_mode: c.billing_mode,
+    has_subscriptions: !!c.has_subscriptions,
+    has_upfront: !!c.has_upfront,
+    is_mixed: !!c.is_mixed,
+  };
+}
+
+async function removeFromCart(slug, term, mode) {
+  const data = await api('/api/cart/remove', { product_slug: slug, term: term, billing_mode: mode || null });
+  applyCartPayload(data);
   renderCart();
 }
 
-async function updateQty(slug, term, qty) {
-  if (qty <= 0) { removeFromCart(slug, term); return; }
-  const data = await api('/api/cart/update', { product_slug: slug, term: term, quantity: qty });
-  if (data.contents) {
-    cartData = { items: data.contents.items, subtotal: data.contents.subtotal, gst: data.contents.gst, discount: data.contents.discount, total: data.contents.total, coupon_code: data.contents.coupon_code, item_count: data.item_count };
-  }
+async function updateQty(slug, term, qty, mode) {
+  if (qty <= 0) { removeFromCart(slug, term, mode); return; }
+  const data = await api('/api/cart/update', { product_slug: slug, term: term, quantity: qty, billing_mode: mode || null });
+  applyCartPayload(data);
   renderCart();
 }
 
@@ -29,23 +53,13 @@ async function applyCoupon() {
   const data = await api('/api/cart/coupon/apply', { code: code });
   if (data.error) { alert(data.error); return; }
 
-  cartData.coupon_code = data.coupon_code;
-  cartData.subtotal = data.contents.subtotal;
-  cartData.gst = data.contents.gst;
-  cartData.discount = data.contents.discount;
-  cartData.total = data.contents.total;
+  applyCartPayload(data);
   renderCart();
 }
 
 async function removeCoupon() {
   const data = await api('/api/cart/coupon/remove', {});
-  if (data.contents) {
-    cartData.coupon_code = null;
-    cartData.subtotal = data.contents.subtotal;
-    cartData.gst = data.contents.gst;
-    cartData.discount = data.contents.discount;
-    cartData.total = data.contents.total;
-  }
+  applyCartPayload(data);
   renderCart();
 }
 
@@ -54,7 +68,7 @@ async function loadCart() {
   try {
     const res = await fetch('/api/cart');
     const data = await res.json();
-    cartData = data;
+    applyCartPayload(data);
     renderCart();
   } catch(e) { console.error('Cart load failed', e); }
 }
@@ -63,13 +77,21 @@ function renderCart() {
   const items = cartData?.items || [];
   const count = cartData?.item_count || 0;
   const hasItems = items.length > 0;
+  // Coupons discount a one-time payment, so they are hidden once the cart
+  // contains a subscription line.
+  const subsOnly = hasItems && !cartData?.has_upfront;
 
   document.getElementById('cartEmpty').style.display = hasItems ? 'none' : 'block';
   document.getElementById('cartItems').style.display = hasItems ? 'block' : 'none';
-  document.getElementById('couponSection').style.display = hasItems ? 'block' : 'none';
+  document.getElementById('couponSection').style.display = (hasItems && !subsOnly) ? 'block' : 'none';
   document.getElementById('orderSummary').style.display = hasItems ? 'block' : 'none';
   document.getElementById('checkoutBtn').disabled = !hasItems;
   document.getElementById('cartSubtitle').textContent = hasItems ? count + ' item' + (count !== 1 ? 's' : '') + ' in cart' : 'Add products to get started';
+
+  const subNote = document.getElementById('cartSubNote');
+  if (subNote) {
+    subNote.style.display = cartData?.has_subscriptions ? 'block' : 'none';
+  }
 
   const countBadge = document.getElementById('cartCount');
   if (count > 0) { countBadge.style.display = 'inline'; countBadge.textContent = count; }
@@ -77,18 +99,29 @@ function renderCart() {
 
   let html = '';
   items.forEach(item => {
+    const isSub = !!item.is_subscription;
+    const qty = isSub
+      ? '<div class="cart-item-qty"><span class="cart-item-fixed"><i class="ti ti-repeat"></i> Billed every cycle</span></div>'
+      : `<div class="cart-item-qty">
+          <button onclick="updateQty('${item.product_slug}','${item.term}',${item.quantity - 1},'${CART_MODE_UPFRONT}')">−</button>
+          <span>${item.quantity}</span>
+          <button onclick="updateQty('${item.product_slug}','${item.term}',${item.quantity + 1},'${CART_MODE_UPFRONT}')">+</button>
+        </div>`;
+    const price = isSub
+      ? `${fmt(item.cycle_amount)} <span class="cart-item-term">/ cycle</span>`
+      : fmt(item.unit_price * item.quantity);
+    const modeBadge = isSub
+      ? '<span class="cart-item-badge">Subscription</span>'
+      : '<span class="cart-item-badge cart-item-badge-once">One-time</span>';
+
     html += `<div class="cart-item">
       <div class="cart-item-info">
-        <div class="cart-item-name">${item.product_name}</div>
+        <div class="cart-item-name">${item.product_name} ${modeBadge}</div>
         <div class="cart-item-term">${item.term_label}</div>
-        <div class="cart-item-price">${fmt(item.unit_price * item.quantity)}</div>
-        <div class="cart-item-qty">
-          <button onclick="updateQty('${item.product_slug}','${item.term}',${item.quantity - 1})">−</button>
-          <span>${item.quantity}</span>
-          <button onclick="updateQty('${item.product_slug}','${item.term}',${item.quantity + 1})">+</button>
-        </div>
+        <div class="cart-item-price">${price}</div>
+        ${qty}
       </div>
-      <button class="cart-item-remove" onclick="removeFromCart('${item.product_slug}','${item.term}')" title="Remove"><i class="ti ti-x"></i></button>
+      <button class="cart-item-remove" onclick="removeFromCart('${item.product_slug}','${item.term}','${isSub ? CART_MODE_SUBSCRIPTION : CART_MODE_UPFRONT}')" title="Remove"><i class="ti ti-x"></i></button>
     </div>`;
   });
   document.getElementById('cartItems').innerHTML = html;
@@ -104,8 +137,22 @@ function renderCart() {
     appliedSection.style.display = 'none';
   }
 
+  // A coupon only discounts the one-time lines, so say so rather than letting
+  // the customer assume the subscription was discounted too.
+  const couponSubNote = document.getElementById('couponSubNote');
+  if (couponSubNote) {
+    couponSubNote.style.display = cartData?.coupon_on_upfront_only ? 'block' : 'none';
+  }
+
   document.getElementById('cartSubtotal').textContent = fmt(cartData?.subtotal || 0);
   document.getElementById('cartGst').textContent = fmt(cartData?.gst || 0);
+
+  // A subscription line is charged one cycle now, so the summary shows the
+  // amount due today rather than the whole term.
+  const subLabel = document.getElementById('cartSubtotalLabel');
+  if (subLabel) subLabel.textContent = cartData?.has_subscriptions ? 'Due now (excl. GST)' : 'Subtotal';
+  const totalLabel = document.getElementById('cartTotalLabel');
+  if (totalLabel) totalLabel.textContent = cartData?.has_subscriptions ? 'Payable now' : 'Total';
 
   const discountRow = document.getElementById('cartDiscountRow');
   if ((cartData?.discount || 0) > 0) {
@@ -137,30 +184,63 @@ async function handleCheckout() {
 
   if (!IS_LOGGED_IN) { window.location.href = '/login?redirect=/cart'; return; }
 
-  const btn = document.getElementById('checkoutBtn');
-  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite;"></i> Processing…';
-  btn.disabled = true;
+  // Subscription lines are settled by their own Razorpay plan, one checkout
+  // per line. One-time lines are settled last, in a single combined order.
+  const subs = items.filter(i => i.is_subscription);
+  const upfront = items.filter(i => !i.is_subscription);
 
-  if (billingMode === 'monthly' && items.length === 1) {
-    await handleSubscriptionCheckout(items[0]);
-  } else {
-    await handleCartCheckout();
+  setBusy(true, subs.length > 1 ? 'Starting subscription 1 of ' + subs.length + '…' : 'Processing…');
+
+  let completed = true;
+  let subsAttempted = 0;
+  let subsConfirmed = 0;
+
+  for (const item of subs) {
+    subsAttempted++;
+    if (subs.length > 1) setBusy(true, 'Subscription ' + subsAttempted + ' of ' + subs.length + '…');
+    const ok = await checkoutSubscriptionLine(item);
+    if (!ok) { completed = false; break; }
+    subsConfirmed++;
+    await dropCartLine(item, CART_MODE_SUBSCRIPTION);
   }
+
+  if (completed && upfront.length) {
+    setBusy(true, 'Processing payment…');
+    completed = await checkoutUpfrontLines(upfront);
+  }
+
+  if (completed) {
+    window.location.href = subs.length ? '/dashboard?success=subscription' : '/dashboard?success=payment';
+    return;
+  }
+
+  await reloadCart();
+  setBusy(false);
+  alert(subsConfirmed > 0
+    ? subsConfirmed + ' of ' + subs.length + ' subscriptions confirmed and are now active. Please finish the remaining items in your cart.'
+    : 'Payment was not completed. Your cart has been saved.');
 }
 
-async function handleSubscriptionCheckout(item) {
-  const totalAmount = cartData?.total || item.line_total;
+/**
+ * Create a plan + subscription for one cart line and open Razorpay for it.
+ * Resolves true once the first payment is verified.
+ */
+function checkoutSubscriptionLine(item) {
+  return new Promise(async (resolve) => {
+    let data;
+    try {
+      data = await api('/api/razorpay/create-plan', {
+        product_slug: item.product_slug,
+        term: item.term
+      });
+    } catch (e) {
+      alert('Subscription failed. Please try again.');
+      return resolve(false);
+    }
 
-  try {
-    const data = await api('/api/razorpay/create-plan', {
-      product_slug: item.product_slug,
-      term: item.term,
-      amount: totalAmount,
-      currency: currency
-    });
-    if (data.error) { alert('Error: ' + data.error); resetBtn(); return; }
+    if (data.error) { alert('Error: ' + data.error); return resolve(false); }
 
-    pendingSubscriptionId = data.subscription_id;
+    pendingSubscriptionIds.push(data.subscription_id);
 
     const rzp = new Razorpay({
       key: RZP_KEY,
@@ -168,39 +248,43 @@ async function handleSubscriptionCheckout(item) {
       name: 'AutoTerra',
       description: item.product_name + ' — ' + item.term_label + ' subscription',
       handler: async function(response) {
-        pendingSubscriptionId = null;
         const vData = await api('/api/razorpay/verify-subscription', {
           razorpay_subscription_id: response.razorpay_subscription_id,
           razorpay_payment_id: response.razorpay_payment_id,
           razorpay_signature: response.razorpay_signature
         });
-        if (vData.success) {
-          await api('/api/cart/remove', { product_slug: item.product_slug, term: item.term });
-          window.location.href = '/dashboard?success=subscription';
+        if (vData && vData.success) {
+          dropPendingSubscription(response.razorpay_subscription_id);
+          resolve(true);
         } else {
-          alert('Subscription verification failed.'); resetBtn();
+          cancelPendingSubscriptions();
+          alert('Subscription verification failed.');
+          resolve(false);
         }
       },
-      modal: { ondismiss: () => { resetBtn(); } },
+      modal: { ondismiss: () => { cancelPendingSubscriptions(); resolve(false); } },
       prefill: { name: '{{ Auth::user()->name ?? "" }}', email: '{{ Auth::user()->email ?? "" }}' },
       theme: { color: '#00A8F8' }
     });
     rzp.open();
-  } catch(e) {
-    alert('Subscription failed. Please try again.'); resetBtn();
-  }
+  });
 }
 
-async function handleCartCheckout() {
-  const totalPaise = Math.round((cartData?.total || 0) * 100);
+function checkoutUpfrontLines(items) {
+  return new Promise(async (resolve) => {
+    let data;
+    try {
+      data = await api('/api/razorpay/create-cart-order', {
+        currency: currency,
+        coupon_code: cartData?.coupon_code || null,
+        items: items.map(i => ({ product_slug: i.product_slug, term: i.term }))
+      });
+    } catch (e) {
+      alert('Payment failed. Please try again.');
+      return resolve(false);
+    }
 
-  try {
-    const data = await api('/api/razorpay/create-cart-order', {
-      amount: totalPaise,
-      currency: currency,
-      coupon_code: cartData?.coupon_code || null
-    });
-    if (data.error) { alert('Error: ' + data.error); resetBtn(); return; }
+    if (data.error) { alert('Error: ' + data.error); return resolve(false); }
 
     pendingOrderId = data.db_order_id;
 
@@ -209,41 +293,69 @@ async function handleCartCheckout() {
       amount: data.amount,
       currency: data.currency,
       name: 'AutoTerra',
-      description: 'AutoTerra — ' + (cartData?.item_count || 1) + ' product' + ((cartData?.item_count || 1) !== 1 ? 's' : ''),
+      description: 'AutoTerra — ' + items.length + ' product' + (items.length !== 1 ? 's' : ''),
       order_id: data.id,
       handler: async function(response) {
-        pendingOrderId = null;
         const vData = await api('/api/razorpay/verify', {
           ...response,
           db_order_id: data.db_order_id
         });
-        if (vData.success) {
-          window.location.href = '/dashboard?success=payment';
+        pendingOrderId = null;
+        if (vData && vData.success) {
+          resolve(true);
         } else {
-          alert('Payment verification failed.'); resetBtn();
+          alert('Payment verification failed.');
+          resolve(false);
         }
       },
-      modal: { ondismiss: () => { resetBtn(); } },
+      modal: { ondismiss: () => { cancelPendingOrder(); resolve(false); } },
       prefill: { name: '{{ Auth::user()->name ?? "" }}', email: '{{ Auth::user()->email ?? "" }}' },
       theme: { color: '#00A8F8' }
     });
     rzp.open();
-  } catch(e) {
-    alert('Payment failed. Please try again.'); resetBtn();
-  }
+  });
 }
 
-function resetBtn() {
-  if (pendingSubscriptionId) {
-    api('/api/razorpay/cancel-pending-subscription', { subscription_id: pendingSubscriptionId }).catch(function() {});
-    pendingSubscriptionId = null;
-  }
-  if (pendingOrderId) {
-    api('/api/razorpay/cancel-pending-order', { order_id: pendingOrderId }).catch(function() {});
-    pendingOrderId = null;
-  }
+/** Remove a purchased line and re-render, keeping checkout loops in control. */
+async function dropCartLine(item, mode) {
+  const data = await api('/api/cart/remove', { product_slug: item.product_slug, term: item.term, billing_mode: mode });
+  applyCartPayload(data);
+  renderCart();
+}
+
+function dropPendingSubscription(razorpaySubscriptionId) {
+  pendingSubscriptionIds = pendingSubscriptionIds.filter(id => id !== razorpaySubscriptionId);
+}
+
+function cancelPendingSubscriptions() {
+  const ids = pendingSubscriptionIds.slice();
+  pendingSubscriptionIds = [];
+  ids.forEach(id => {
+    api('/api/razorpay/cancel-pending-subscription', { subscription_id: id }).catch(function() {});
+  });
+}
+
+function cancelPendingOrder() {
+  if (!pendingOrderId) return;
+  const id = pendingOrderId;
+  pendingOrderId = null;
+  api('/api/razorpay/cancel-pending-order', { order_id: id }).catch(function() {});
+}
+
+async function reloadCart() {
+  try {
+    const res = await fetch('/api/cart');
+    applyCartPayload(await res.json());
+    renderCart();
+  } catch (e) { /* keep the current view if the refresh fails */ }
+}
+
+function setBusy(busy, label) {
   const btn = document.getElementById('checkoutBtn');
-  btn.innerHTML = '<i class="ti ti-lock"></i> Proceed to checkout';
-  btn.disabled = !(cartData?.items?.length > 0);
+  if (!btn) return;
+  btn.innerHTML = busy
+    ? '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite;"></i> ' + (label || 'Processing…')
+    : '<i class="ti ti-lock"></i> Proceed to checkout';
+  btn.disabled = busy || !(cartData?.items?.length > 0);
 }
 </script>
