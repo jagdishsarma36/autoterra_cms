@@ -392,7 +392,53 @@ document.addEventListener('DOMContentLoaded', function () {
       links.style.gap = '16px';
       links.style.zIndex = '99';
       links.style.borderBottom = '1px solid rgba(0,168,248,0.12)';
+      if (open) closeNavSubs();
     });
+
+/* ── Nav sub-menu: hover on desktop, tap on tablet/mobile ──
+   Must match the ≤900px breakpoint where .nav-links collapses. */
+var NAV_DESKTOP = window.matchMedia('(min-width: 901px)');
+
+function closeNavSubs(except) {
+    document.querySelectorAll('.nav-item.has-sub.open').forEach(function (item) {
+        if (item === except) return;
+        item.classList.remove('open');
+        var trigger = item.querySelector('.nav-sub-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    });
+}
+
+document.addEventListener('click', function (e) {
+    var target = e.target;
+    if (!target || !target.closest) return;
+
+    var trigger = target.closest('.nav-item.has-sub .nav-sub-trigger');
+
+    if (trigger) {
+        // Desktop keeps the hover behaviour and follows the link
+        if (NAV_DESKTOP.matches) return;
+
+        var item = trigger.closest('.nav-item.has-sub');
+
+        // Second tap on an already expanded sub-menu follows the parent link
+        if (item.classList.contains('open')) {
+            item.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+            return;
+        }
+
+        e.preventDefault();
+        closeNavSubs(item);
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+        return;
+    }
+
+    // Tap anywhere else collapses an expanded sub-menu
+    if (!NAV_DESKTOP.matches && !target.closest('.nav-item.has-sub')) {
+        closeNavSubs();
+    }
+});
 
 //**** pro spatial count ****//
 $('.ps-stat-num').each(function () {

@@ -25,17 +25,18 @@
     @endif
   </div>--}}
   <div class="nav-links">
-    @foreach($navLinks as $link)
+    @foreach($navLinks as $i => $link)
       @php
         $children = collect($link['children'] ?? [])->filter(fn ($c) => filled($c['label'] ?? null) && filled($c['url'] ?? null))->values();
         $isActive = request()->path() == trim($link['url'], '/');
       @endphp
       @if($children->isNotEmpty())
+      @php $subId = 'nav-sub-' . $i . '-' . \Illuminate\Support\Str::slug($link['label']); @endphp
       <div class="nav-item has-sub">
-        <a href="{{ $link['url'] }}" class="{{ $isActive ? 'active' : '' }}">
+        <a href="{{ $link['url'] }}" class="nav-sub-trigger {{ $isActive ? 'active' : '' }}" aria-haspopup="true" aria-expanded="false" aria-controls="{{ $subId }}">
           {{ $link['label'] }} <i class="ti ti-chevron-down nav-caret"></i>
         </a>
-        <ul class="nav-dropdown">
+        <ul class="nav-dropdown" id="{{ $subId }}">
           @foreach($children as $child)
           <li>
             <a href="{{ $child['url'] }}" class="{{ request()->path() == trim($child['url'], '/') ? 'active' : '' }}">
