@@ -316,7 +316,7 @@
     </section>
     @else
     <section class="section section-white">
-      <div style="max-width:860px;margin:0 auto;">
+      <div style="margin:0 auto;">
         <div class="page-content">{!! $rValue !!}</div>
       </div>
     </section>
