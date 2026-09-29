@@ -4471,7 +4471,7 @@ section:has(>.legal-wrap).reveal.show {
   /* Mobile menu (opened by hamburger JS): expand sub-menus as stacked links */
   .nav-links .nav-item { width: 100%; flex-direction: column; align-items: flex-start; gap: 6px; }
   .nav-links .nav-item.has-sub .nav-dropdown {
-    display: none; position: absolute; min-width: 0; width: 100%;
+    display: block; position: static; min-width: 0; width: 100%;
     border: none; box-shadow: none; background: transparent; padding: 4px 0 0 14px;
   }
   .nav-links .nav-item.has-sub .nav-dropdown a { padding: 6px 12px; }
@@ -4717,10 +4717,6 @@ section:has(>.legal-wrap).reveal.show {
     .license_tabs, .orders_tabs {
         overflow-x: auto;
     }
-    .nav-links .nav-item.has-sub .nav-dropdown {
-    display: none; position: absolute; min-width: 0; width: 100%;
-    border: none; box-shadow: none; background: transparent; padding: 4px 0 0 14px;
-  }
 }
 
 
