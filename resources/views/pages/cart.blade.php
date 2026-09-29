@@ -24,6 +24,11 @@
 .cart-item-qty button{width:24px;height:24px;border:1px solid var(--border);border-radius:5px;background:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--body);transition:border-color 0.15s,color 0.15s;}
 .cart-item-qty button:hover{border-color:var(--cyan);color:var(--cyan);}
 .cart-item-qty span{font-size:12px;font-weight:600;min-width:18px;text-align:center;}
+.cart-item-fixed{font-size:11px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.cart-item-badge{display:inline-block;margin-left:6px;background:#E6F7FF;color:#005B8F;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:2px 6px;border-radius:4px;vertical-align:2px;}
+.cart-item-badge-once{background:var(--off);color:var(--muted);}
+.cart-sub-note{display:none;background:#E6F7FF;border:1px solid #7DD3FC;border-radius:6px;padding:8px 10px;margin-top:10px;font-size:11px;color:#005B8F;line-height:1.5;}
+.cart-sub-note i{vertical-align:-2px;}
 .cart-item-remove{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;font-size:16px;flex-shrink:0;}
 .cart-item-remove:hover{color:#EF4444;}
 .cart-empty{text-align:center;padding:56px 20px;color:var(--muted);font-size:13px;}
@@ -43,6 +48,8 @@
 .cart-coupon-row button:hover{background:var(--cyan);}
 .cart-coupon-applied{display:flex;align-items:center;justify-content:space-between;background:#F0FFF8;border:1px solid #6EE7B7;border-radius:6px;padding:6px 10px;font-size:11px;color:#065F46;font-weight:600;}
 .cart-coupon-applied button{background:none;border:none;color:#991B1B;cursor:pointer;font-size:13px;padding:0 2px;}
+.cart-coupon-note{display:none;margin-top:8px;background:#FFF7ED;border:1px solid #FDBA74;border-radius:6px;padding:7px 9px;font-size:10.5px;color:#9A3412;line-height:1.5;}
+.cart-coupon-note i{vertical-align:-1px;margin-right:2px;}
 .order-summary{padding:16px 20px;}
 .order-price-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
 .order-price-label{font-size:12px;color:var(--muted);}
@@ -99,19 +106,37 @@
         @foreach($contents['items'] as $item)
         <div class="cart-item">
           <div class="cart-item-info">
-            <div class="cart-item-name">{{ $item['product_name'] }}</div>
-            <div class="cart-item-term">{{ $item['term_label'] }}</div>
-            <div class="cart-item-price">{{ $rup($item['unit_price'] * $item['quantity']) }}</div>
-            <div class="cart-item-qty">
-              <button onclick="updateQty('{{ $item['product_slug'] }}','{{ $item['term'] }}',{{ $item['quantity'] - 1 }})">−</button>
-              <span>{{ $item['quantity'] }}</span>
-              <button onclick="updateQty('{{ $item['product_slug'] }}','{{ $item['term'] }}',{{ $item['quantity'] + 1 }})">+</button>
+            <div class="cart-item-name">
+              {{ $item['product_name'] }}
+              <span class="cart-item-badge {{ $item['is_subscription'] ? '' : 'cart-item-badge-once' }}">{{ $item['is_subscription'] ? 'Subscription' : 'One-time' }}</span>
             </div>
+            <div class="cart-item-term">{{ $item['term_label'] }}</div>
+            <div class="cart-item-price">
+              @if($item['is_subscription'])
+                {{ $rup($item['cycle_amount']) }} <span class="cart-item-term">/ cycle</span>
+              @else
+                {{ $rup($item['unit_price'] * $item['quantity']) }}
+              @endif
+            </div>
+            @if($item['is_subscription'])
+              <div class="cart-item-qty"><span class="cart-item-fixed"><i class="ti ti-repeat"></i> Billed every cycle</span></div>
+            @else
+              <div class="cart-item-qty">
+                <button onclick="updateQty('{{ $item['product_slug'] }}','{{ $item['term'] }}',{{ $item['quantity'] - 1 }},'upfront')">−</button>
+                <span>{{ $item['quantity'] }}</span>
+                <button onclick="updateQty('{{ $item['product_slug'] }}','{{ $item['term'] }}',{{ $item['quantity'] + 1 }},'upfront')">+</button>
+              </div>
+            @endif
           </div>
-          <button class="cart-item-remove" onclick="removeFromCart('{{ $item['product_slug'] }}','{{ $item['term'] }}')" title="Remove"><i class="ti ti-x"></i></button>
+          <button class="cart-item-remove" onclick="removeFromCart('{{ $item['product_slug'] }}','{{ $item['term'] }}','{{ $item['is_subscription'] ? 'monthly' : 'upfront' }}')" title="Remove"><i class="ti ti-x"></i></button>
         </div>
         @endforeach
       @endif
+    </div>
+
+    <div class="cart-sub-note" id="cartSubNote" style="{{ $contents['has_subscriptions'] ?? false ? '' : 'display:none;' }}">
+      <i class="ti ti-info-circle"></i>
+      Subscription items are billed on their own recurring plan. You will confirm each subscription in turn at checkout, then pay for any one-time items in a single payment.
     </div>
   </div>
 
@@ -120,7 +145,7 @@
       <h4>Order Summary</h4>
     </div>
 
-    <div id="couponSection" class="cart-coupon" style="{{ $item_count ? '' : 'display:none;' }}">
+    <div id="couponSection" class="cart-coupon" style="{{ $item_count && ($contents['has_upfront'] ?? true) ? '' : 'display:none;' }}">
       <div id="couponInput" class="cart-coupon-row" style="{{ $coupon_code ? 'display:none;' : '' }}">
         <input type="text" id="couponCode" placeholder="Coupon code">
         <button onclick="applyCoupon()">Apply</button>
@@ -129,14 +154,18 @@
         <span><i class="ti ti-ticket"></i> {{ $coupon_code }}</span>
         <button onclick="removeCoupon()" title="Remove coupon"><i class="ti ti-x"></i></button>
       </div>
+      <div class="cart-coupon-note" id="couponSubNote" style="{{ ($contents['coupon_on_upfront_only'] ?? false) ? '' : 'display:none;' }}">
+        <i class="ti ti-info-circle"></i>
+        {{ $coupon_code }} applies to your one-time items only. Subscriptions are billed on a fixed recurring plan at full price.
+      </div>
     </div>
 
     <div id="orderSummary" class="order-summary" style="{{ $item_count ? '' : 'display:none;' }}">
-      <div class="order-price-row"><span class="order-price-label">Subtotal</span><span class="order-price-val" id="cartSubtotal">{{ $rup($contents['subtotal']) }}</span></div>
+      <div class="order-price-row"><span class="order-price-label" id="cartSubtotalLabel">{{ ($contents['has_subscriptions'] ?? false) ? 'Due now (excl. GST)' : 'Subtotal' }}</span><span class="order-price-val" id="cartSubtotal">{{ $rup($contents['subtotal']) }}</span></div>
       <div class="order-discount-row" id="cartDiscountRow" style="{{ $contents['discount'] > 0 ? '' : 'display:none;' }}"><span class="order-price-label">Discount</span><span class="order-price-val" id="cartDiscount">−{{ $rup($contents['discount']) }}</span></div>
-      <div class="order-price-row"><span class="order-price-label">GST (18%)</span><span class="order-price-val" id="cartGst">{{ $rup($contents['gst']) }}</span></div>
+      <div class="order-price-row"><span class="order-price-label" id="cartGstLabel">GST (18%)</span><span class="order-price-val" id="cartGst">{{ $rup($contents['gst']) }}</span></div>
       <div class="order-divider"></div>
-      <div class="order-total-row"><span class="order-total-label">Total</span><span class="order-total-val" id="cartTotal">{{ $rup($contents['total']) }}</span></div>
+      <div class="order-total-row"><span class="order-total-label" id="cartTotalLabel">{{ ($contents['has_subscriptions'] ?? false) ? 'Payable now' : 'Total' }}</span><span class="order-total-val" id="cartTotal">{{ $rup($contents['total']) }}</span></div>
     </div>
 
     <div class="order-cta">
@@ -172,10 +201,7 @@ if (menuToggle) {
 const RZP_KEY = '{{ config("razorpay.key_id") }}';
 const IS_LOGGED_IN = true;
 const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').content;
-let billingMode = 'upfront';
 let currency = 'INR';
-let pendingOrderId = null;
-let pendingSubscriptionId = null;
 let cartData = null;
 
 function fmt(n) {

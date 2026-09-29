@@ -110,6 +110,13 @@
 .order-help a{color:var(--cyan);font-weight:700;}
 .tax-note{font-size:11px;color:var(--muted);margin-top:20px;padding:10px 14px;background:var(--off);border-radius:6px;border:1px solid var(--border);}
 .tax-note i{color:var(--cyan);font-size:13px;vertical-align:-2px;}
+.cart-item-badge{display:inline-block;margin-left:6px;background:#E6F7FF;color:#005B8F;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:2px 6px;border-radius:4px;vertical-align:2px;}
+.cart-item-badge-once{background:var(--off);color:var(--muted);}
+.cart-item-fixed{font-size:11px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.cart-sub-note{display:none;background:#E6F7FF;border:1px solid #7DD3FC;border-radius:6px;padding:8px 10px;margin-top:10px;font-size:11px;color:#005B8F;line-height:1.5;text-align:left;}
+.cart-sub-note i{vertical-align:-2px;}
+.cart-coupon-note{display:none;margin-top:8px;background:#FFF7ED;border:1px solid #FDBA74;border-radius:6px;padding:7px 9px;font-size:10.5px;color:#9A3412;line-height:1.5;text-align:left;}
+.cart-coupon-note i{vertical-align:-1px;margin-right:2px;}
 @media(max-width:900px){.geo-banner,.buy-hero,.india-section,.intl-section{padding-left:24px;padding-right:24px;}.buy-layout{grid-template-columns:1fr;}.buy-sidebar{position:static;}.buy-product-grid{grid-template-columns:1fr;}}
 </style>
 @endsection
@@ -164,10 +171,14 @@
             <button onclick="applyCoupon()">Apply</button>
           </div>
           <div id="couponApplied" style="display:none;"></div>
+          <div class="cart-coupon-note" id="couponSubNote" style="display:none;">
+            <i class="ti ti-info-circle"></i>
+            This code applies to your one-time items only. Subscriptions are billed on a fixed recurring plan at full price.
+          </div>
         </div>
         <div class="order-summary" id="orderSummary" style="display:none;">
           <div class="order-price-row">
-            <span class="order-price-label">Subtotal (excl. GST)</span>
+            <span class="order-price-label" id="cartSubtotalLabel">Subtotal (excl. GST)</span>
             <span class="order-price-val" id="cartSubtotal"></span>
           </div>
           <div class="order-price-row">
@@ -180,7 +191,7 @@
           </div>
           <div class="order-divider"></div>
           <div class="order-total-row">
-            <span class="order-total-label">Total</span>
+            <span class="order-total-label" id="cartTotalLabel">Total</span>
             <span class="order-total-val" id="cartTotal"></span>
           </div>
         </div>
@@ -194,6 +205,10 @@
           <a href="/quote" class="btn-buy-ghost">
             <i class="ti ti-file-text"></i> Need a formal quote instead?
           </a>
+          <div class="cart-sub-note" id="cartSubNote" style="display:none;">
+            <i class="ti ti-info-circle"></i>
+            Each subscription is confirmed in turn at checkout. You can mix subscription and one-time products in the same cart.
+          </div>
         </div>
         <div class="order-security">
           <span><i class="ti ti-shield-check"></i> Secure payment</span>
@@ -231,12 +246,14 @@ let PRICING = {};
 let selectedTerm = '1yr';
 let billingMode = 'upfront';
 let currency = 'INR';
-let pendingOrderId = null;
-let pendingSubscriptionId = null;
 let cartData = null;
 const ALL_TERMS = ['daily','weekly','3mo','6mo','1yr','3yr','5yr'];
 const TERM_LABELS = {'daily':'Daily','weekly':'Weekly','3mo':'3-Month','6mo':'6-Month','1yr':'1-Year','3yr':'3-Year','5yr':'5-Year'};
 const GST_RATE = 0.18;
+// How to read one recurring charge, e.g. {period:'monthly', interval:3} is
+// "every 3 months". The cycle amounts themselves come from /api/pricing, so
+// the quote on this page always matches what checkout bills.
+const CYCLE_LABELS = {'daily':'day','weekly':'week','3mo':'3 months','6mo':'6 months','1yr':'month','3yr':'year','5yr':'year'};
 
 const PRODUCT_FEATURES = {
   view: ['Point cloud 3D viewer','DXF / KML / SHP viewing','Basic measurements'],
@@ -297,11 +314,15 @@ function renderTermTabs() {
 }
 
 function getPrice(slug, term) {
+  const entry = getPriceEntry(slug, term);
+  return entry ? entry.amount : null;
+}
+
+function getPriceEntry(slug, term) {
   term = term || selectedTerm;
   const p = PRICING[slug];
   if (!p || !p.prices[term]) return null;
-  const v = p.prices[term];
-  return typeof v === 'object' ? v.amount : v;
+  return p.prices[term];
 }
 
 function renderCards() {
@@ -341,6 +362,20 @@ function renderCards() {
 }
 
 function renderPriceHTML(price, slug) {
+  // Subscription mode quotes the recurring charge, not the whole term price.
+  // Both figures come from the server so the card and the checkout agree.
+  if (billingMode === 'monthly') {
+    const entry = getPriceEntry(slug);
+    const perCycle = entry && entry.cycle_base != null ? entry.cycle_base : price;
+    const cycleCount = entry ? (entry.cycle_count || 1) : 1;
+    const cycleLabel = CYCLE_LABELS[selectedTerm] || 'month';
+    const times = cycleCount === 1
+      ? 'one charge per ' + TERM_LABELS[selectedTerm].toLowerCase()
+      : 'billed ' + cycleCount + '× per ' + cycleLabel;
+    return `<div class="buy-card-per-mo">${fmt(perCycle)}<span class="buy-card-per-mo-label">/ ${cycleLabel}</span></div>
+      <div class="buy-card-total">${fmt(price)} total · ${times}</div>`;
+  }
+
   const days = {'daily':1,'weekly':7,'3mo':90,'6mo':180,'1yr':365,'3yr':1095,'5yr':1825}[selectedTerm] || 365;
   if (selectedTerm === 'daily') {
     return `<div class="buy-card-per-mo">${fmt(price)}<span class="buy-card-per-mo-label">/day</span></div>
@@ -365,11 +400,16 @@ function setBillingMode(mode) {
   billingMode = mode;
   document.getElementById('tabUpfront').classList.toggle('active', mode === 'upfront');
   document.getElementById('tabMonthly').classList.toggle('active', mode === 'monthly');
+  // A product already in the cart for the other billing mode is a separate
+  // line, so re-render to refresh the per-mode "Added" state.
+  renderCards();
 }
 
 function isItemInCart(slug, term) {
   if (!cartData || !cartData.items) return false;
-  return cartData.items.some(i => i.product_slug === slug && i.term === term);
+  return cartData.items.some(i =>
+    i.product_slug === slug && i.term === term && (i.billing_mode || 'upfront') === billingMode
+  );
 }
 
 async function addToCart(slug) {
@@ -381,10 +421,15 @@ async function addToCart(slug) {
   const btn = document.getElementById('addBtn-' + slug);
   if (btn) { btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 0.8s linear infinite;"></i>'; btn.disabled = true; }
 
-  const data = await api('/api/cart/add', { product_slug: slug, term: selectedTerm, quantity: 1 });
+  const data = await api('/api/cart/add', {
+    product_slug: slug,
+    term: selectedTerm,
+    quantity: 1,
+    billing_mode: billingMode
+  });
   if (data.error) { alert(data.error); if (btn) { btn.innerHTML = '<i class="ti ti-shopping-cart-plus"></i> Add to Cart'; btn.disabled = false; } return; }
 
-  cartData = { items: data.contents.items, subtotal: data.contents.subtotal, gst: data.contents.gst, discount: data.contents.discount, total: data.contents.total, coupon_code: data.contents.coupon_code, item_count: data.item_count };
+  applyCartPayload(data);
   renderCart();
   renderCards();
 }

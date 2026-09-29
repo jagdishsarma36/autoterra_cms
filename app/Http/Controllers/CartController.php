@@ -24,7 +24,15 @@ class CartController extends Controller
             'discount' => $contents['discount'],
             'total' => $contents['total'],
             'coupon_code' => $contents['coupon_code'],
+            'coupon_on_upfront_only' => $contents['coupon_on_upfront_only'],
+            'upfront_subtotal' => $contents['upfront_subtotal'],
             'item_count' => $this->cart->getItemCount(),
+            'billing_mode' => $contents['billing_mode'],
+            'has_subscriptions' => $contents['has_subscriptions'],
+            'has_upfront' => $contents['has_upfront'],
+            'is_mixed' => $contents['is_mixed'],
+            'subscription_count' => $contents['subscription_count'],
+            'upfront_count' => $contents['upfront_count'],
         ]);
     }
 
@@ -45,6 +53,7 @@ class CartController extends Controller
             'product_slug' => 'required|string',
             'term' => 'required|string',
             'quantity' => 'nullable|integer|min:1|max:10',
+            'billing_mode' => 'nullable|string|in:' . CartService::MODE_UPFRONT . ',' . CartService::MODE_SUBSCRIPTION,
         ]);
 
         $price = $this->cart->getItemPrice(
@@ -60,7 +69,8 @@ class CartController extends Controller
         $this->cart->addItem(
             $request->product_slug,
             $request->term,
-            $request->integer('quantity', 1)
+            $request->integer('quantity', 1),
+            $request->input('billing_mode', CartService::MODE_UPFRONT)
         );
 
         return response()->json([
@@ -75,9 +85,14 @@ class CartController extends Controller
         $request->validate([
             'product_slug' => 'required|string',
             'term' => 'required|string',
+            'billing_mode' => 'nullable|string|in:' . CartService::MODE_UPFRONT . ',' . CartService::MODE_SUBSCRIPTION,
         ]);
 
-        $this->cart->removeItem($request->product_slug, $request->term);
+        $this->cart->removeItem(
+            $request->product_slug,
+            $request->term,
+            $request->input('billing_mode')
+        );
 
         return response()->json([
             'success' => true,
@@ -92,12 +107,14 @@ class CartController extends Controller
             'product_slug' => 'required|string',
             'term' => 'required|string',
             'quantity' => 'required|integer|min:0|max:10',
+            'billing_mode' => 'nullable|string|in:' . CartService::MODE_UPFRONT . ',' . CartService::MODE_SUBSCRIPTION,
         ]);
 
         $this->cart->updateQuantity(
             $request->product_slug,
             $request->term,
-            $request->integer('quantity')
+            $request->integer('quantity'),
+            $request->input('billing_mode')
         );
 
         return response()->json([
@@ -122,6 +139,7 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'coupon_code' => $this->cart->getCouponCode(),
+            'item_count' => $this->cart->getItemCount(),
             'contents' => $this->cart->getContents('INR'),
         ]);
     }
@@ -132,6 +150,7 @@ class CartController extends Controller
 
         return response()->json([
             'success' => true,
+            'item_count' => $this->cart->getItemCount(),
             'contents' => $this->cart->getContents('INR'),
         ]);
     }
